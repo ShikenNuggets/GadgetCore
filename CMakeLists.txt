@@ -11,14 +11,24 @@ endif()
 
 project ("GadgetCore" LANGUAGES CXX)
 
+include(FetchContent)
+
+FetchContent_Declare(
+	catch2
+	GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+	GIT_TAG v3.11.0
+)
+
+FetchContent_MakeAvailable(catch2)
+
 file (GLOB_RECURSE SRC_FILES
-	"src/*.cpp",
-	"src/*.h",
-	"src/*.hpp",
+	"src/*.cpp"
+	"src/*.h"
+	"src/*.hpp"
 )
 
 file (GLOB_RECURSE INC_FILES
-	"include/*.h",
+	"include/*.h"
 	"include/*.hpp"
 )
 
@@ -27,8 +37,4 @@ set_property(TARGET GadgetCore PROPERTY CXX_STANDARD 23)
 
 target_include_directories(GadgetCore PUBLIC include)
 
-# Add source to this project's executable.
-add_executable (GadgetCoreTests "src/GadgetCore.cpp" "include/GadgetCore.hpp")
-set_property(TARGET GadgetCoreTests PROPERTY CXX_STANDARD 23)
-
-target_link_libraries(GadgetCoreTests PRIVATE GadgetCore)
+add_subdirectory(tests)

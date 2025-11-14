@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int main()
+int NotMain()
 {
 	cout << "Hello CMake." << endl;
 	return 0;
