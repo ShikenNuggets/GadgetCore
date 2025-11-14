@@ -21,6 +21,8 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(catch2)
 
+set(CMAKE_CXX_CLANG_TIDY clang-tidy)
+
 file (GLOB_RECURSE SRC_FILES
 	"src/*.cpp"
 	"src/*.h"
