@@ -10,12 +10,20 @@ namespace GCore::Math
 	using GFloat = double;
 	static_assert(FloatLike<GFloat>, "GFloat must be a floating point type and implicitly-convertible to double");
 
-	static constexpr GFloat Pi = std::numbers::pi_v<GFloat>;
-	static constexpr GFloat NearZero = std::numeric_limits<GFloat>::denorm_min();
-	static constexpr GFloat Infinity = std::numeric_limits<GFloat>::infinity();
+	template<FloatLike T>
+	static constexpr T TPi = std::numbers::pi_v<T>;
+	static constexpr GFloat Pi = TPi<GFloat>;
 
 	template<FloatLike T>
-	static inline constexpr bool IsNearZero(T value_){ return value_ <= NearZero && value_ >= -NearZero; }
+	static constexpr T TNearZero = std::numeric_limits<T>::denorm_min();
+	static constexpr GFloat NearZero = TNearZero<GFloat>;
+
+	template<FloatLike T>
+	static constexpr T TInfinity = std::numeric_limits<T>::infinity();
+	static constexpr GFloat Infinity = TInfinity<GFloat>;
+
+	template<FloatLike T>
+	static inline constexpr bool IsNearZero(T value_){ return value_ <= TNearZero<T> && value_ >= -TNearZero<T>; }
 
 	template <FloatLike T>
 	static inline constexpr bool IsNear(T a_, T b_){ return IsNearZero(a_ - b_); }
