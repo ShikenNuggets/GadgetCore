@@ -36,7 +36,7 @@ namespace GCore::Math
 	{
 		if (IsNearZero(b_))
 		{
-			return 0;
+			return 0.0;
 		}
 
 		return a_ / b_;
