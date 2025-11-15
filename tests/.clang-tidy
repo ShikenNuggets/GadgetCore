@@ -2,11 +2,14 @@ Checks: '
   bug-prone-*,
 
   cppcoreguidelines-*,
+    -cppcoreguidelines-avoid-magic-numbers, # Lots of magic numbers in test code,
+    -cppcoreguidelines-avoid-do-while, # Catch2 macros use do while
 
   google-*,
-    -google-build-using-namespace, # Using non-std namespace in headers is generally OK,
+    -google-build-using-namespace, # Using non std namespace in headers is generally OK,
     -google-objc-*, # No Objective C here,
     -google-readability-todo, # Very internal Google specific,
+    -google-runtime-float, # Test code can include long doubles
     
   misc-*,
     -misc-include-cleaner, # Too many irrelevant warnings,
@@ -23,12 +26,13 @@ Checks: '
   readability-*,
     -readability-identifier-length, # Sometimes your variables SHOULD be short,
     -readability-function-cognitive-complexity, # Not a fan of this metric,
+    -readability-magic-numbers, # Lots of magic numbers in test code,
     -readability-uppercase-literal-suffix, # Not sure why this check exists,
 '
 
 CheckOptions:
  - key: bugprone-assert-side-effect.AssertMacros
-   value: "assert,_ASSERT,GADGET_ASSERT"
+   value: "assert,_ASSERT,GADGET_ASSERT,REQUIRE,REQUIRE_FALSE"
    
  - key: bugprone-misplaced-widening-cast.CheckImplicitCasts
    value: true
