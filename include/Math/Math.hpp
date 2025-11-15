@@ -8,6 +8,9 @@ namespace GCore::Math
 	concept FloatLike = std::is_floating_point_v<T> && std::is_convertible_v<T, double>;
 
 	using GFloat = double;
+	static_assert(FloatLike<float>, "Sanity Check - Built-in float must satisfy the FloatLike concept");
+	static_assert(FloatLike<double>, "Sanity Check - Built-in double must satisfy the FloatLike concept");
+	static_assert(FloatLike<long double>, "Sanity Check - Built-in long double must satisfy the FloatLike concept");
 	static_assert(FloatLike<GFloat>, "GFloat must be a floating point type and implicitly-convertible to double");
 
 	template<FloatLike T>
