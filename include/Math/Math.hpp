@@ -26,13 +26,13 @@ namespace GCore::Math
 	static constexpr GFloat Infinity = TInfinity<GFloat>;
 
 	template<FloatLike T>
-	static inline constexpr bool IsNearZero(T value_){ return value_ <= TNearZero<T> && value_ >= -TNearZero<T>; }
+	static inline constexpr bool IsNearZero(T value_) noexcept{ return value_ <= TNearZero<T> && value_ >= -TNearZero<T>; }
 
 	template <FloatLike T>
-	static inline constexpr bool IsNear(T a_, T b_){ return IsNearZero(a_ - b_); }
+	static inline constexpr bool IsNear(T a_, T b_) noexcept{ return IsNearZero(a_ - b_); }
 
 	template <FloatLike T>
-	static inline constexpr T SafeDivide(T a_, T b_)
+	static inline constexpr T SafeDivide(T a_, T b_) noexcept
 	{
 		if (IsNearZero(b_))
 		{
