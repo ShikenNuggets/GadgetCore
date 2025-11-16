@@ -2,6 +2,7 @@ Checks: '
   bug-prone-*,
 
   cppcoreguidelines-*,
+    -cppcoreguidelines-avoid-magic-numbers, # Alias, seems to not respect the IgnoredIntegerValues option,
 
   google-*,
     -google-build-using-namespace, # Using non-std namespace in headers is generally OK,
