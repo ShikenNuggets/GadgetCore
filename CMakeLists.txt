@@ -21,6 +21,14 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(catch2)
 
+FetchContent_Declare(
+	SDL3
+	GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+	GIT_TAG release-3.2.26
+)
+
+FetchContent_MakeAvailable(SDL3)
+
 set(CMAKE_CXX_CLANG_TIDY clang-tidy)
 
 file (GLOB_RECURSE SRC_FILES
@@ -38,5 +46,10 @@ add_library(GadgetCore STATIC ${SRC_FILES} ${INC_FILES})
 set_property(TARGET GadgetCore PROPERTY CXX_STANDARD 23)
 
 target_include_directories(GadgetCore PUBLIC include)
+
+target_link_libraries(GadgetCore
+	PUBLIC
+		SDL3::SDL3
+)
 
 add_subdirectory(tests)
