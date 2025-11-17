@@ -35,7 +35,6 @@ FetchContent_MakeAvailable(SDL3)
 # --------------------------------------- #
 # ------------ Setup Tooling ------------ #
 # --------------------------------------- #
-set(CMAKE_CXX_CLANG_TIDY clang-tidy)
 
 # Detect compiler
 if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
@@ -46,15 +45,13 @@ else()
     set(EXCEPTION_FLAG "")
 endif()
 
+find_program(CLANG_TIDY_EXE NAMES clang-tidy)
 
-if (CMAKE_CXX_CLANG_TIDY)
-    set(CLANG_TIDY_ARGS "")
-	list(APPEND CLANG_TIDY_ARGS "-extra-arg=${EXCEPTION_FLAG}")
-
-    set(CMAKE_CXX_CLANG_TIDY
-        clang-tidy
-        ${CLANG_TIDY_ARGS}
-    )
+if (CLANG_TIDY_EXE)
+	message(STATUS "clang-tidy checks enabled")
+	set(CMAKE_CXX_CLANG_TIDY clang-tidy "-extra-arg=${EXCEPTION_FLAG}")
+else()
+	message(STATUS "clang-tidy not found, will not run checks")
 endif()
 
 # --------------------------------------- #
