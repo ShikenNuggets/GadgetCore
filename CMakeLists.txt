@@ -11,6 +11,9 @@ endif()
 
 project ("GadgetCore" LANGUAGES CXX)
 
+# --------------------------------------- #
+# ----- Fetch External Dependencies ----- #
+# --------------------------------------- #
 include(FetchContent)
 
 FetchContent_Declare(
@@ -25,13 +28,38 @@ FetchContent_Declare(
 	SDL3
 	GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
 	GIT_TAG release-3.2.26
-	CMAKE_ARGS -DSDL_UNIX_CONSOLE_BUILD=ON
 )
 
 FetchContent_MakeAvailable(SDL3)
 
+# --------------------------------------- #
+# ------------ Setup Tooling ------------ #
+# --------------------------------------- #
 set(CMAKE_CXX_CLANG_TIDY clang-tidy)
 
+# Detect compiler
+if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    set(EXCEPTION_FLAG "/EHsc")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set(EXCEPTION_FLAG "-fexceptions")
+else()
+    set(EXCEPTION_FLAG "")
+endif()
+
+
+if (CMAKE_CXX_CLANG_TIDY)
+    set(CLANG_TIDY_ARGS "")
+	list(APPEND CLANG_TIDY_ARGS "-extra-arg=${EXCEPTION_FLAG}")
+
+    set(CMAKE_CXX_CLANG_TIDY
+        clang-tidy
+        ${CLANG_TIDY_ARGS}
+    )
+endif()
+
+# --------------------------------------- #
+# ------------ Setup Target ------------- #
+# --------------------------------------- #
 file (GLOB_RECURSE SRC_FILES
 	"src/*.cpp"
 	"src/*.h"
@@ -44,7 +72,12 @@ file (GLOB_RECURSE INC_FILES
 )
 
 add_library(GadgetCore STATIC ${SRC_FILES} ${INC_FILES})
-set_property(TARGET GadgetCore PROPERTY CXX_STANDARD 23)
+
+set_target_properties(GadgetCore PROPERTIES
+	CXX_STANDARD 23
+	CXX_STANDARD_REQUIRED YES
+	CXX_EXTENSIONS NO
+)
 
 target_include_directories(GadgetCore PUBLIC include)
 
@@ -53,4 +86,7 @@ target_link_libraries(GadgetCore
 		SDL3::SDL3
 )
 
+# --------------------------- #
+# ---------- Tests ---------- #
+# --------------------------- #
 add_subdirectory(tests)
