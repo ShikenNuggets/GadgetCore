@@ -57,7 +57,7 @@ namespace GCore::Logger
 	template<typename... Args>
 	inline void Log(Severity severity_, std::format_string<Args...> fmt_, Args&&... args_)
 	{
-		auto messageStr = std::format(fmt_, args_...);
+		auto messageStr = std::format(fmt_, std::forward<Args>(args_)...);
 		auto finalMessage = std::format("[GCORE][{}] {}", SeverityToString(severity_), messageStr);
 		OnProcessLogMessage_Internal(severity_, std::move(finalMessage));
 	}
