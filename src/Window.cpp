@@ -1,5 +1,7 @@
 #include "Window.hpp"
 
+#include "Logger.hpp"
+
 using namespace GCore;
 
 Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, int32_t x_, int32_t y_) : windowPtr(nullptr), size(width_, height_), position(x_, y_), renderAPI(renderAPI_)
@@ -37,14 +39,14 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, int32_t x_
 	const auto displayId = SDL_GetPrimaryDisplay();
 	if (displayId == 0)
 	{
-		// TODO - Log warning: could not get primary display ID
+		Logger::Log(Logger::Warning, "Could not get primary display ID! SDL Error: {}", SDL_GetError());
 	}
 	else
 	{
 		const auto* displayMode = SDL_GetCurrentDisplayMode(displayId);
 		if (displayMode == nullptr)
 		{
-			// TODO - Log warning: Could not get display mode
+			Logger::Log(Logger::Warning, "Could not get primary display mode! SDL Error: {}", SDL_GetError());
 		}
 		else if (displayMode->refresh_rate != 0.0f)
 		{
