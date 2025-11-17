@@ -2,6 +2,8 @@
 
 #include <print>
 
+#include "FileSystem.hpp"
+
 using namespace GCore;
 
 static inline Logger::CallbackFunc& GetLoggerFunc() noexcept
@@ -30,19 +32,23 @@ void Logger::SimpleInit(Mode mode_, Severity minSeverity_, const std::filesystem
 
 			break;
 		case Mode::FileOut:
-			GetLoggerFunc() = [minSeverity_](Severity severity_, std::string message_)
+			GetLoggerFunc() = [path_, minSeverity_](Severity severity_, std::string message_)
 			{
-				// TODO - File output
+				const std::string msg = std::move(message_); // Suppresses an otherwise useful warning
+				if (severity_ <= minSeverity_)
+				{
+					auto _ = FileSystem::WriteToFile(path_, msg);
+				}
 			};
 
 			break;
 		case Mode::StdAndFile:
-			GetLoggerFunc() = [minSeverity_](Severity severity_, std::string message_)
+			GetLoggerFunc() = [path_, minSeverity_](Severity severity_, std::string message_)
 			{
-				if(severity_ <= minSeverity_)
+				if (severity_ <= minSeverity_)
 				{
+					auto _ = FileSystem::WriteToFile(path_, message_);
 					std::println("{}", std::move(message_));
-					// TODO - File output
 				}
 			};
 
