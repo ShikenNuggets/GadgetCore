@@ -76,7 +76,7 @@ set_target_properties(GadgetCore PROPERTIES
 	CXX_EXTENSIONS NO
 )
 
-target_include_directories(GadgetCore PUBLIC include)
+target_include_directories(GadgetCore PUBLIC include/GadgetCore)
 
 target_link_libraries(GadgetCore
 	PUBLIC
