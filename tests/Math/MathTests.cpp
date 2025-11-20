@@ -2,7 +2,7 @@
 
 #include <catch2/catch_all.hpp>
 
-#include "Math/Math.hpp"
+#include "GCore/Math/Math.hpp"
 
 using namespace GCore;
 

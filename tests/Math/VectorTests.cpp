@@ -1,6 +1,6 @@
 #include <catch2/catch_all.hpp>
 
-#include "Math/Vector.hpp"
+#include "GCore/Math/Vector.hpp"
 
 using namespace GCore;
 
