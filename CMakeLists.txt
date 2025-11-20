@@ -76,7 +76,14 @@ set_target_properties(GadgetCore PROPERTIES
 	CXX_EXTENSIONS NO
 )
 
-target_include_directories(GadgetCore PUBLIC include/GadgetCore)
+target_include_directories(GadgetCore PRIVATE
+	${CMAKE_CURRENT_SOURCE_DIR}/include/GCore
+)
+
+target_include_directories(GadgetCore PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/GCore>
+	$<INSTALL_INTERFACE:include/GCore>
+)
 
 target_link_libraries(GadgetCore
 	PUBLIC
