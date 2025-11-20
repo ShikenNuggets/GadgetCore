@@ -81,8 +81,8 @@ target_include_directories(GadgetCore PRIVATE
 )
 
 target_include_directories(GadgetCore PUBLIC
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/GCore>
-	$<INSTALL_INTERFACE:include/GCore>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+	$<INSTALL_INTERFACE:include>
 )
 
 target_link_libraries(GadgetCore
