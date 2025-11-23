@@ -20,17 +20,26 @@ FetchContent_Declare(
 	catch2
 	GIT_REPOSITORY https://github.com/catchorg/Catch2.git
 	GIT_TAG v3.11.0
+	EXCLUDE_FROM_ALL
 )
-
 FetchContent_MakeAvailable(catch2)
 
 FetchContent_Declare(
 	SDL3
 	GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
 	GIT_TAG release-3.2.26
+	EXCLUDE_FROM_ALL
 )
-
 FetchContent_MakeAvailable(SDL3)
+
+FetchContent_Declare(
+	SDL3_Image
+	GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
+	GIT_TAG release-3.2.4
+	EXCLUDE_FROM_ALL
+)
+set(SDLIMAGE_AVIF OFF) # This is on by default and gives us some nonsense unrecoverable error
+FetchContent_MakeAvailable(SDL3_Image)
 
 # --------------------------------------- #
 # ------------ Setup Tooling ------------ #
@@ -88,6 +97,7 @@ target_include_directories(GadgetCore PUBLIC
 target_link_libraries(GadgetCore
 	PUBLIC
 		SDL3::SDL3
+		SDL3_image::SDL3_image
 )
 
 # --------------------------- #
