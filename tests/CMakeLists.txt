@@ -9,6 +9,11 @@ file (GLOB_RECURSE TEST_SRC_FILES
 
 add_executable (GadgetCoreTests ${TEST_SRC_FILES})
 set_target_properties(GadgetCoreTests PROPERTIES CXX_EXTENSIONS NO)
+
+target_include_directories(GadgetCoreTests SYSTEM PRIVATE
+	$<TARGET_PROPERTY:Catch2::Catch2WithMain,INTERFACE_INCLUDE_DIRECTORIES>
+)
+
 target_link_libraries(GadgetCoreTests
 	PRIVATE
 		GadgetCore
