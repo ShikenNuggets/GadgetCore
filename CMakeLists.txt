@@ -70,11 +70,7 @@ file (GLOB_RECURSE INC_FILES
 
 add_library(GadgetCore STATIC ${SRC_FILES} ${INC_FILES})
 
-set_target_properties(GadgetCore PROPERTIES
-	CXX_STANDARD 23
-	CXX_STANDARD_REQUIRED YES
-	CXX_EXTENSIONS NO
-)
+target_compile_features(GadgetCore PUBLIC cxx_std_23)
 
 target_include_directories(GadgetCore PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/include/GCore

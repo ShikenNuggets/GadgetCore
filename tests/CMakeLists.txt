@@ -8,7 +8,7 @@ file (GLOB_RECURSE TEST_SRC_FILES
 )
 
 add_executable (GadgetCoreTests ${TEST_SRC_FILES})
-set_property(TARGET GadgetCoreTests PROPERTY CXX_STANDARD 23)
+set_target_properties(GadgetCoreTests PROPERTIES CXX_EXTENSIONS NO)
 target_link_libraries(GadgetCoreTests
 	PRIVATE
 		GadgetCore
