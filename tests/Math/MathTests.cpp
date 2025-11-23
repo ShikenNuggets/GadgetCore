@@ -91,3 +91,10 @@ TEST_CASE("Math::Dot4D", "[math_dot_4d]")
 	REQUIRE(Math::IsNear(Math::Dot4D(0.0, 0.0, 0.0, 0.0, 3.0, 2.0, 1.0, 4.0), 0.0));
 	REQUIRE(Math::IsNear(Math::Dot4D(-1.0, 2.0, -3.0, 4.0, -4.0, 3.0, -2.0, 1.0), 20.0));
 }
+
+TEST_CASE("Math::IsValidNumber", "[math_is_valid_number]")
+{
+	REQUIRE(Math::IsValidNumber(0.0));
+	REQUIRE(Math::IsValidNumber(1024.0));
+	REQUIRE(!Math::IsValidNumber(Math::Infinity));
+}

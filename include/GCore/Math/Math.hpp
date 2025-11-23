@@ -38,6 +38,12 @@ namespace GCore::Math
 	static constexpr T TInfinity = std::numeric_limits<T>::infinity();
 	static constexpr GFloat Infinity = TInfinity<GFloat>;
 
+	template <FloatLike T>
+	static inline constexpr bool IsValidNumber(T value)
+	{
+		return !std::isnan(value) && !std::isinf(value);
+	}
+
 	template<FloatLike T>
 	static inline constexpr bool IsNearZero(T value_) noexcept{ return value_ <= TNearZero<T> && value_ >= -TNearZero<T>; }
 
