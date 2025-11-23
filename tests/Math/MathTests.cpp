@@ -6,7 +6,7 @@
 
 using namespace GCore;
 
-TEST_CASE("Math::IsNearZero")
+TEST_CASE("Math::IsNearZero", "[math_is_near_zero]")
 {
 	REQUIRE(Math::IsNearZero(0.0));
 	REQUIRE(Math::IsNearZero(-0.0));
@@ -39,7 +39,7 @@ TEST_CASE("Math::IsNearZero")
 	REQUIRE_FALSE(Math::IsNearZero(-1e308));
 }
 
-TEST_CASE("Math::IsNear")
+TEST_CASE("Math::IsNear", "[math_is_near]")
 {
 	REQUIRE(Math::IsNear(0.0, 0.0));
 	REQUIRE(Math::IsNear(1.0, 1.0));
@@ -65,7 +65,7 @@ TEST_CASE("Math::IsNear")
 	REQUIRE_FALSE(Math::IsNear(1024.0L, std::numeric_limits<long double>::quiet_NaN()));
 }
 
-TEST_CASE("Math::SafeDivide")
+TEST_CASE("Math::SafeDivide", "[math_safe_divide]")
 {
 	REQUIRE(Math::IsNear(Math::SafeDivide(9.0, 3.0), 3.0));
 	REQUIRE(Math::IsNearZero(Math::SafeDivide(9.0, 0.0)));

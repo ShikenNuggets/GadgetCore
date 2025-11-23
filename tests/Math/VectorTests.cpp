@@ -7,14 +7,14 @@ using namespace GCore;
 // --------------------------- //
 // ---------- TVec2 ---------- //
 // --------------------------- //
-TEST_CASE("TVec2::TVec2")
+TEST_CASE("TVec2::TVec2", "[tvec2_constructor]")
 {
 	const TVec2<double> doubleVec2;
 	REQUIRE(doubleVec2.x == 0.0);
 	REQUIRE(doubleVec2.y == 0.0);
 }
 
-TEST_CASE("TVec2::Zero")
+TEST_CASE("TVec2::Zero", "[tvec2_zero]")
 {
 	const TVec2<double> zeroVec = TVec2<double>::Zero();
 	REQUIRE(zeroVec.x == 0.0);
@@ -24,7 +24,7 @@ TEST_CASE("TVec2::Zero")
 // --------------------------- //
 // ---------- TVec3 ---------- //
 // --------------------------- //
-TEST_CASE("TVec3::TVec3")
+TEST_CASE("TVec3::TVec3", "[tvec3_constructor]")
 {
 	const TVec3<double> doubleVec3;
 	REQUIRE(doubleVec3.x == 0.0);
@@ -36,7 +36,7 @@ TEST_CASE("TVec3::TVec3")
 // ---------- TVec4 ---------- //
 // --------------------------- //
 
-TEST_CASE("TVec4::TVec4")
+TEST_CASE("TVec4::TVec4", "[tvec4_constructor]")
 {
 	const TVec4<double> doubleVec4;
 	REQUIRE(doubleVec4.x == 0.0);
