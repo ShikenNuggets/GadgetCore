@@ -70,3 +70,24 @@ TEST_CASE("Math::SafeDivide", "[math_safe_divide]")
 	REQUIRE(Math::IsNear(Math::SafeDivide(9.0, 3.0), 3.0));
 	REQUIRE(Math::IsNearZero(Math::SafeDivide(9.0, 0.0)));
 }
+
+TEST_CASE("Math::Dot2D", "[math_dot_2d]")
+{
+	REQUIRE(Math::IsNear(Math::Dot2D(1.0, 2.0, 3.0, 4.0), 11.0));
+	REQUIRE(Math::IsNear(Math::Dot2D(0.0, 0.0, 5.0, 7.0), 0.0));
+	REQUIRE(Math::IsNear(Math::Dot2D(-1.0, 4.0, 2.0, -3.0), -14.0));
+}
+
+TEST_CASE("Math::Dot3D", "[math_dot_3d]")
+{
+	REQUIRE(Math::IsNear(Math::Dot3D(1.0, 2.0, 3.0, 4.0, 5.0, 6.0), 32.0));
+	REQUIRE(Math::IsNear(Math::Dot3D(0.0, 0.0, 0.0, 9.0, 8.0, 7.0), 0.0));
+	REQUIRE(Math::IsNear(Math::Dot3D(-1.0, 2.0, -3.0, 4.0, -5.0, 6.0), -32.0));
+}
+
+TEST_CASE("Math::Dot4D", "[math_dot_4d]")
+{
+	REQUIRE(Math::IsNear(Math::Dot4D(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0), 70.0));
+	REQUIRE(Math::IsNear(Math::Dot4D(0.0, 0.0, 0.0, 0.0, 3.0, 2.0, 1.0, 4.0), 0.0));
+	REQUIRE(Math::IsNear(Math::Dot4D(-1.0, 2.0, -3.0, 4.0, -4.0, 3.0, -2.0, 1.0), 20.0));
+}

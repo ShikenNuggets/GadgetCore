@@ -54,4 +54,13 @@ namespace GCore::Math
 
 		return a_ / b_;
 	}
+
+	template <FloatLike T>
+	static inline constexpr T Dot2D(T aa_, T ab_, T ba_, T bb_){ return (aa_ * ba_) + (ab_ * bb_); }
+
+	template <FloatLike T>
+	static inline constexpr T Dot3D(T aa_, T ab_, T ac_, T ba_, T bb_, T bc_){ return (aa_ * ba_) + (ab_ * bb_) + (ac_ * bc_); }
+
+	template <FloatLike T>
+	static inline constexpr T Dot4D(T aa_, T ab_, T ac_, T ad_, T ba_, T bb_, T bc_, T bd_){ return (aa_ * ba_) + (ab_ * bb_) + (ac_ * bc_) + (ad_ * bd_); }
 }
