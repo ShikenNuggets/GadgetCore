@@ -44,6 +44,13 @@ namespace GCore::Math
 		return !std::isnan(value) && !std::isinf(value);
 	}
 
+	template <FloatLike T>
+	static inline T Sqrt(T value)
+	{
+		// TODO - constexpr in C++26
+		return sqrt(value);
+	}
+
 	template<FloatLike T>
 	static inline constexpr bool IsNearZero(T value_) noexcept{ return value_ <= TNearZero<T> && value_ >= -TNearZero<T>; }
 
