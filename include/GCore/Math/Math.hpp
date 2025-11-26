@@ -1,5 +1,6 @@
 #pragma once
 
+#include <limits>
 #include <numbers>
 #include <type_traits>
 
