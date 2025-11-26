@@ -121,3 +121,29 @@ TEST_CASE("Math::Clamp", "[math_clamp]")
 	REQUIRE(Math::Clamp(0, 9, -10) == 0);
 	REQUIRE(Math::IsNear(Math::Clamp(0.0, 1.0, 0.5), 0.5));
 }
+
+TEST_CASE("Math::IsPrime", "[math_is_prime]")
+{
+	REQUIRE(!Math::IsPrime(0));
+	REQUIRE(!Math::IsPrime(1));
+	REQUIRE(Math::IsPrime(2));
+	REQUIRE(Math::IsPrime(3));
+	REQUIRE(!Math::IsPrime(4));
+	REQUIRE(Math::IsPrime(5));
+	REQUIRE(!Math::IsPrime(6));
+	REQUIRE(Math::IsPrime(7));
+
+	REQUIRE(Math::IsPrime(Math::LargestPrime));
+}
+
+TEST_CASE("Math::NextPrime", "[math_next_prime]")
+{
+	REQUIRE(Math::NextPrime(0) == 2);
+	REQUIRE(Math::NextPrime(1) == 2);
+	REQUIRE(Math::NextPrime(2) == 3);
+	REQUIRE(Math::NextPrime(3) == 5);
+	REQUIRE(Math::NextPrime(4) == 5);
+	REQUIRE(Math::NextPrime(5) == 7);
+	REQUIRE(Math::NextPrime(6) == 7);
+	REQUIRE(Math::NextPrime(7) == 11);
+}

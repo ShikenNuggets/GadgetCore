@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <limits>
 #include <numbers>
 #include <type_traits>
@@ -39,17 +40,19 @@ namespace GCore::Math
 	static constexpr T TInfinity = std::numeric_limits<T>::infinity();
 	static constexpr GFloat Infinity = TInfinity<GFloat>;
 
+	static constexpr uint64_t LargestPrime = 18'446'744'073'709'551'557ULL; //Largest prime number that can be represented by a 64 bit integer
+
 	template <FloatLike T>
 	static inline constexpr bool IsValidNumber(T value)
 	{
 		return !std::isnan(value) && !std::isinf(value);
 	}
 
-	template <FloatLike T>
+	template <Numeric T>
 	static inline T Sqrt(T value)
 	{
 		// TODO - constexpr in C++26
-		return sqrt(value);
+		return std::sqrt(value);
 	}
 
 	template<FloatLike T>
@@ -102,5 +105,51 @@ namespace GCore::Math
 		}
 
 		return value;
+	}
+
+	static inline bool IsPrime(uint64_t num)
+	{
+		if (num <= 1)
+		{
+			return false;
+		}
+
+		if (num == 2)
+		{
+			return true;
+		}
+
+		if (num % 2 == 0)
+		{
+			return false;
+		}
+
+		auto sqrtNum = Sqrt<uint64_t>(num); // TODO - constexpr in C++26
+		for (uint64_t i = 3; i <= sqrtNum; i += 2)
+		{
+			if (num % i == 0)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	static inline uint64_t NextPrime(uint64_t start){
+		if (start >= LargestPrime)
+		{
+			return 0;
+		}
+
+		for (uint64_t i = start + 1; i <= std::numeric_limits<uint64_t>::max(); i++)
+		{
+			if (IsPrime(i))
+			{
+				return i;
+			}
+		}
+
+		return 0;
 	}
 }
