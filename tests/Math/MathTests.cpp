@@ -106,3 +106,10 @@ TEST_CASE("Math::Dot4D", "[math_dot_4d]")
 	REQUIRE(Math::IsNear(Math::Dot4D(0.0, 0.0, 0.0, 0.0, 3.0, 2.0, 1.0, 4.0), 0.0));
 	REQUIRE(Math::IsNear(Math::Dot4D(-1.0, 2.0, -3.0, 4.0, -4.0, 3.0, -2.0, 1.0), 20.0));
 }
+
+TEST_CASE("Math::Clamp", "[math_clamp]")
+{
+	REQUIRE(Math::Clamp(0, 9, 10) == 9);
+	REQUIRE(Math::Clamp(0, 9, -10) == 0);
+	REQUIRE(Math::IsNear(Math::Clamp(0.0, 1.0, 0.5), 0.5));
+}

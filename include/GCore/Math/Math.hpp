@@ -76,4 +76,19 @@ namespace GCore::Math
 
 	template <FloatLike T>
 	static inline constexpr T Dot4D(T aa_, T ab_, T ac_, T ad_, T ba_, T bb_, T bc_, T bd_){ return (aa_ * ba_) + (ab_ * bb_) + (ac_ * bc_) + (ad_ * bd_); }
+
+	template <Numeric T>
+	static inline constexpr T Clamp(T min, T max, T value) noexcept
+	{
+		if (value < min)
+		{
+			return min;
+		}
+		else if (value > max)
+		{
+			return max;
+		}
+
+		return value;
+	}
 }
