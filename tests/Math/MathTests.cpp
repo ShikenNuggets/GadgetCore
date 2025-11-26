@@ -86,6 +86,14 @@ TEST_CASE("Math::SafeDivide", "[math_safe_divide]")
 	REQUIRE(Math::IsNearZero(Math::SafeDivide(9.0, 0.0)));
 }
 
+TEST_CASE("Math::Abs", "[math_abs]")
+{
+	REQUIRE(Math::Abs(-1) == 1);
+	REQUIRE(Math::Abs(1) == 1);
+	REQUIRE(Math::Abs(static_cast<uint8_t>(254u)) == 254);
+	REQUIRE(Math::Abs(Math::Infinity) == Math::Infinity);
+}
+
 TEST_CASE("Math::Dot2D", "[math_dot_2d]")
 {
 	REQUIRE(Math::IsNear(Math::Dot2D(1.0, 2.0, 3.0, 4.0), 11.0));

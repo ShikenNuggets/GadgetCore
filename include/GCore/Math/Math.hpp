@@ -68,6 +68,17 @@ namespace GCore::Math
 		return a_ / b_;
 	}
 
+	template <Numeric T>
+	static inline constexpr T Abs(T value) noexcept
+	{
+		if (value < 0.0)
+		{
+			return value * -1.0;
+		}
+
+		return value;
+	}
+
 	template <FloatLike T>
 	static inline constexpr T Dot2D(T aa_, T ab_, T ba_, T bb_){ return (aa_ * ba_) + (ab_ * bb_); }
 
