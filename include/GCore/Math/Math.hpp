@@ -226,4 +226,17 @@ namespace GCore::Math
 		const auto floor = static_cast<int64_t>(std::floor(value));
 		return IsNear(static_cast<T>(floor), value);
 	}
+
+	template <FloatLike T>
+	static inline constexpr T RemapRange(T value, T oldMin, T oldMax, T newMin, T newMax)
+	{
+		if (oldMin == oldMax || newMin == newMax)
+		{
+			return newMin;
+		}
+
+		const auto oldRange = (oldMax - oldMin);
+		const auto newRange = (newMax - newMin);
+		return (((value - oldMin) * newRange) / oldRange) + newMin;
+	}
 }

@@ -269,3 +269,20 @@ TEST_CASE("Math::IsInteger", "[math_is_integer]")
 	REQUIRE(Math::IsInteger(-3.0));
 	REQUIRE(!Math::IsInteger(-3.9));
 }
+
+TEST_CASE("Math::RemapRange", "[math_remap_range]")
+{
+	REQUIRE(Math::IsNear(Math::RemapRange(5.0, 0.0, 10.0, 0.0, 100.0), 50.0));
+	REQUIRE(Math::IsNear(Math::RemapRange(0.0, 0.0, 10.0, 0.0, 100.0), 0.0));
+	REQUIRE(Math::IsNear(Math::RemapRange(10.0, 0.0, 10.0, 0.0, 100.0), 100.0));
+	REQUIRE(Math::IsNear(Math::RemapRange(5.0, 0.0, 10.0, 0.0, 1.0), 0.5));
+	REQUIRE(Math::IsNear(Math::RemapRange(2.5, 0.0, 5.0, -100.0, 100.0), 0.0));
+	REQUIRE(Math::IsNear(Math::RemapRange(-5.0, -10.0, 0.0, 0.0, 100.0), 50.0));
+	REQUIRE(Math::IsNear(Math::RemapRange(5.0, 0.0, 5.0, 0.0, 2.0), 2.0));
+
+	REQUIRE(Math::IsNear(Math::RemapRange(5.0, 5.0, 5.0, 0.0, 10.0), 0.0));
+	REQUIRE(Math::IsNear(Math::RemapRange(5.0, 0.0, 0.0, 0.0, 10.0), 0.0));
+
+	REQUIRE(Math::IsNear(Math::RemapRange(5.0, 0.0, 10.0, 0.0, 0.0), 0.0));
+	REQUIRE(Math::IsNear(Math::RemapRange(5.0, 0.0, 10.0, 10.0, 10.0), 10.0));
+}
