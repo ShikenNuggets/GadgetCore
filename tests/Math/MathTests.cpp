@@ -138,6 +138,39 @@ TEST_CASE("Math::Clamp", "[math_clamp]")
 	REQUIRE(Math::IsNear(Math::Clamp(0.0, 1.0, 0.5), 0.5));
 }
 
+TEST_CASE("Math::SinR", "[math_sin_r]")
+{
+	REQUIRE(Math::IsNear(Math::SinR(0.0), 0.0));
+	REQUIRE(Math::IsNear(Math::SinR(std::numbers::pi_v<double> / 6.0), 0.5));
+	REQUIRE(Math::IsNear(Math::SinR(std::numbers::pi_v<double> / 4.0), std::sin(std::numbers::pi_v<double> / 4.0)));
+	REQUIRE(Math::IsNear(Math::SinR(std::numbers::pi_v<double> / 2.0), 1.0));
+	REQUIRE(Math::IsNear(Math::SinR(std::numbers::pi_v<double>), 0.0));
+	REQUIRE(Math::IsNear(Math::SinR(3 * std::numbers::pi_v<double> / 2.0), -1.0));
+	REQUIRE(Math::IsNear(Math::SinR(2 * std::numbers::pi_v<double>), 0.0));
+}
+
+TEST_CASE("Math::CosR", "[math_cos_r]")
+{
+	REQUIRE(Math::IsNear(Math::CosR(0.0), 1.0));
+	REQUIRE(Math::IsNear(Math::CosR(std::numbers::pi_v<double> / 6.0), std::cos(std::numbers::pi_v<double> / 6.0)));
+	REQUIRE(Math::IsNear(Math::CosR(std::numbers::pi_v<double> / 4.0), std::cos(std::numbers::pi_v<double> / 4.0)));
+	REQUIRE(Math::IsNear(Math::CosR(std::numbers::pi_v<double> / 2.0), 0.0));
+	REQUIRE(Math::IsNear(Math::CosR(std::numbers::pi_v<double>), -1.0));
+	REQUIRE(Math::IsNear(Math::CosR(3 * std::numbers::pi_v<double> / 2.0), 0.0));
+	REQUIRE(Math::IsNear(Math::CosR(2 * std::numbers::pi_v<double>), 1.0));
+}
+
+TEST_CASE("Math::TanR", "[math_tan_r]")
+{
+	REQUIRE(Math::IsNear(Math::TanR(0.0), 0.0));
+	REQUIRE(Math::IsNear(Math::TanR(std::numbers::pi_v<double> / 4.0), 1.0));
+	REQUIRE(Math::IsNear(Math::TanR(std::numbers::pi_v<double> / 6.0), std::tan(std::numbers::pi_v<double> / 6.0)));
+	REQUIRE(Math::IsNear(Math::TanR(std::numbers::pi_v<double> / 2.0), std::tan(std::numbers::pi_v<double> / 2.0)));
+	REQUIRE(Math::IsNear(Math::TanR(3.0 * std::numbers::pi_v<double> / 4.0), -1.0));
+	REQUIRE(Math::IsNear(Math::TanR(std::numbers::pi_v<double>), 0.0));
+	REQUIRE(Math::IsNear(Math::TanR(3.0 * std::numbers::pi_v<double> / 2.0), std::tan(3.0 * std::numbers::pi_v<double> / 2.0)));
+}
+
 TEST_CASE("Math::Sin", "[math_sin]")
 {
 	REQUIRE(Math::IsNear(Math::Sin(0.0), 0.0));

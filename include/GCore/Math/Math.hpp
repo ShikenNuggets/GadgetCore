@@ -115,21 +115,39 @@ namespace GCore::Math
 	}
 
 	template <FloatLike T>
-	static inline T Sin(T angle)
+	static inline T SinR(T radians)
 	{
-		return std::sin(DegreesToRadians(angle)); // TODO - constexpr in C++26
+		return std::sin(radians); // TODO - constexpr in C++26
 	}
 
 	template <FloatLike T>
-	static inline T Cos(T angle)
+	static inline T CosR(T radians)
 	{
-		return std::cos(DegreesToRadians(angle)); // TODO - constexpr in C++26
+		return std::cos(radians); // TODO - constexpr in C++26
 	}
 
 	template <FloatLike T>
-	static inline T Tan(T angle)
+	static inline T TanR(T radians)
 	{
-		return std::tan(DegreesToRadians(angle)); // TODO - constexpr in C++26
+		return std::tan(radians); // TODO - constexpr in C++26
+	}
+
+	template <FloatLike T>
+	static inline T Sin(T degrees)
+	{
+		return SinR(DegreesToRadians(degrees));
+	}
+
+	template <FloatLike T>
+	static inline T Cos(T degrees)
+	{
+		return CosR(DegreesToRadians(degrees));
+	}
+
+	template <FloatLike T>
+	static inline T Tan(T degrees)
+	{
+		return TanR(DegreesToRadians(degrees));
 	}
 
 	template <FloatLike T>
