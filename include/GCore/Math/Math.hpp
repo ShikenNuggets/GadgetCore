@@ -153,4 +153,11 @@ namespace GCore::Math
 
 		return 0;
 	}
+
+	template <FloatLike T>
+	static inline constexpr bool IsInteger(T value)
+	{
+		const auto floor = static_cast<int64_t>(std::floor(value));
+		return IsNear(static_cast<T>(floor), value);
+	}
 }

@@ -147,3 +147,12 @@ TEST_CASE("Math::NextPrime", "[math_next_prime]")
 	REQUIRE(Math::NextPrime(6) == 7);
 	REQUIRE(Math::NextPrime(7) == 11);
 }
+
+TEST_CASE("Math::IsInteger", "[math_is_integer]")
+{
+	REQUIRE(Math::IsInteger(1.0));
+	REQUIRE(Math::IsInteger(2.0));
+	REQUIRE(!Math::IsInteger(2.01));
+	REQUIRE(Math::IsInteger(-3.0));
+	REQUIRE(!Math::IsInteger(-3.9));
+}
