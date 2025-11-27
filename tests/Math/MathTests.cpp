@@ -13,6 +13,22 @@ TEST_CASE("Math::IsValidNumber", "[math_is_valid_number]")
 	REQUIRE(!Math::IsValidNumber(Math::Infinity));
 }
 
+TEST_CASE("Math::DegreesToRadians", "[math_degrees_to_radians]")
+{
+	REQUIRE(Math::IsNear(Math::DegreesToRadians(0.0), 0.0));
+	REQUIRE(Math::IsNear(Math::DegreesToRadians(90.0), std::numbers::pi_v<double> / 2.0));
+	REQUIRE(Math::IsNear(Math::DegreesToRadians(180.0), std::numbers::pi_v<double>));
+	REQUIRE(Math::IsNear(Math::DegreesToRadians(360.0), std::numbers::pi_v<double> * 2.0));
+}
+
+TEST_CASE("Math::RadiansToDegrees", "[math_radians_to_degrees]")
+{
+	REQUIRE(Math::IsNear(Math::RadiansToDegrees(0.0), 0.0));
+	REQUIRE(Math::IsNear(Math::RadiansToDegrees(std::numbers::pi_v<double> / 2.0), 90.0));
+	REQUIRE(Math::IsNear(Math::RadiansToDegrees(std::numbers::pi_v<double>), 180.0));
+	REQUIRE(Math::IsNear(Math::RadiansToDegrees(std::numbers::pi_v<double> * 2.0), 360.0));
+}
+
 TEST_CASE("Math::Sqrt", "[math_sqrt]")
 {
 	REQUIRE(Math::IsNear(Math::Sqrt(16.0), 4.0));
@@ -120,6 +136,70 @@ TEST_CASE("Math::Clamp", "[math_clamp]")
 	REQUIRE(Math::Clamp(0, 9, 10) == 9);
 	REQUIRE(Math::Clamp(0, 9, -10) == 0);
 	REQUIRE(Math::IsNear(Math::Clamp(0.0, 1.0, 0.5), 0.5));
+}
+
+TEST_CASE("Math::Sin", "[math_sin]")
+{
+	REQUIRE(Math::IsNear(Math::Sin(0.0), 0.0));
+	REQUIRE(Math::IsNear(Math::Sin(30.0), 0.5));
+	REQUIRE(Math::IsNear(Math::Sin(45.0), std::sin(std::numbers::pi_v<double> / 4.0)));
+	REQUIRE(Math::IsNear(Math::Sin(90.0), 1.0));
+	REQUIRE(Math::IsNear(Math::Sin(180.0), 0.0));
+	REQUIRE(Math::IsNear(Math::Sin(270.0), -1.0));
+	REQUIRE(Math::IsNear(Math::Sin(360.0), 0.0));
+}
+
+TEST_CASE("Math::Cos", "[math_cos]")
+{
+	REQUIRE(Math::IsNear(Math::Cos(0.0), 1.0));
+	REQUIRE(Math::IsNear(Math::Cos(30.0), std::cos(std::numbers::pi_v<double> / 6.0)));
+	REQUIRE(Math::IsNear(Math::Cos(45.0), std::cos(std::numbers::pi_v<double> / 4.0)));
+	REQUIRE(Math::IsNear(Math::Cos(90.0), 0.0));
+	REQUIRE(Math::IsNear(Math::Cos(180.0), -1.0));
+	REQUIRE(Math::IsNear(Math::Cos(270.0), 0.0));
+	REQUIRE(Math::IsNear(Math::Cos(360.0), 1.0));
+}
+
+TEST_CASE("Math::Tan", "[math_tan]")
+{
+	REQUIRE(Math::IsNear(Math::Tan(0.0), 0.0));
+	REQUIRE(Math::IsNear(Math::Tan(45.0), 1.0));
+	REQUIRE(Math::IsNear(Math::Tan(90.0), std::tan(std::numbers::pi_v<double> / 2.0)));
+	REQUIRE(Math::IsNear(Math::Tan(180.0), 0.0));
+	REQUIRE(Math::IsNear(Math::Tan(270.0), std::tan(3 * std::numbers::pi_v<double> / 2.0)));
+}
+
+TEST_CASE("Math::Asin", "[math_asin]")
+{
+	REQUIRE(Math::IsNear(Math::Asin(0.0), 0.0));
+	REQUIRE(Math::IsNear(Math::Asin(0.5), 30.0));
+	REQUIRE(Math::IsNear(Math::Asin(1.0), 90.0));
+	REQUIRE(Math::IsNear(Math::Asin(-1.0), -90.0));
+}
+
+TEST_CASE("Math::Acos", "[math_acos]")
+{
+	REQUIRE(Math::IsNear(Math::Acos(1.0), 0.0));
+	REQUIRE(Math::IsNear(Math::Acos(0.5), 60.0));
+	REQUIRE(Math::IsNear(Math::Acos(0.0), 90.0));
+	REQUIRE(Math::IsNear(Math::Acos(-1.0), 180.0));
+}
+
+TEST_CASE("Math::Atan", "[math_atan]")
+{
+	REQUIRE(Math::IsNear(Math::Atan(0.0), 0.0));
+	REQUIRE(Math::IsNear(Math::Atan(1.0), 45.0));
+	REQUIRE(Math::IsNear(Math::Atan(-1.0), -45.0));
+	REQUIRE(Math::IsNear(Math::Atan(10.0), 84.289406));
+}
+
+TEST_CASE("Math::Atan2", "[math_atan2]")
+{
+	REQUIRE(Math::IsNear(Math::Atan2(0.0, 0.0), 0.0));
+	REQUIRE(Math::IsNear(Math::Atan2(1.0, 1.0), 45.0));
+	REQUIRE(Math::IsNear(Math::Atan2(-1.0, -1.0), -135.0));
+	REQUIRE(Math::IsNear(Math::Atan2(1.0, 0.0), 90.0));
+	REQUIRE(Math::IsNear(Math::Atan2(0.0, 1.0), 0.0));
 }
 
 TEST_CASE("Math::IsPrime", "[math_is_prime]")

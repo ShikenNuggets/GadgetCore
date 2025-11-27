@@ -34,7 +34,7 @@ namespace GCore::Math
 	static constexpr GFloat Pi = TPi<GFloat>;
 
 	template<FloatLike T>
-	static constexpr T TNearZero = std::numeric_limits<T>::denorm_min();
+	static constexpr T TNearZero = 1e-5;
 	static constexpr GFloat NearZero = TNearZero<GFloat>;
 
 	template<FloatLike T>
@@ -48,6 +48,12 @@ namespace GCore::Math
 	{
 		return !std::isnan(value) && !std::isinf(value);
 	}
+
+	template <Numeric T>
+	static inline constexpr T DegreesToRadians(T angle){ return angle * (Pi / 180.0); }
+
+	template <Numeric T>
+	static inline constexpr T RadiansToDegrees(T angle){ return angle * (180.0 / Pi); }
 
 	template <Numeric T>
 	static inline T Sqrt(T value)
@@ -106,6 +112,48 @@ namespace GCore::Math
 		}
 
 		return value;
+	}
+
+	template <FloatLike T>
+	static inline T Sin(T angle)
+	{
+		return std::sin(DegreesToRadians(angle)); // TODO - constexpr in C++26
+	}
+
+	template <FloatLike T>
+	static inline T Cos(T angle)
+	{
+		return std::cos(DegreesToRadians(angle)); // TODO - constexpr in C++26
+	}
+
+	template <FloatLike T>
+	static inline T Tan(T angle)
+	{
+		return std::tan(DegreesToRadians(angle)); // TODO - constexpr in C++26
+	}
+
+	template <FloatLike T>
+	static inline T Asin(T sin)
+	{
+		return RadiansToDegrees(std::asin(sin)); // TODO - constexpr in C++26
+	}
+
+	template <FloatLike T>
+	static inline T Acos(T cos)
+	{
+		return RadiansToDegrees(std::acos(cos)); // TODO - constexpr in C++26
+	}
+
+	template <FloatLike T>
+	static inline T Atan(T tan)
+	{
+		return RadiansToDegrees(std::atan(tan)); // TODO - constexpr in C++26
+	}
+
+	template <FloatLike T>
+	static inline T Atan2(T y, T x)
+	{
+		return RadiansToDegrees(std::atan2(y, x)); // TODO - constexpr in C++26
 	}
 
 	static inline bool IsPrime(uint64_t num)
