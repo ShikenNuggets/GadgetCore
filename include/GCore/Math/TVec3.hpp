@@ -11,5 +11,7 @@ namespace Gadget
 		T x, y, z;
 
 		explicit constexpr TVec3(T x_ = 0.0, T y_ = 0.0, T z_ = 0.0) noexcept : x(x_), y(y_), z(z_){}
+
+		static inline constexpr TVec3 Fill(T value) noexcept{ return TVec3(value, value, value); }
 	};
 }
