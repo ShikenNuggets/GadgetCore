@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-using namespace GCore;
+using namespace Gadget;
 
 ErrorCode FileSystem::CreateDirectory(const std::filesystem::path& dirPath_)
 {

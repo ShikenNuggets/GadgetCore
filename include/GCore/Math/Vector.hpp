@@ -2,7 +2,7 @@
 
 #include "Math.hpp"
 
-namespace GCore
+namespace Gadget
 {
 	template<Math::FloatLike T>
 	struct TVec2

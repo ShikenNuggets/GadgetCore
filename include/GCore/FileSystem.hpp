@@ -6,7 +6,7 @@
 
 #include "CoreDefines.hpp"
 
-namespace GCore::FileSystem
+namespace Gadget::FileSystem
 {
 	enum class WriteType : uint8_t
 	{

@@ -2,7 +2,7 @@
 
 #include "Logger.hpp"
 
-using namespace GCore;
+using namespace Gadget;
 
 Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, int32_t x_, int32_t y_) : windowPtr(nullptr), size(width_, height_), position(x_, y_), renderAPI(renderAPI_)
 {

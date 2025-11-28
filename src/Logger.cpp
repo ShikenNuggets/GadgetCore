@@ -4,7 +4,7 @@
 
 #include "FileSystem.hpp"
 
-using namespace GCore;
+using namespace Gadget;
 
 static inline Logger::CallbackFunc& GetLoggerFunc() noexcept
 {

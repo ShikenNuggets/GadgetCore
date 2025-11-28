@@ -4,7 +4,7 @@
 #include <format>
 #include <functional>
 
-namespace GCore::Logger
+namespace Gadget::Logger
 {
 	enum Severity : uint8_t
 	{

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace GCore
+namespace Gadget
 {
 	// DO NOT make any assumptions about the underlying numeric values of error codes
 	// "OK" will always be 0, errors will always be > 0

@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace GCore
+namespace Gadget
 {
 	struct ScreenCoordinate
 	{

@@ -4,7 +4,7 @@
 
 #include "GCore/Math/Math.hpp"
 
-using namespace GCore;
+using namespace Gadget;
 
 TEST_CASE("Math::IsValidNumber", "[math_is_valid_number]")
 {

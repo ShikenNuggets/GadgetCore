@@ -2,7 +2,7 @@
 
 #include "GCore/Math/Vector.hpp"
 
-using namespace GCore;
+using namespace Gadget;
 
 // --------------------------- //
 // ---------- TVec2 ---------- //

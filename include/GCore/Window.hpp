@@ -6,7 +6,7 @@
 
 #include "ScreenCoordinate.hpp"
 
-namespace GCore
+namespace Gadget
 {
 	enum class RenderAPI : uint8_t
 	{

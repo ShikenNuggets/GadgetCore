@@ -6,7 +6,7 @@
 #include <numbers>
 #include <type_traits>
 
-namespace GCore::Math
+namespace Gadget::Math
 {
 	template<typename T>
 	concept FloatLike = std::is_floating_point_v<T> && std::is_convertible_v<T, double>;
