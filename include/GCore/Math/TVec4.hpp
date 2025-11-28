@@ -1,0 +1,16 @@
+#pragma once
+
+#include "Math.hpp"
+#include "TVec2.hpp"
+#include "TVec3.hpp"
+
+namespace Gadget
+{
+	template<Math::FloatLike T>
+	struct TVec4
+	{
+		T x, y, z, w;
+
+		explicit constexpr TVec4(T x_ = 0.0, T y_ = 0.0, T z_ = 0.0, T w_ = 0.0) noexcept : x(x_), y(y_), z(z_), w(w_){}
+	};
+}
