@@ -39,3 +39,12 @@ TEST_CASE("TVec2::+=", "[tvec2_operator_+=]")
 	REQUIRE(plusEqualTest.x == 4.0);
 	REQUIRE(plusEqualTest.y == 6.0);
 }
+
+TEST_CASE("TVec2::IsValid", "[tvec2_is_valid]")
+{
+	const auto valid = TVec2<double>(1.0, 2.0);
+	const auto invalid = TVec2<double>(Math::TInfinity<double>, 0.0);
+
+	REQUIRE(valid.IsValid());
+	REQUIRE(!invalid.IsValid());
+}

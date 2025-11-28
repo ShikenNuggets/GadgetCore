@@ -22,5 +22,7 @@ namespace Gadget
 		static inline constexpr TVec3 Up() noexcept{ return TVec3(0.0, 1.0, 0.0); }
 		static inline constexpr TVec3 Forward() noexcept{ return TVec3(0.0, 0.0, -1.0); }
 		static inline constexpr TVec3 Right() noexcept{ return TVec3(1.0, 0.0, 0.0); }
+
+		inline constexpr bool IsValid() const{ return Math::IsValidNumber(x) && Math::IsValidNumber(y) && Math::IsValidNumber(z); }
 	};
 }

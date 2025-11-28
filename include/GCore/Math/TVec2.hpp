@@ -21,5 +21,7 @@ namespace Gadget
 		inline constexpr TVec2 operator /(T value_) const noexcept{ return TVec2(Math::SafeDivide(x, value_), Math::SafeDivide(y, value_)); }
 
 		inline constexpr void operator +=(const TVec2& v) noexcept{ *this = *this + v; }
+
+		inline constexpr bool IsValid() const{ return Math::IsValidNumber(x) && Math::IsValidNumber(y); }
 	};
 }
