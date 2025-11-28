@@ -1,6 +1,6 @@
 #include <catch2/catch_all.hpp>
 
-#include "GCore/Math/Vector.hpp"
+#include "GCore/Math/TVec4.hpp"
 
 using namespace Gadget;
 
@@ -20,4 +20,23 @@ TEST_CASE("TVec4::Fill", "[tvec4_fill]")
 	REQUIRE(fillTest.y == 0.5);
 	REQUIRE(fillTest.z == 0.5);
 	REQUIRE(fillTest.w == 0.5);
+}
+
+TEST_CASE("TVec4::+", "[tvec4_operator_+]")
+{
+	const auto plusTest = TVec4<double>(1.0, 2.0, 3.0, 4.0) + TVec4<double>(5.0, 6.0, 7.0, 8.0);
+	REQUIRE(plusTest.x == 6.0);
+	REQUIRE(plusTest.y == 8.0);
+	REQUIRE(plusTest.z == 10.0);
+	REQUIRE(plusTest.w == 12.0);
+}
+
+TEST_CASE("TVec4::+=", "[tvec4_operator_+=]")
+{
+	auto plusEqualTest = TVec4<double>(1.0, 2.0, 3.0, 4.0);
+	plusEqualTest += TVec4<double>(5.0, 6.0, 7.0, 8.0);
+	REQUIRE(plusEqualTest.x == 6.0);
+	REQUIRE(plusEqualTest.y == 8.0);
+	REQUIRE(plusEqualTest.z == 10.0);
+	REQUIRE(plusEqualTest.w == 12.0);
 }
