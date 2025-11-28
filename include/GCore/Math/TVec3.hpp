@@ -18,6 +18,17 @@ namespace Gadget
 
 		inline constexpr void operator+=(const TVec3& v) noexcept{ *this = *this + v; }
 
+		static inline constexpr T Dot(const TVec3& a, const TVec3& b) noexcept{ return Math::Dot3D(a.x, a.y, a.z, b.x, b.y, b.z); }
+
+		static inline constexpr TVec3 Cross(const TVec3& a, const TVec3& b) noexcept
+		{
+			return TVec3(
+				a.y * b.z - a.z * b.y,
+				a.z * b.x - a.x * b.z,
+				a.x * b.y - a.y * b.x
+			);
+		}
+
 		// Sorry for baking in these assumptions, but it's useful
 		static inline constexpr TVec3 Up() noexcept{ return TVec3(0.0, 1.0, 0.0); }
 		static inline constexpr TVec3 Forward() noexcept{ return TVec3(0.0, 0.0, -1.0); }

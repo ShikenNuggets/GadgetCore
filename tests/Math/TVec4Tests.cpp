@@ -41,6 +41,17 @@ TEST_CASE("TVec4::+=", "[tvec4_operator_+=]")
 	REQUIRE(plusEqualTest.w == 12.0);
 }
 
+TEST_CASE("TVec4::Dot", "[tvec4_dot]")
+{
+	const auto dotTestA = TVec4<double>::Dot(TVec4(1.0, 2.0, 3.0, 4.0), TVec4(5.0, 6.0, 7.0, 8.0));
+	const auto dotTestB = TVec4<double>::Dot(TVec4(0.0, 0.0, 0.0, 0.0), TVec4(3.0, 2.0, 1.0, 4.0));
+	const auto dotTestC = TVec4<double>::Dot(TVec4(-1.0, 2.0, -3.0, 4.0), TVec4(-4.0, 3.0, -2.0, 1.0));
+
+	REQUIRE(Math::IsNear(dotTestA, 70.0));
+	REQUIRE(Math::IsNear(dotTestB, 0.0));
+	REQUIRE(Math::IsNear(dotTestC, 20.0));
+}
+
 TEST_CASE("TVec4::IsValid", "[tvec4_is_valid]")
 {
 	const auto valid = TVec4<double>(1.0, 2.0, 3.0, 4.0);

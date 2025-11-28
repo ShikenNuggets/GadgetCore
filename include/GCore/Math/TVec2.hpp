@@ -22,6 +22,8 @@ namespace Gadget
 
 		inline constexpr void operator +=(const TVec2& v) noexcept{ *this = *this + v; }
 
+		static inline constexpr T Dot(const TVec2& a, const TVec2& b) noexcept{ return Math::Dot2D(a.x, a.y, b.x, b.y); }
+
 		inline constexpr bool IsValid() const{ return Math::IsValidNumber(x) && Math::IsValidNumber(y); }
 	};
 }
