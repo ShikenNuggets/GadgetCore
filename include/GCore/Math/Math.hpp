@@ -239,4 +239,7 @@ namespace Gadget::Math
 		const auto newRange = (newMax - newMin);
 		return (((value - oldMin) * newRange) / oldRange) + newMin;
 	}
+
+	template <FloatLike T>
+	static inline constexpr T Lerp(T a, T b, T t) noexcept{ return a + (t * (b - a)); }
 }

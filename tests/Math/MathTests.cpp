@@ -286,3 +286,12 @@ TEST_CASE("Math::RemapRange", "[math_remap_range]")
 	REQUIRE(Math::IsNear(Math::RemapRange(5.0, 0.0, 10.0, 0.0, 0.0), 0.0));
 	REQUIRE(Math::IsNear(Math::RemapRange(5.0, 0.0, 10.0, 10.0, 10.0), 10.0));
 }
+
+TEST_CASE("Math::Lerp", "[math_lerp]")
+{
+	const auto lerpTest1 = Math::Lerp(0.0, 1.0, 0.5);
+	REQUIRE(Math::IsNear(lerpTest1, 0.5));
+
+	const auto lerpTest2 = Math::Lerp(0.0, 10.0, 0.25);
+	REQUIRE(Math::IsNear(lerpTest2, 2.5));
+}

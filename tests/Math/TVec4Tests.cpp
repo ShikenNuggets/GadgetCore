@@ -40,6 +40,15 @@ TEST_CASE("TVec4::+", "[tvec4_operator_+]")
 	REQUIRE(plusTest.w == 12.0);
 }
 
+TEST_CASE("TVec4::-", "[tvec4_operator_-]")
+{
+	const auto subTest = TVec4<double>(6.0, 5.0, 4.0, 3.0) - TVec4<double>(3.0, 2.0, 1.0, 0.0);
+	REQUIRE(subTest.x == 3.0);
+	REQUIRE(subTest.y == 3.0);
+	REQUIRE(subTest.z == 3.0);
+	REQUIRE(subTest.w == 3.0);
+}
+
 TEST_CASE("TVec4::*", "[tvec4_operator_*]")
 {
 	constexpr auto x = 1.0;
@@ -70,6 +79,16 @@ TEST_CASE("TVec4::+=", "[tvec4_operator_+=]")
 	REQUIRE(plusEqualTest.w == 12.0);
 }
 
+TEST_CASE("TVec4::-=", "[tvec4_operator_-=]")
+{
+	auto subEqualTest = TVec4<double>(6.0, 5.0, 4.0, 3.0);
+	subEqualTest -= TVec4<double>(3.0, 2.0, 1.0, 0.0);
+	REQUIRE(subEqualTest.x == 3.0);
+	REQUIRE(subEqualTest.y == 3.0);
+	REQUIRE(subEqualTest.z == 3.0);
+	REQUIRE(subEqualTest.w == 3.0);
+}
+
 TEST_CASE("TVec4::*=", "[tvec4_operator_*=]")
 {
 	auto multEqualTest = TVec4<double>(1.0, 2.0, 3.0, 4.0);
@@ -89,6 +108,18 @@ TEST_CASE("TVec4::Dot", "[tvec4_dot]")
 	REQUIRE(Math::IsNear(dotTestA, 70.0));
 	REQUIRE(Math::IsNear(dotTestB, 0.0));
 	REQUIRE(Math::IsNear(dotTestC, 20.0));
+}
+
+TEST_CASE("TVec4::Lerp", "[tvec4_lerp]")
+{
+	const auto a = TVec4<double>(0.0, 1.0, 2.0, 3.0);
+	const auto b = TVec4<double>(4.0, 5.0, 6.0, 7.0);
+	const auto lerpTest = TVec4<double>::Lerp(a, b, 0.5);
+
+	REQUIRE(Math::IsNear(lerpTest.x, 2.0));
+	REQUIRE(Math::IsNear(lerpTest.y, 3.0));
+	REQUIRE(Math::IsNear(lerpTest.z, 4.0));
+	REQUIRE(Math::IsNear(lerpTest.w, 5.0));
 }
 
 TEST_CASE("TVec4::IsNear", "[tvec4_is_near]")
