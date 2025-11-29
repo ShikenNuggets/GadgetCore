@@ -32,12 +32,34 @@ TEST_CASE("TVec2::+", "[tvec2_operator_+]")
 	REQUIRE(plusTest.y == 6.0);
 }
 
+TEST_CASE("TVec2::*", "[tvec2_operator_*]")
+{
+	constexpr auto x = 1.0;
+	constexpr auto y = 2.0;
+
+	const auto multTest = TVec2<double>(x, y) * 3.0;
+	REQUIRE(multTest.x == 3.0);
+	REQUIRE(multTest.y == 6.0);
+
+	const auto multTest2 = 3.0 * TVec2<double>(x, y); // Friend multiplication also works
+	REQUIRE(multTest.x == multTest2.x);
+	REQUIRE(multTest.y == multTest2.y);
+}
+
 TEST_CASE("TVec2::+=", "[tvec2_operator_+=]")
 {
 	auto plusEqualTest = TVec2<double>(1.0, 2.0);
 	plusEqualTest += TVec2<double>(3.0, 4.0);
 	REQUIRE(plusEqualTest.x == 4.0);
 	REQUIRE(plusEqualTest.y == 6.0);
+}
+
+TEST_CASE("TVec2::*=", "[tvec2_operator_*=]")
+{
+	auto multEqualTest = TVec2<double>(1.0, 2.0);
+	multEqualTest *= 3.0;
+	REQUIRE(multEqualTest.x == 3.0);
+	REQUIRE(multEqualTest.y == 6.0);
 }
 
 TEST_CASE("TVec2::Dot", "[tvec2_dot]")

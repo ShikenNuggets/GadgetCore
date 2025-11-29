@@ -15,8 +15,12 @@ namespace Gadget
 		static inline constexpr TVec3 Fill(T value) noexcept{ return TVec3(value, value, value); }
 
 		inline constexpr TVec3 operator+(const TVec3& v) const noexcept{ return TVec3(x + v.x, y + v.y, z + v.z); }
+		inline constexpr TVec3 operator*(T v) const noexcept{ return TVec3(x * v, y * v, z * v); }
+
+		friend inline constexpr TVec3 operator*(T s, const TVec3& v){ return v * s; }
 
 		inline constexpr void operator+=(const TVec3& v) noexcept{ *this = *this + v; }
+		inline constexpr void operator*=(T v) noexcept{ *this = *this * v; }
 
 		static inline constexpr T Dot(const TVec3& a, const TVec3& b) noexcept{ return Math::Dot3D(a.x, a.y, a.z, b.x, b.y, b.z); }
 

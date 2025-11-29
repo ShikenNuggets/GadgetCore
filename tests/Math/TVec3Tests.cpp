@@ -28,6 +28,23 @@ TEST_CASE("TVec3::+", "[tvec3_operator_+]")
 	REQUIRE(plusTest.z == 9.0);
 }
 
+TEST_CASE("TVec3::*", "[tvec3_operator_*]")
+{
+	constexpr auto x = 1.0;
+	constexpr auto y = 2.0;
+	constexpr auto z = 3.0;
+
+	const auto multTest = TVec3<double>(x, y, z) * 4.0;
+	REQUIRE(multTest.x == 4.0);
+	REQUIRE(multTest.y == 8.0);
+	REQUIRE(multTest.z == 12.0);
+
+	const auto multTest2 = 4.0 * TVec3<double>(x, y, z);
+	REQUIRE(multTest.x == multTest2.x);
+	REQUIRE(multTest.y == multTest2.y);
+	REQUIRE(multTest.z == multTest2.z);
+}
+
 TEST_CASE("TVec3::+=", "[tvec3_operator_+=]")
 {
 	auto plusEqualTest = TVec3<double>(1.0, 2.0, 3.0);
@@ -35,6 +52,15 @@ TEST_CASE("TVec3::+=", "[tvec3_operator_+=]")
 	REQUIRE(plusEqualTest.x == 5.0);
 	REQUIRE(plusEqualTest.y == 7.0);
 	REQUIRE(plusEqualTest.z == 9.0);
+}
+
+TEST_CASE("TVec3::*=", "[tvec3_operator_*=]")
+{
+	auto multEqualTest = TVec3<double>(1.0, 2.0, 3.0);
+	multEqualTest *= 4.0;
+	REQUIRE(multEqualTest.x == 4.0);
+	REQUIRE(multEqualTest.y == 8.0);
+	REQUIRE(multEqualTest.z == 12.0);
 }
 
 TEST_CASE("TVec3::Dot", "[tvec3_dot]")

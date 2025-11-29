@@ -20,7 +20,10 @@ namespace Gadget
 		inline constexpr TVec2 operator *(T value_) const noexcept{ return TVec2(x * value_, y * value_); }
 		inline constexpr TVec2 operator /(T value_) const noexcept{ return TVec2(Math::SafeDivide(x, value_), Math::SafeDivide(y, value_)); }
 
+		friend inline constexpr TVec2 operator *(T s, const TVec2& v){ return v * s; }
+
 		inline constexpr void operator +=(const TVec2& v) noexcept{ *this = *this + v; }
+		inline constexpr void operator *=(T v) noexcept{ *this = *this * v; }
 
 		static inline constexpr T Dot(const TVec2& a, const TVec2& b) noexcept{ return Math::Dot2D(a.x, a.y, b.x, b.y); }
 

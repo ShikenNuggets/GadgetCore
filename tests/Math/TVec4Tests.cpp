@@ -31,6 +31,26 @@ TEST_CASE("TVec4::+", "[tvec4_operator_+]")
 	REQUIRE(plusTest.w == 12.0);
 }
 
+TEST_CASE("TVec4::*", "[tvec4_operator_*]")
+{
+	constexpr auto x = 1.0;
+	constexpr auto y = 2.0;
+	constexpr auto z = 3.0;
+	constexpr auto w = 4.0;
+
+	const auto multTest = TVec4<double>(x, y, z, w) * 5.0;
+	REQUIRE(multTest.x == 5.0);
+	REQUIRE(multTest.y == 10.0);
+	REQUIRE(multTest.z == 15.0);
+	REQUIRE(multTest.w == 20.0);
+
+	const auto multTest2 = 5.0 * TVec4<double>(x, y, z, w);
+	REQUIRE(multTest.x == multTest2.x);
+	REQUIRE(multTest.y == multTest2.y);
+	REQUIRE(multTest.z == multTest2.z);
+	REQUIRE(multTest.w == multTest2.w);
+}
+
 TEST_CASE("TVec4::+=", "[tvec4_operator_+=]")
 {
 	auto plusEqualTest = TVec4<double>(1.0, 2.0, 3.0, 4.0);
@@ -39,6 +59,16 @@ TEST_CASE("TVec4::+=", "[tvec4_operator_+=]")
 	REQUIRE(plusEqualTest.y == 8.0);
 	REQUIRE(plusEqualTest.z == 10.0);
 	REQUIRE(plusEqualTest.w == 12.0);
+}
+
+TEST_CASE("TVec4::*=", "[tvec4_operator_*=]")
+{
+	auto multEqualTest = TVec4<double>(1.0, 2.0, 3.0, 4.0);
+	multEqualTest *= 5.0;
+	REQUIRE(multEqualTest.x == 5.0);
+	REQUIRE(multEqualTest.y == 10.0);
+	REQUIRE(multEqualTest.z == 15.0);
+	REQUIRE(multEqualTest.w == 20.0);
 }
 
 TEST_CASE("TVec4::Dot", "[tvec4_dot]")

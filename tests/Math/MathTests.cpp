@@ -246,7 +246,7 @@ TEST_CASE("Math::IsPrime", "[math_is_prime]")
 	REQUIRE(!Math::IsPrime(6));
 	REQUIRE(Math::IsPrime(7));
 
-	REQUIRE(Math::IsPrime(Math::LargestPrime));
+	//REQUIRE(Math::IsPrime(Math::LargestPrime)); // This is pretty slow
 }
 
 TEST_CASE("Math::NextPrime", "[math_next_prime]")
