@@ -13,6 +13,15 @@ TEST_CASE("TVec4::TVec4", "[tvec4_constructor]")
 	REQUIRE(doubleVec4.w == 0.0);
 }
 
+TEST_CASE("TVec4::Zero", "[tvec4_zero]")
+{
+	const TVec4<double> zeroVec = TVec4<double>::Zero();
+	REQUIRE(zeroVec.x == 0.0);
+	REQUIRE(zeroVec.y == 0.0);
+	REQUIRE(zeroVec.z == 0.0);
+	REQUIRE(zeroVec.w == 0.0);
+}
+
 TEST_CASE("TVec4::Fill", "[tvec4_fill]")
 {
 	const auto fillTest = TVec4<double>::Fill(0.5);
