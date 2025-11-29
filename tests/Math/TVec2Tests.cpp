@@ -73,6 +73,22 @@ TEST_CASE("TVec2::Dot", "[tvec2_dot]")
 	REQUIRE(Math::IsNear(dotTestC, -14.0));
 }
 
+TEST_CASE("TVec2::IsNear", "[tvec2_is_near]")
+{
+	const auto testA = TVec2<double>(1.0, 2.0);
+	const auto testB = TVec2<double>(1.0, 2.0);
+	const auto testC = TVec2<double>(1.0001, 2.0001);
+
+	REQUIRE(testA.IsNear(testA));
+	REQUIRE(testA.IsNear(testB));
+	REQUIRE(!testA.IsNear(testC));
+
+	REQUIRE(testB.IsNear(testB));
+	REQUIRE(!testB.IsNear(testC));
+
+	REQUIRE(testC.IsNear(testC));
+}
+
 TEST_CASE("TVec2::IsValid", "[tvec2_is_valid]")
 {
 	const auto valid = TVec2<double>(1.0, 2.0);
