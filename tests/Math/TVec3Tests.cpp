@@ -61,6 +61,14 @@ TEST_CASE("TVec3::*", "[tvec3_operator_*]")
 	REQUIRE(multTest.z == multTest2.z);
 }
 
+TEST_CASE("TVec3::/", "[tvec3_operator_/]")
+{
+	const auto divTest = TVec3<double>(3.0, 6.0, 9.0) / 3.0;
+	REQUIRE(divTest.x == 1.0);
+	REQUIRE(divTest.y == 2.0);
+	REQUIRE(divTest.z == 3.0);
+}
+
 TEST_CASE("TVec3::+=", "[tvec3_operator_+=]")
 {
 	auto plusEqualTest = TVec3<double>(1.0, 2.0, 3.0);
@@ -86,6 +94,41 @@ TEST_CASE("TVec3::*=", "[tvec3_operator_*=]")
 	REQUIRE(multEqualTest.x == 4.0);
 	REQUIRE(multEqualTest.y == 8.0);
 	REQUIRE(multEqualTest.z == 12.0);
+}
+
+TEST_CASE("TVec3::/=", "[tvec3_operator_/=]")
+{
+	auto divTest = TVec3<double>(3.0, 6.0, 9.0);
+	divTest /= 3.0;
+	REQUIRE(divTest.x == 1.0);
+	REQUIRE(divTest.y == 2.0);
+	REQUIRE(divTest.z == 3.0);
+}
+
+TEST_CASE("TVec3::SquaredMagnitude", "[tvec3_squared_magnitude]")
+{
+	auto magTest = TVec3<double>(4.0, 4.0, 4.0);
+	REQUIRE(magTest.SquaredMagnitude() == 48.0);
+}
+
+TEST_CASE("TVec3::Magnitude", "[tvec3_magnitude]")
+{
+	auto magTest = TVec3<double>(4.0, 4.0, 4.0);
+	REQUIRE(magTest.Magnitude() == Math::Sqrt(48.0));
+
+	auto magTest2 = TVec3<double>(0.0, 0.0, 0.0);
+	REQUIRE(magTest2.Magnitude() == 0.0);
+}
+
+TEST_CASE("TVec3::Normal", "[tvec3_normal]")
+{
+	auto normalTest = TVec3<double>(4.0, 4.0, 4.0);
+	auto normal = normalTest.Normal();
+	const auto expected = normalTest / Math::Sqrt(48.0);
+	REQUIRE(Math::IsNear(normal.Magnitude(), 1.0));
+	REQUIRE(Math::IsNear(normal.x, expected.x));
+	REQUIRE(Math::IsNear(normal.y, expected.y));
+	REQUIRE(Math::IsNear(normal.z, expected.z));
 }
 
 TEST_CASE("TVec3::Dot", "[tvec3_dot]")

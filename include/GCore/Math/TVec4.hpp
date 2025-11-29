@@ -19,12 +19,19 @@ namespace Gadget
 		inline constexpr TVec4 operator+(const TVec4& v) const noexcept{ return TVec4(x + v.x, y + v.y, z + v.z, w + v.w); }
 		inline constexpr TVec4 operator-(const TVec4& v) const noexcept{ return TVec4(x - v.x, y - v.y, z - v.z, w - v.w); }
 		inline constexpr TVec4 operator*(T v) const noexcept{ return TVec4(x * v, y * v, z * v, w * v); }
+		inline constexpr TVec4 operator/(T v) const noexcept{ return TVec4(Math::SafeDivide(x, v), Math::SafeDivide(y, v), Math::SafeDivide(z, v), Math::SafeDivide(w, v)); }
 
 		friend inline constexpr TVec4 operator*(T s, const TVec4& v){ return v * s; }
 
 		inline constexpr void operator+=(const TVec4& v) noexcept{ *this = *this + v; }
 		inline constexpr void operator-=(const TVec4& v) noexcept{ *this = *this - v; }
 		inline constexpr void operator*=(T v) noexcept{ *this = *this * v; }
+		inline constexpr void operator/=(T v) noexcept{ *this = *this / v; }
+
+		inline constexpr T SquaredMagnitude() const noexcept{ return (x * x) + (y * y) + (z * z) + (w * w); }
+		inline T Magnitude() const{ return Math::Sqrt(SquaredMagnitude()); }
+		inline TVec4 Normal() const{ return *this / Magnitude(); }
+		inline void Normalize(){ *this = Normal(); }
 
 		static inline constexpr T Dot(const TVec4& a, const TVec4& b) noexcept{ return Math::Dot4D(a.x, a.y, a.z, a.w, b.x, b.y, b.z, b.w); }
 		static inline constexpr TVec4 Lerp(const TVec4& a, const TVec4& b, T t) noexcept{ return a + t * (b - a); }

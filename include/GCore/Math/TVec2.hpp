@@ -25,6 +25,12 @@ namespace Gadget
 		inline constexpr void operator +=(const TVec2& v) noexcept{ *this = *this + v; }
 		inline constexpr void operator -=(const TVec2& v) noexcept{ *this = *this - v; }
 		inline constexpr void operator *=(T v) noexcept{ *this = *this * v; }
+		inline constexpr void operator /=(T v) noexcept{ *this = *this / v; }
+
+		inline constexpr T SquaredMagnitude() const noexcept{ return (x * x) + (y * y); }
+		inline T Magnitude() const{ return Math::Sqrt(SquaredMagnitude()); }
+		inline TVec2 Normal() const{ return *this / Magnitude(); }
+		inline void Normalize(){ *this = Normal(); }
 
 		static inline constexpr T Dot(const TVec2& a, const TVec2& b) noexcept{ return Math::Dot2D(a.x, a.y, b.x, b.y); }
 		static inline constexpr TVec2 Lerp(const TVec2& a, const TVec2& b, T t) noexcept{ return a + t * (b - a); }
