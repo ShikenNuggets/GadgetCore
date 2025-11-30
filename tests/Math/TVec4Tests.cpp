@@ -31,6 +31,15 @@ TEST_CASE("TVec4::Fill", "[tvec4_fill]")
 	REQUIRE(fillTest.w == 0.5);
 }
 
+TEST_CASE("TVec4::unary_-", "[tvec4_unary_-]")
+{
+	const auto negTest = -TVec4<double>(1.0, 2.0, 3.0, 4.0);
+	REQUIRE(negTest.x == -1.0);
+	REQUIRE(negTest.y == -2.0);
+	REQUIRE(negTest.z == -3.0);
+	REQUIRE(negTest.w == -4.0);
+}
+
 TEST_CASE("TVec4::+", "[tvec4_operator_+]")
 {
 	const auto plusTest = TVec4<double>(1.0, 2.0, 3.0, 4.0) + TVec4<double>(5.0, 6.0, 7.0, 8.0);

@@ -16,6 +16,7 @@ namespace Gadget
 		static inline constexpr TVec4 Zero() noexcept{ return TVec4(0.0, 0.0, 0.0, 0.0); }
 		static inline constexpr TVec4 Fill(T value) noexcept{ return TVec4(value, value, value, value); }
 
+		inline constexpr TVec4 operator-() const noexcept{ return TVec4(-x, -y, -z, -w); }
 		inline constexpr TVec4 operator+(const TVec4& v) const noexcept{ return TVec4(x + v.x, y + v.y, z + v.z, w + v.w); }
 		inline constexpr TVec4 operator-(const TVec4& v) const noexcept{ return TVec4(x - v.x, y - v.y, z - v.z, w - v.w); }
 		inline constexpr TVec4 operator*(T v) const noexcept{ return TVec4(x * v, y * v, z * v, w * v); }
