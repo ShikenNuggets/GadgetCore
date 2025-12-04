@@ -58,8 +58,8 @@ TEST_CASE("TQuat::*", "[tquat_*]")
 	const auto leftMult = (assocTestA * assocTestB) * assocTestC;
 	const auto rightMult = assocTestA * (assocTestB * assocTestC);
 
-	REQUIRE(Math::IsNear(leftMult.w, rightMult.w));
-	REQUIRE(Math::IsNear(leftMult.x, rightMult.x));
-	REQUIRE(Math::IsNear(leftMult.y, rightMult.y));
-	REQUIRE(Math::IsNear(leftMult.z, rightMult.z));
+	REQUIRE(leftMult.w == Math::Approx(rightMult.w));
+	REQUIRE(leftMult.x == Math::Approx(rightMult.x));
+	REQUIRE(leftMult.y == Math::Approx(rightMult.y));
+	REQUIRE(leftMult.z == Math::Approx(rightMult.z));
 }

@@ -69,6 +69,23 @@ namespace Gadget::Math
 	static inline constexpr bool IsNear(T a_, T b_) noexcept{ return IsNearZero(a_ - b_); }
 
 	template <FloatLike T>
+	class Approx
+	{
+	public:
+		constexpr Approx(T value_) noexcept : value(value_){}
+
+		inline constexpr bool operator==(const T value_) const noexcept
+		{
+			return IsNear(value, value_);
+		}
+
+		friend inline constexpr bool operator==(T s, const Approx& v) noexcept{ return v == s; }
+
+	private:
+		T value;
+	};
+
+	template <FloatLike T>
 	static inline constexpr T SafeDivide(T a_, T b_) noexcept
 	{
 		if (IsNearZero(b_))
