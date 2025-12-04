@@ -64,6 +64,24 @@ TEST_CASE("TQuat::*", "[tquat_*]")
 	REQUIRE(leftMult.z == Math::Approx(rightMult.z));
 }
 
+TEST_CASE("TQuat::*TVec3", "[tquat_*_tvec3]")
+{
+	const auto identityRotation = TQuat<double>::Identity() * TVec3<double>(1.0, -2.0, 3.0);
+	REQUIRE(identityRotation.x == Math::Approx(1.0));
+	REQUIRE(identityRotation.y == Math::Approx(-2.0));
+	REQUIRE(identityRotation.z == Math::Approx(3.0));
+
+	const auto rotationX90 = TQuat<double>(Math::Cos(45.0), Math::Sin(45.0), 0.0, 0.0) * TVec3(0.0, 1.0, 0.0);
+	REQUIRE(rotationX90.x == Math::Approx(0.0));
+	REQUIRE(rotationX90.y == Math::Approx(0.0));
+	REQUIRE(rotationX90.z == Math::Approx(1.0));
+
+	const auto rotationZ180 = TQuat<double>(0.0, 0.0, 0.0, 1.0) * TVec3<double>(1.0, 2.0, 3.0);
+	REQUIRE(rotationZ180.x == Math::Approx(-1.0));
+	REQUIRE(rotationZ180.y == Math::Approx(-2.0));
+	REQUIRE(rotationZ180.z == Math::Approx(3.0));
+}
+
 TEST_CASE("TQuat::*=", "[tquat_*=]")
 {
 	auto identityTimesQ = TQuat<double>::Identity();

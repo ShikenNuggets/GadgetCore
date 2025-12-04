@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Math.hpp"
+#include "TVec3.hpp"
 
 namespace Gadget
 {
@@ -21,6 +22,13 @@ namespace Gadget
 				(w * q.y) - (x * q.z) + (y * q.w) + (z * q.x),
 				(w * q.z) + (x * q.y) - (y * q.x) + (z * q.w)
 			);
+		}
+
+		inline constexpr TVec3<T> operator*(const TVec3<T>& vec) const noexcept
+		{
+			const auto u = TVec3<T>(x, y, z);
+			const auto s = w;
+			return 2.0 * TVec3<T>::Dot(u, vec) * u + (s * s - TVec3<T>::Dot(u, u)) * vec + 2.0 * s * TVec3<T>::Cross(u, vec);
 		}
 
 		inline constexpr void operator *=(const TQuat& q) noexcept{ *this = *this * q; }
