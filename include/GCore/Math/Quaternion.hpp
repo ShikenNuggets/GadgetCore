@@ -22,6 +22,8 @@ namespace Gadget
 				(w * q.z) + (x * q.y) - (y * q.x) + (z * q.w)
 			);
 		}
+
+		inline constexpr void operator *=(const TQuat& q) noexcept{ *this = *this * q; }
 	};
 
 	using Quaternion = TQuat<Math::GFloat>;

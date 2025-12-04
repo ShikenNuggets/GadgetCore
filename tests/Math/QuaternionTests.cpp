@@ -63,3 +63,45 @@ TEST_CASE("TQuat::*", "[tquat_*]")
 	REQUIRE(leftMult.y == Math::Approx(rightMult.y));
 	REQUIRE(leftMult.z == Math::Approx(rightMult.z));
 }
+
+TEST_CASE("TQuat::*=", "[tquat_*=]")
+{
+	auto identityTimesQ = TQuat<double>::Identity();
+	identityTimesQ *= TQuat<double>(1.0, 2.0, 3.0, 4.0);
+	REQUIRE(identityTimesQ.w == 1.0);
+	REQUIRE(identityTimesQ.x == 2.0);
+	REQUIRE(identityTimesQ.y == 3.0);
+	REQUIRE(identityTimesQ.z == 4.0);
+
+	auto qTimesIdentity = TQuat<double>(1.0, 2.0, 3.0, 4.0);
+	qTimesIdentity *= TQuat<double>::Identity();
+	REQUIRE(qTimesIdentity.w == 1.0);
+	REQUIRE(qTimesIdentity.x == 2.0);
+	REQUIRE(qTimesIdentity.y == 3.0);
+	REQUIRE(qTimesIdentity.z == 4.0);
+
+	// TODO - q *= inverse(q)
+
+	auto multTest = TQuat<double>(1.0, 2.0, 3.0, 4.0);
+	multTest *= TQuat<double>(5.0, 6.0, 7.0, 8.0);
+	REQUIRE(multTest.w == -60.0);
+	REQUIRE(multTest.x == 12.0);
+	REQUIRE(multTest.y == 30.0);
+	REQUIRE(multTest.z == 24.0);
+
+	// Test associativity
+	const auto assocTestA = TQuat<double>(0.3, -0.5, 0.1, 0.8);
+	const auto assocTestB = TQuat<double>(0.1, 0.3, 0.6, 0.8);
+	const auto assocTestC = TQuat<double>(-0.2, 0.4, 0.2, 0.9);
+
+	auto leftMult = (assocTestA * assocTestB);
+	leftMult *= assocTestC;
+
+	auto rightMult = assocTestA;
+	rightMult *= (assocTestB * assocTestC);
+
+	REQUIRE(leftMult.w == Math::Approx(rightMult.w));
+	REQUIRE(leftMult.x == Math::Approx(rightMult.x));
+	REQUIRE(leftMult.y == Math::Approx(rightMult.y));
+	REQUIRE(leftMult.z == Math::Approx(rightMult.z));
+}
