@@ -14,6 +14,9 @@ namespace Gadget
 
 		static inline constexpr TQuat Identity() noexcept{ return TQuat(1.0, 0.0, 0.0, 0.0); }
 
+		inline constexpr TQuat operator-() const noexcept{ return TQuat(-w, -x, -y, -z); }
+		inline constexpr TQuat operator+(const TQuat& q) const noexcept{ return TQuat(w + q.w, x + q.x, y + q.y, z + q.z); }
+
 		inline constexpr TQuat operator*(const TQuat& q) const noexcept
 		{
 			return TQuat(
@@ -31,7 +34,37 @@ namespace Gadget
 			return 2.0 * TVec3<T>::Dot(u, vec) * u + (s * s - TVec3<T>::Dot(u, u)) * vec + 2.0 * s * TVec3<T>::Cross(u, vec);
 		}
 
+		inline constexpr TQuat operator*(T v) const noexcept{ return TQuat(w * v, x * v, y * v, z * v); }
+		inline constexpr TQuat operator/(T v) const noexcept
+		{
+			return TQuat(Math::SafeDivide(w, v), Math::SafeDivide(x, v), Math::SafeDivide(y, v), Math::SafeDivide(z, v));
+		}
+
+		friend inline constexpr TQuat operator*(T s, const TQuat& q) noexcept{ return q * s; }
+
 		inline constexpr void operator *=(const TQuat& q) noexcept{ *this = *this * q; }
+		inline constexpr void operator *=(T v) noexcept{ *this = *this * v; }
+		inline constexpr void operator /=(T v) noexcept{ *this = *this / v; }
+
+		inline constexpr T SquaredMagnitude() const noexcept{ return (w * w) + (x * x) + (y * y) + (z * z); }
+		inline T Magnitude() const{ return Math::Sqrt(SquaredMagnitude()); }
+		inline TQuat Normal() const{ return *this / Magnitude(); }
+		inline void Normalize(){ *this = Normal(); }
+
+		static inline constexpr T Dot(const TQuat& a, const TQuat& b) noexcept
+		{
+			return Math::Dot4D(/*A*/ a.w, a.x, a.y, a.z, /*B*/ b.w, b.x, b.y, b.z);
+		}
+
+		static inline constexpr TQuat Lerp(const TQuat& q1, const TQuat& q2, T t) noexcept
+		{
+			if (Dot(q1, q2) < 0.0)
+			{
+				return (q1 * (1.0 - t) + -q2 * t).Normal();
+			}
+
+			return (q1 * (1.0 - t) + q2 * t).Normal();
+		}
 	};
 
 	using Quaternion = TQuat<Math::GFloat>;

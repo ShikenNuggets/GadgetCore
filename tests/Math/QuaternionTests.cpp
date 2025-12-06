@@ -3,6 +3,7 @@
 #include <GCore/Math/Quaternion.hpp>
 
 using namespace Gadget;
+using Math::Approx;
 
 TEST_CASE("TQuat::TQuat", "[tquat_constructor]")
 {
@@ -82,6 +83,35 @@ TEST_CASE("TQuat::*TVec3", "[tquat_*_tvec3]")
 	REQUIRE(rotationZ180.z == Math::Approx(3.0));
 }
 
+TEST_CASE("TQuat::*T", "[tquat_operator_*t]")
+{
+	constexpr auto w = 1.0;
+	constexpr auto x = 2.0;
+	constexpr auto y = 3.0;
+	constexpr auto z = 4.0;
+
+	const auto multTest = TQuat<double>(w, x, y, z) * 5.0;
+	REQUIRE(multTest.w == 5.0);
+	REQUIRE(multTest.x == 10.0);
+	REQUIRE(multTest.y == 15.0);
+	REQUIRE(multTest.z == 20.0);
+
+	const auto multTest2 = 5.0 * TQuat<double>(w, x, y, z);
+	REQUIRE(multTest.w == multTest2.w);
+	REQUIRE(multTest.x == multTest2.x);
+	REQUIRE(multTest.y == multTest2.y);
+	REQUIRE(multTest.z == multTest2.z);
+}
+
+TEST_CASE("TVec4::/T", "[tvec4_operator_/t]")
+{
+	const auto divTest = TQuat<double>(3.0, 6.0, 9.0, 12.0) / 3.0;
+	REQUIRE(divTest.w == 1.0);
+	REQUIRE(divTest.x == 2.0);
+	REQUIRE(divTest.y == 3.0);
+	REQUIRE(divTest.z == 4.0);
+}
+
 TEST_CASE("TQuat::*=", "[tquat_*=]")
 {
 	auto identityTimesQ = TQuat<double>::Identity();
@@ -122,4 +152,94 @@ TEST_CASE("TQuat::*=", "[tquat_*=]")
 	REQUIRE(leftMult.x == Math::Approx(rightMult.x));
 	REQUIRE(leftMult.y == Math::Approx(rightMult.y));
 	REQUIRE(leftMult.z == Math::Approx(rightMult.z));
+}
+
+TEST_CASE("TQuat::*=T", "[tquat_operator_*=t]")
+{
+	auto multEqualTest = TQuat<double>(1.0, 2.0, 3.0, 4.0);
+	multEqualTest *= 5.0;
+	REQUIRE(multEqualTest.w == 5.0);
+	REQUIRE(multEqualTest.x == 10.0);
+	REQUIRE(multEqualTest.y == 15.0);
+	REQUIRE(multEqualTest.z == 20.0);
+}
+
+TEST_CASE("TVec4::/=T", "[tvec4_operator_/=t]")
+{
+	auto divTest = TQuat<double>(3.0, 6.0, 9.0, 12.0);
+	divTest /= 3.0;
+	REQUIRE(divTest.w == 1.0);
+	REQUIRE(divTest.x == 2.0);
+	REQUIRE(divTest.y == 3.0);
+	REQUIRE(divTest.z == 4.0);
+}
+
+TEST_CASE("TQuat::SquaredMagnitude", "[tquat_squared_magnitude]")
+{
+	auto magTest = TQuat<double>(4.0, 4.0, 4.0, 4.0);
+	REQUIRE(magTest.SquaredMagnitude() == 64.0);
+}
+
+TEST_CASE("TQuat::Magnitude", "[tquat_magnitude]")
+{
+	auto magTest = TQuat<double>(4.0, 4.0, 4.0, 4.0);
+	REQUIRE(magTest.Magnitude() == Math::Sqrt(64.0));
+
+	auto magTest2 = TQuat<double>(0.0, 0.0, 0.0, 0.0);
+	REQUIRE(magTest2.Magnitude() == 0.0);
+}
+
+TEST_CASE("TQuat::Normal", "[tquat_normal]")
+{
+	auto normalTest = TQuat<double>(4.0, 4.0, 4.0, 4.0);
+	auto normal = normalTest.Normal();
+	const auto expected = normalTest / Math::Sqrt(64.0);
+	REQUIRE(Math::IsNear(normal.Magnitude(), 1.0));
+	REQUIRE(Math::IsNear(normal.w, expected.w));
+	REQUIRE(Math::IsNear(normal.x, expected.x));
+	REQUIRE(Math::IsNear(normal.y, expected.y));
+	REQUIRE(Math::IsNear(normal.z, expected.z));
+}
+
+TEST_CASE("TQuat::Dot", "[tquat_dot]")
+{
+	REQUIRE(TQuat<double>::Dot(TQuat<double>(1.0, 2.0, 3.0, 4.0), TQuat<double>(5.0, 6.0, 7.0, 8.0)) == Approx(70.0));
+	REQUIRE(TQuat<double>::Dot(TQuat<double>(0.0, 0.0, 0.0, 0.0), TQuat<double>(3.0, 2.0, 1.0, 4.0)) == Approx(0.0));
+	REQUIRE(TQuat<double>::Dot(TQuat<double>(-1.0, 2.0, -3.0, 4.0), TQuat<double>(-4.0, 3.0, -2.0, 1.0)) == Approx(20.0));
+}
+
+TEST_CASE("TQuat::Lerp", "[tquat_lerp]")
+{
+	const auto q1 = TQuat<double>(0.0, 0.0, 0.0, 1.0);
+	const auto q2 = TQuat<double>(0.0, 1.0, 0.0, 0.0);
+
+	const auto q1Norm = q1.Normal();
+	auto result = TQuat<double>::Lerp(q1, q2, 0.0);
+	REQUIRE(result.w == Approx(q1Norm.w));
+	REQUIRE(result.x == Approx(q1Norm.x));
+	REQUIRE(result.y == Approx(q1Norm.y));
+	REQUIRE(result.z == Approx(q1Norm.z));
+
+	const auto q2Norm = q2.Normal();
+	result = TQuat<double>::Lerp(q1, q2, 1.0);
+	REQUIRE(result.w == Approx(q2Norm.w));
+	REQUIRE(result.x == Approx(q2Norm.x));
+	REQUIRE(result.y == Approx(q2Norm.y));
+	REQUIRE(result.z == Approx(q2Norm.z));
+
+	result = TQuat<double>::Lerp(q1, q2, 0.5);
+	REQUIRE(result.w == Approx(0.0));
+	REQUIRE(result.x == Approx(0.70710678118654746));
+	REQUIRE(result.y == Approx(0.0));
+	REQUIRE(result.z == Approx(0.70710678118654746));
+
+	const auto q3 = TQuat<double>::Identity();
+	const auto q4 = TQuat<double>(-0.5, -0.866025403784, 0.0, 0.0);
+	REQUIRE(TQuat<double>::Dot(q3, q4) < 0.0);
+
+	result = TQuat<double>::Lerp(q3, q4, 0.5);
+	REQUIRE(result.w == Approx(0.86602540378454829));
+	REQUIRE(result.x == Approx(0.49999999999980999));
+	REQUIRE(result.y == Approx(0.0));
+	REQUIRE(result.z == Approx(0.0));
 }
