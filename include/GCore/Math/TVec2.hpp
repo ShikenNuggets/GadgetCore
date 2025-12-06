@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Math.hpp"
+#include "CoreMath.hpp"
 
 namespace Gadget
 {

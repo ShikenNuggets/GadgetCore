@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Math.hpp"
+#include "CoreMath.hpp"
 #include "TVec2.hpp"
 #include "TVec3.hpp"
 
