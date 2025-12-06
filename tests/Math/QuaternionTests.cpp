@@ -244,6 +244,22 @@ TEST_CASE("TQuat::Lerp", "[tquat_lerp]")
 	REQUIRE(result.z == Approx(0.0));
 }
 
+TEST_CASE("TQuat::IsNear", "[tquat_is_near]")
+{
+	const auto testA = TQuat<double>(1.0, 2.0, 3.0, 4.0);
+	const auto testB = TQuat<double>(1.0, 2.0, 3.0, 4.0);
+	const auto testC = TQuat<double>(1.0001, 2.0001, 3.1, 3.9995);
+
+	REQUIRE(testA.IsNear(testA));
+	REQUIRE(testA.IsNear(testB));
+	REQUIRE(!testA.IsNear(testC));
+
+	REQUIRE(testB.IsNear(testB));
+	REQUIRE(!testB.IsNear(testC));
+
+	REQUIRE(testC.IsNear(testC));
+}
+
 TEST_CASE("TQuat::IsValid", "[tquat_is_valid]")
 {
 	const auto valid = TQuat<double>(1.0, 2.0, 3.0, 4.0);

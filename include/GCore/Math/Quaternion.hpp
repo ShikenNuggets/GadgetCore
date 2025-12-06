@@ -66,6 +66,7 @@ namespace Gadget
 			return (q1 * (1.0 - t) + q2 * t).Normal();
 		}
 
+		inline constexpr bool IsNear(const TQuat& value) const noexcept{ return Math::IsNear(w, value.w) && Math::IsNear(x, value.x) && Math::IsNear(y, value.y) && Math::IsNear(z, value.z); }
 		inline constexpr bool IsValid() const{ return Math::IsValidNumber(w) && Math::IsValidNumber(x) && Math::IsValidNumber(y) && Math::IsValidNumber(z); }
 	};
 
