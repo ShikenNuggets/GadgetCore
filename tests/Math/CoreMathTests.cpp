@@ -2,7 +2,7 @@
 
 #include <catch2/catch_all.hpp>
 
-#include "GCore/Math/Math.hpp"
+#include "GCore/Math/CoreMath.hpp"
 
 using namespace Gadget;
 
