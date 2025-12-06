@@ -65,6 +65,8 @@ namespace Gadget
 
 			return (q1 * (1.0 - t) + q2 * t).Normal();
 		}
+
+		inline constexpr bool IsValid() const{ return Math::IsValidNumber(w) && Math::IsValidNumber(x) && Math::IsValidNumber(y) && Math::IsValidNumber(z); }
 	};
 
 	using Quaternion = TQuat<Math::GFloat>;

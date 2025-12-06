@@ -243,3 +243,12 @@ TEST_CASE("TQuat::Lerp", "[tquat_lerp]")
 	REQUIRE(result.y == Approx(0.0));
 	REQUIRE(result.z == Approx(0.0));
 }
+
+TEST_CASE("TQuat::IsValid", "[tquat_is_valid]")
+{
+	const auto valid = TQuat<double>(1.0, 2.0, 3.0, 4.0);
+	const auto invalid = TQuat<double>(Math::TInfinity<double>, 0.0, -1.0, -2.0);
+
+	REQUIRE(valid.IsValid());
+	REQUIRE(!invalid.IsValid());
+}
