@@ -96,13 +96,6 @@ TEST_CASE("Math::IsNear", "[math_is_near]")
 	REQUIRE_FALSE(Math::IsNear(1024.0L, std::numeric_limits<long double>::quiet_NaN()));
 }
 
-TEST_CASE("Math::Approx", "[math_approx]")
-{
-	REQUIRE(0.0 == Math::Approx(0.0));
-	REQUIRE(1.001 == Math::Approx(1.001));
-	REQUIRE_FALSE(2.0 == Math::Approx(1.9));
-}
-
 TEST_CASE("Math::SafeDivide", "[math_safe_divide]")
 {
 	REQUIRE(Math::IsNear(Math::SafeDivide(9.0, 3.0), 3.0));

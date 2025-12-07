@@ -3,7 +3,7 @@
 #include "GCore/Math/Math.hpp"
 
 using namespace Gadget;
-using Math::Approx;
+using Catch::Approx;
 
 TEST_CASE("Math::ToQuaternion(Euler)", "[math_to_quaternion_euler]")
 {
@@ -59,7 +59,7 @@ TEST_CASE("Math::ToMatrix4(TQuat)", "[math_to_matrix4_quat]")
 	m = Math::ToMatrix4(q90X);
 	for (size_t i = 0; i < Matrix4::Size(); ++i)
 	{
-		REQUIRE(m[i] == Approx(m90X[i]));
+		REQUIRE(m[i] == Approx(m90X[i]).margin(1e-6));
 	}
 
 	const auto q90Y = Quaternion(Math::CosR(Math::Pi / 4.0), 0.0, Math::SinR(Math::Pi / 4.0), 0.0);
@@ -67,7 +67,7 @@ TEST_CASE("Math::ToMatrix4(TQuat)", "[math_to_matrix4_quat]")
 	m = Math::ToMatrix4(q90Y);
 	for (size_t i = 0; i < Matrix4::Size(); ++i)
 	{
-		REQUIRE(m[i] == Approx(m90Y[i]));
+		REQUIRE(m[i] == Approx(m90Y[i]).margin(1e-6));
 	}
 
 	const auto q90Z = Quaternion(Math::CosR(Math::Pi / 4.0), 0.0, 0.0, Math::SinR(Math::Pi / 4.0));
@@ -75,7 +75,7 @@ TEST_CASE("Math::ToMatrix4(TQuat)", "[math_to_matrix4_quat]")
 	m = Math::ToMatrix4(q90Z);
 	for (size_t i = 0; i < Matrix4::Size(); ++i)
 	{
-		REQUIRE(m[i] == Approx(m90Z[i]));
+		REQUIRE(m[i] == Approx(m90Z[i]).margin(1e-6));
 	}
 
 	const auto qNormal = Quaternion(Math::CosR(Math::Pi / 3.0), Math::SinR(Math::Pi / 3.0), 0.0, 0.0).Normal();
@@ -125,12 +125,12 @@ TEST_CASE("Math::Rotate", "[math_rotate]")
 	REQUIRE(rotate90X[2] == identity[2]);
 	REQUIRE(rotate90X[3] == identity[3]);
 	REQUIRE(rotate90X[4] == identity[4]);
-	REQUIRE(rotate90X[5] == Approx(0.0));
+	REQUIRE(rotate90X[5] == Approx(0.0).margin(1e-6));
 	REQUIRE(rotate90X[6] == Approx(1.0));
 	REQUIRE(rotate90X[7] == identity[7]);
 	REQUIRE(rotate90X[8] == identity[8]);
 	REQUIRE(rotate90X[9] == Approx(-1.0));
-	REQUIRE(rotate90X[10] == Approx(0.0));
+	REQUIRE(rotate90X[10] == Approx(0.0).margin(1e-6));
 	REQUIRE(rotate90X[11] == identity[11]);
 	REQUIRE(rotate90X[12] == identity[12]);
 	REQUIRE(rotate90X[13] == identity[13]);
@@ -138,7 +138,7 @@ TEST_CASE("Math::Rotate", "[math_rotate]")
 	REQUIRE(rotate90X[15] == identity[15]);
 
 	const auto rotate90Y = Math::Rotate(90.0, Vector3(0.0, 1.0, 0.0));
-	REQUIRE(rotate90Y[0] == Approx(0.0));
+	REQUIRE(rotate90Y[0] == Approx(0.0).margin(1e-6));
 	REQUIRE(rotate90Y[1] == identity[1]);
 	REQUIRE(rotate90Y[2] == Approx(-1.0));
 	REQUIRE(rotate90Y[3] == identity[3]);
@@ -148,7 +148,7 @@ TEST_CASE("Math::Rotate", "[math_rotate]")
 	REQUIRE(rotate90Y[7] == identity[7]);
 	REQUIRE(rotate90Y[8] == Approx(1.0));
 	REQUIRE(rotate90Y[9] == Approx(identity[9]));
-	REQUIRE(rotate90Y[10] == Approx(0.0));
+	REQUIRE(rotate90Y[10] == Approx(0.0).margin(1e-6));
 	REQUIRE(rotate90Y[11] == identity[11]);
 	REQUIRE(rotate90Y[12] == identity[12]);
 	REQUIRE(rotate90Y[13] == identity[13]);
@@ -156,12 +156,12 @@ TEST_CASE("Math::Rotate", "[math_rotate]")
 	REQUIRE(rotate90Y[15] == identity[15]);
 
 	const auto rotate90Z = Math::Rotate(90.0, Vector3(0.0, 0.0, 1.0));
-	REQUIRE(rotate90Z[0] == Approx(0.0));
+	REQUIRE(rotate90Z[0] == Approx(0.0).margin(1e-6));
 	REQUIRE(rotate90Z[1] == Approx(1.0));
 	REQUIRE(rotate90Z[2] == identity[2]);
 	REQUIRE(rotate90Z[3] == identity[3]);
 	REQUIRE(rotate90Z[4] == Approx(-1.0));
-	REQUIRE(rotate90Z[5] == Approx(0.0));
+	REQUIRE(rotate90Z[5] == Approx(0.0).margin(1e-6));
 	REQUIRE(rotate90Z[6] == identity[6]);
 	REQUIRE(rotate90Z[7] == identity[7]);
 	REQUIRE(rotate90Z[8] == identity[8]);

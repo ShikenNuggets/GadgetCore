@@ -3,7 +3,7 @@
 #include <GCore/Math/Quaternion.hpp>
 
 using namespace Gadget;
-using Math::Approx;
+using Catch::Approx;
 
 TEST_CASE("TQuat::TQuat", "[tquat_constructor]")
 {
@@ -59,28 +59,28 @@ TEST_CASE("TQuat::*", "[tquat_*]")
 	const auto leftMult = (assocTestA * assocTestB) * assocTestC;
 	const auto rightMult = assocTestA * (assocTestB * assocTestC);
 
-	REQUIRE(leftMult.w == Math::Approx(rightMult.w));
-	REQUIRE(leftMult.x == Math::Approx(rightMult.x));
-	REQUIRE(leftMult.y == Math::Approx(rightMult.y));
-	REQUIRE(leftMult.z == Math::Approx(rightMult.z));
+	REQUIRE(leftMult.w == Approx(rightMult.w));
+	REQUIRE(leftMult.x == Approx(rightMult.x));
+	REQUIRE(leftMult.y == Approx(rightMult.y));
+	REQUIRE(leftMult.z == Approx(rightMult.z));
 }
 
 TEST_CASE("TQuat::*TVec3", "[tquat_*_tvec3]")
 {
 	const auto identityRotation = TQuat<double>::Identity() * TVec3<double>(1.0, -2.0, 3.0);
-	REQUIRE(identityRotation.x == Math::Approx(1.0));
-	REQUIRE(identityRotation.y == Math::Approx(-2.0));
-	REQUIRE(identityRotation.z == Math::Approx(3.0));
+	REQUIRE(identityRotation.x == Approx(1.0));
+	REQUIRE(identityRotation.y == Approx(-2.0));
+	REQUIRE(identityRotation.z == Approx(3.0));
 
 	const auto rotationX90 = TQuat<double>(Math::Cos(45.0), Math::Sin(45.0), 0.0, 0.0) * TVec3(0.0, 1.0, 0.0);
-	REQUIRE(rotationX90.x == Math::Approx(0.0));
-	REQUIRE(rotationX90.y == Math::Approx(0.0));
-	REQUIRE(rotationX90.z == Math::Approx(1.0));
+	REQUIRE(rotationX90.x == Approx(0.0));
+	REQUIRE(rotationX90.y == Approx(0.0));
+	REQUIRE(rotationX90.z == Approx(1.0));
 
 	const auto rotationZ180 = TQuat<double>(0.0, 0.0, 0.0, 1.0) * TVec3<double>(1.0, 2.0, 3.0);
-	REQUIRE(rotationZ180.x == Math::Approx(-1.0));
-	REQUIRE(rotationZ180.y == Math::Approx(-2.0));
-	REQUIRE(rotationZ180.z == Math::Approx(3.0));
+	REQUIRE(rotationZ180.x == Approx(-1.0));
+	REQUIRE(rotationZ180.y == Approx(-2.0));
+	REQUIRE(rotationZ180.z == Approx(3.0));
 }
 
 TEST_CASE("TQuat::*T", "[tquat_operator_*t]")
@@ -148,10 +148,10 @@ TEST_CASE("TQuat::*=", "[tquat_*=]")
 	auto rightMult = assocTestA;
 	rightMult *= (assocTestB * assocTestC);
 
-	REQUIRE(leftMult.w == Math::Approx(rightMult.w));
-	REQUIRE(leftMult.x == Math::Approx(rightMult.x));
-	REQUIRE(leftMult.y == Math::Approx(rightMult.y));
-	REQUIRE(leftMult.z == Math::Approx(rightMult.z));
+	REQUIRE(leftMult.w == Approx(rightMult.w));
+	REQUIRE(leftMult.x == Approx(rightMult.x));
+	REQUIRE(leftMult.y == Approx(rightMult.y));
+	REQUIRE(leftMult.z == Approx(rightMult.z));
 }
 
 TEST_CASE("TQuat::*=T", "[tquat_operator_*=t]")

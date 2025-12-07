@@ -3,7 +3,7 @@
 #include "GCore/Math/TMat2.hpp"
 
 using namespace Gadget;
-using Math::Approx;
+using Catch::Approx;
 
 TEST_CASE("TMat2::TMat2", "[tmat2_constructor]")
 {
