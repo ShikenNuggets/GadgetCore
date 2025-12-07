@@ -44,6 +44,50 @@ TEST_CASE("Math::ToQuaternion(Euler)", "[math_to_quaternion_euler]")
 	REQUIRE(q.Magnitude() == Approx(1.0));
 }
 
+TEST_CASE("Math::ToMatrix4(TQuat)", "[math_to_matrix4_quat]")
+{
+	const auto qIdentity = Quaternion::Identity();
+	const auto mIdentity = Matrix4::Identity();
+	auto m = Math::ToMatrix4(qIdentity);
+	for (size_t i = 0; i < Matrix4::Size(); ++i)
+	{
+		REQUIRE(m[i] == mIdentity[i]);
+	}
+
+	const auto q90X = Quaternion(Math::CosR(Math::Pi / 4.0), Math::SinR(Math::Pi / 4.0), 0.0, 0.0);
+	const auto m90X = Math::Rotate(90.0, Vector3(1.0, 0.0, 0.0));
+	m = Math::ToMatrix4(q90X);
+	for (size_t i = 0; i < Matrix4::Size(); ++i)
+	{
+		REQUIRE(m[i] == Approx(m90X[i]));
+	}
+
+	const auto q90Y = Quaternion(Math::CosR(Math::Pi / 4.0), 0.0, Math::SinR(Math::Pi / 4.0), 0.0);
+	const auto m90Y = Math::Rotate(90.0, Vector3(0.0, 1.0, 0.0));
+	m = Math::ToMatrix4(q90Y);
+	for (size_t i = 0; i < Matrix4::Size(); ++i)
+	{
+		REQUIRE(m[i] == Approx(m90Y[i]));
+	}
+
+	const auto q90Z = Quaternion(Math::CosR(Math::Pi / 4.0), 0.0, 0.0, Math::SinR(Math::Pi / 4.0));
+	const auto m90Z = Math::Rotate(90.0, Vector3(0.0, 0.0, 1.0));
+	m = Math::ToMatrix4(q90Z);
+	for (size_t i = 0; i < Matrix4::Size(); ++i)
+	{
+		REQUIRE(m[i] == Approx(m90Z[i]));
+	}
+
+	const auto qNormal = Quaternion(Math::CosR(Math::Pi / 3.0), Math::SinR(Math::Pi / 3.0), 0.0, 0.0).Normal();
+	const auto qScaled = qNormal * 3.0;
+	const auto mNormal = Math::ToMatrix4(qNormal);
+	const auto mScaled = Math::ToMatrix4(qScaled);
+	for (size_t i = 0; i < Matrix4::Size(); ++i)
+	{
+		CHECK(mNormal[i] == Approx(mScaled[i]));
+	}
+}
+
 TEST_CASE("Math::Translate", "[math_translate]")
 {
 	const auto identity = Matrix4::Identity();

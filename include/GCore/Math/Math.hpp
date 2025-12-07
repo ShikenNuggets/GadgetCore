@@ -32,6 +32,29 @@ namespace Gadget::Math
 	}
 
 	template <FloatLike T>
+	inline constexpr TMat4<T> ToMatrix4(const TQuat<T>& quat)
+	{
+		const auto q = quat.Normal();
+		const auto x2 = q.x * q.x;
+		const auto y2 = q.y * q.y;
+		const auto z2 = q.z * q.z;
+
+		auto mat = TMat4<T>::Identity();
+		mat[0] = 1.0 - (2.0 * y2) - (2.0 * z2);
+		mat[4] = (2.0 * q.x * q.y) - (2.0 * q.z * q.w);
+		mat[8] = (2.0 * q.x * q.z) + (2.0 * q.y * q.w);
+
+		mat[1] = (2.0 * q.x * q.y) + (2.0 * q.z * q.w);
+		mat[5] = 1.0 - (2.0 * x2) - (2.0 * z2);
+		mat[9] = 2.0 * q.y * q.z - 2.0 * q.x * q.w;
+
+		mat[2] = (2.0 * q.x * q.z) - (2.0 * q.y * q.w);
+		mat[6] = (2.0 * q.y * q.z) + (2.0 * q.x * q.w);
+		mat[10] = 1.0 - (2.0 * x2) - (2.0 * y2);
+		return mat;
+	}
+
+	template <FloatLike T>
 	inline constexpr TMat4<T> Translate(const TVec3<T>& v)
 	{
 		return TMat4<T>(
