@@ -45,6 +45,20 @@ namespace Gadget
 			);
 		}
 
+		inline constexpr T Determinant() const noexcept
+		{
+			return (m[0] * m[3]) - (m[2] * m[1]);
+		}
+
+		inline constexpr TMat2 Inverse() const noexcept
+		{
+			const auto invDet = Math::SafeDivide(1.0, Determinant());
+			return TMat2(
+				m[3] * invDet, -m[1] * invDet,
+				-m[2] * invDet, m[0] * invDet
+			);
+		}
+
 	private:
 		std::array<T, Size()> m;
 	};

@@ -3,6 +3,7 @@
 #include "GCore/Math/TMat2.hpp"
 
 using namespace Gadget;
+using Math::Approx;
 
 TEST_CASE("TMat2::TMat2", "[tmat2_constructor]")
 {
@@ -49,4 +50,43 @@ TEST_CASE("TMat2::Identity", "[tmat2_identity]")
 
 	REQUIRE(identity[2] == 0.0);
 	REQUIRE(identity[3] == 1.0);
+}
+
+TEST_CASE("TMat2::Determinant", "[tmat2_determinant]")
+{
+	const auto identity = TMat2<double>::Identity();
+	REQUIRE(identity.Determinant() == Approx(1.0));
+
+	auto m = TMat2<double>(4.0, 3.0, 6.0, 3.0);
+	REQUIRE(m.Determinant() == Approx(-6.0));
+
+	m = TMat2<double>(0.0, 0.0, 0.0, 0.0);
+	REQUIRE(m.Determinant() == 0.0);
+
+	m = TMat2<double>(-2.0, 3.0, 4.0, 5.0);
+	REQUIRE(m.Determinant() == Approx(-22.0));
+}
+
+TEST_CASE("TMat2::Inverse", "[tmat2_inverse]")
+{
+	const auto identity = TMat2<double>::Identity();
+	const auto invId = identity.Inverse();
+	for (size_t i = 0; i < TMat2<double>::Size(); ++i)
+	{
+		REQUIRE(invId[i] == identity[i]);
+	}
+
+	auto m = TMat2<double>(4.0, 7.0, 2.0, 6.0).Inverse();
+	REQUIRE(m[0] == Approx(0.6));
+	REQUIRE(m[1] == Approx(-0.7));
+	REQUIRE(m[2] == Approx(-0.2));
+	REQUIRE(m[3] == Approx(0.4));
+
+	// TODO - Matrix * Inverse == Identity
+
+	m = TMat2<double>(2.0, 4.0, 1.0, 2.0).Inverse();
+	REQUIRE(m[0] == 0.0);
+	REQUIRE(m[1] == 0.0);
+	REQUIRE(m[2] == 0.0);
+	REQUIRE(m[3] == 0.0);
 }

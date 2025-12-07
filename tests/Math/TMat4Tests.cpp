@@ -3,6 +3,7 @@
 #include "GCore/Math/TMat4.hpp"
 
 using namespace Gadget;
+using Catch::Approx;
 
 TEST_CASE("TMat4::TMat4", "[tmat4_constructor]")
 {
@@ -75,4 +76,56 @@ TEST_CASE("TMat4::Identity", "[tmat4_identity]")
 	REQUIRE(identity[13] == 0.0);
 	REQUIRE(identity[14] == 0.0);
 	REQUIRE(identity[15] == 1.0);
+}
+
+TEST_CASE("TMat4::Determinant", "[tmat4_determinant]")
+{
+	const auto identity = TMat4<double>::Identity();
+	REQUIRE(identity.Determinant() == Approx(1.0));
+
+	auto m = TMat4<double>(1.0, 0.0, 0.0, 0.0, 2.0, 1.0, 0.0, 0.0, 3.0, 2.0, 1.0, 0.0, 4.0, 3.0, 2.0, 1.0);
+	REQUIRE(m.Determinant() == Approx(1.0));
+
+	m = TMat4<double>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	REQUIRE(m.Determinant() == 0.0);
+
+	m = identity;
+	m[15] = -1.0;
+	REQUIRE(m.Determinant() == Approx(-1.0));
+}
+
+TEST_CASE("TMat4::Inverse", "[tmat4_inverse]")
+{
+	const auto identity = TMat4<double>::Identity();
+	const auto invId = identity.Inverse();
+	for (size_t i = 0; i < TMat4<double>::Size(); ++i)
+	{
+		REQUIRE(invId[i] == identity[i]);
+	}
+
+	auto m = TMat4<double>(1.0, 0.0, 0.0, 0.0, 2.0, 1.0, 0.0, 0.0, 3.0, 2.0, 1.0, 0.0, 4.0, 3.0, 2.0, 1.0).Inverse();
+	REQUIRE(m[0] == Approx(1.0));
+	REQUIRE(m[1] == Approx(0.0));
+	REQUIRE(m[2] == Approx(0.0));
+	REQUIRE(m[3] == Approx(0.0));
+	REQUIRE(m[4] == Approx(-2.0));
+	REQUIRE(m[5] == Approx(1.0));
+	REQUIRE(m[6] == Approx(0.0));
+	REQUIRE(m[7] == Approx(0.0));
+	REQUIRE(m[8] == Approx(1.0));
+	REQUIRE(m[9] == Approx(-2.0));
+	REQUIRE(m[10] == Approx(1.0));
+	REQUIRE(m[11] == Approx(0.0));
+	REQUIRE(m[12] == Approx(0.0));
+	REQUIRE(m[13] == Approx(1.0));
+	REQUIRE(m[14] == Approx(-2.0));
+	REQUIRE(m[15] == Approx(1.0));
+
+	// TODO - Matrix * Inverse == Identity
+
+	m = TMat4<double>(1.0, 2.0, 0.0, 0.0, 2.0, 4.0, 0.0, 0.0, 1.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0).Inverse();
+	for(size_t i = 0; i < TMat4<double>::Size(); ++i)
+	{
+		REQUIRE(m[i] == 0.0);
+	}
 }

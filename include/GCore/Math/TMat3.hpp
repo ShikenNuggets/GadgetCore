@@ -53,6 +53,29 @@ namespace Gadget
 			);
 		}
 
+		inline constexpr T Determinant() const noexcept
+		{
+			return m[0] * (m[4] * m[8] - m[7] * m[5]) -
+				m[1] * (m[3] * m[8] - m[5] * m[6]) +
+				m[2] * (m[3] * m[7] - m[4] * m[6]);
+		}
+
+		inline constexpr TMat3 Inverse() const noexcept
+		{
+			const auto invDet = Math::SafeDivide(1.0, Determinant());
+			return TMat3(
+				(m[4] * m[8] - m[7] * m[5]) * invDet,
+				(m[2] * m[7] - m[1] * m[8]) * invDet,
+				(m[1] * m[5] - m[2] * m[4]) * invDet,
+				(m[5] * m[6] - m[3] * m[8]) * invDet,
+				(m[0] * m[8] - m[2] * m[6]) * invDet,
+				(m[3] * m[2] - m[0] * m[5]) * invDet,
+				(m[3] * m[7] - m[6] * m[4]) * invDet,
+				(m[6] * m[1] - m[0] * m[7]) * invDet,
+				(m[0] * m[4] - m[3] * m[1]) * invDet
+			);
+		}
+
 	private:
 		std::array<T, Size()> m;
 	};
