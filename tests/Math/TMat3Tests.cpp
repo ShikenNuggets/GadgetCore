@@ -24,6 +24,28 @@ TEST_CASE("TMat3::TMat3(T...)", "[tmat3_constructor_t]")
 	}
 }
 
+TEST_CASE("TMat3::operator[]", "[tmat3_operator_array]")
+{
+	auto mat = TMat3<double>::Identity();
+	mat[0] = 0.0;
+	mat[1] = 1.0;
+	mat[2] = 2.0;
+	mat[3] = 3.0;
+	mat[4] = 4.0;
+	mat[5] = 5.0;
+	mat[6] = 6.0;
+	mat[7] = 7.0;
+	mat[8] = 8.0;
+
+	for (size_t i = 0; i < TMat3<double>::Size(); ++i)
+	{
+		REQUIRE(mat[i] == static_cast<double>(i));
+	}
+
+	REQUIRE_THROWS(mat[-1]);
+	REQUIRE_THROWS(mat[TMat3<double>::Size()]);
+}
+
 TEST_CASE("TMat3::Identity", "[tmat3_identity]")
 {
 	const auto identity = TMat3<double>::Identity();

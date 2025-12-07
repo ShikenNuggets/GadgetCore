@@ -24,6 +24,35 @@ TEST_CASE("TMat4::TMat4(T...)", "[tmat4_constructor_t]")
 	}
 }
 
+TEST_CASE("TMat4::operator[]", "[tmat4_operator_array]")
+{
+	auto mat = TMat4<double>::Identity();
+	mat[0] = 0.0;
+	mat[1] = 1.0;
+	mat[2] = 2.0;
+	mat[3] = 3.0;
+	mat[4] = 4.0;
+	mat[5] = 5.0;
+	mat[6] = 6.0;
+	mat[7] = 7.0;
+	mat[8] = 8.0;
+	mat[9] = 9.0;
+	mat[10] = 10.0;
+	mat[11] = 11.0;
+	mat[12] = 12.0;
+	mat[13] = 13.0;
+	mat[14] = 14.0;
+	mat[15] = 15.0;
+
+	for (size_t i = 0; i < TMat4<double>::Size(); ++i)
+	{
+		REQUIRE(mat[i] == static_cast<double>(i));
+	}
+
+	REQUIRE_THROWS(mat[-1]);
+	REQUIRE_THROWS(mat[TMat4<double>::Size()]);
+}
+
 TEST_CASE("TMat4::Identity", "[tmat4_identity]")
 {
 	const auto identity = TMat4<double>::Identity();

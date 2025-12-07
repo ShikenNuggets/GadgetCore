@@ -14,6 +14,9 @@ namespace Gadget
 	class TMat2
 	{
 	public:
+		static inline constexpr size_t RowSize() noexcept{ return 2; }
+		static inline constexpr size_t Size() noexcept{ return RowSize() * RowSize(); }
+
 		constexpr TMat2() : m{ 1.0, 0.0, 0.0, 1.0 }{}
 
 		constexpr TMat2(T a1, T a2, T b1, T b2) : m{}
@@ -30,6 +33,11 @@ namespace Gadget
 			return m.at(i);
 		}
 
+		inline constexpr T& operator[](size_t i)
+		{
+			return m.at(i);
+		}
+
 		static inline constexpr TMat2 Identity()
 		{
 			return TMat2(1.0, 0.0,
@@ -38,6 +46,6 @@ namespace Gadget
 		}
 
 	private:
-		std::array<T, 2 * 2> m;
+		std::array<T, Size()> m;
 	};
 }

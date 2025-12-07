@@ -16,6 +16,9 @@ namespace Gadget
 	class TMat4
 	{
 	public:
+		static inline constexpr size_t RowSize() noexcept{ return 4; }
+		static inline constexpr size_t Size() noexcept{ return RowSize() * RowSize(); }
+
 		constexpr TMat4() : m{ 1.0, 0.0, 0.0, 0.0, /**/ 0.0, 1.0, 0.0, 0.0, /**/ 0.0, 0.0, 1.0, 0.0, /**/ 0.0, 0.0, 0.0, 1.0 }{}
 		
 		constexpr TMat4(T a1, T a2, T a3, T a4, T b1, T b2, T b3, T b4, T c1, T c2, T c3, T c4, T d1, T d2, T d3, T d4) : m{}
@@ -42,6 +45,11 @@ namespace Gadget
 		}
 
 		inline constexpr T operator [](size_t i) const
+		{
+			return m.at(i);
+		}
+
+		inline constexpr T& operator[](size_t i)
 		{
 			return m.at(i);
 		}
