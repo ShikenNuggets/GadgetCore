@@ -106,3 +106,12 @@ TEST_CASE("TMat3::Inverse", "[tmat3_inverse]")
 		REQUIRE(m[i] == 0.0);
 	}
 }
+
+TEST_CASE("TMat3::IsValid", "[tmat3_is_valid]")
+{
+	const auto identity = TMat3<double>::Identity();
+	REQUIRE(identity.IsValid());
+
+	const auto inf = TMat3<double>(Math::TInfinity<double>, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	REQUIRE(!inf.IsValid());
+}

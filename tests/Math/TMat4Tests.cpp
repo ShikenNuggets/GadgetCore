@@ -129,3 +129,12 @@ TEST_CASE("TMat4::Inverse", "[tmat4_inverse]")
 		REQUIRE(m[i] == 0.0);
 	}
 }
+
+TEST_CASE("TMat4::IsValid", "[tmat4_is_valid]")
+{
+	const auto identity = TMat4<double>::Identity();
+	REQUIRE(identity.IsValid());
+
+	const auto inf = TMat4<double>(Math::TInfinity<double>, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	REQUIRE(!inf.IsValid());
+}

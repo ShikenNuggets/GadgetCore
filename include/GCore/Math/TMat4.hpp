@@ -95,6 +95,19 @@ namespace Gadget
 			);
 		}
 
+		inline constexpr bool IsValid() const
+		{
+			for (const auto& v : m)
+			{
+				if (!Math::IsValidNumber(v))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
 	private:
 		std::array<T, 4 * 4> m;
 	};
