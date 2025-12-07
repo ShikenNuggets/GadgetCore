@@ -43,3 +43,118 @@ TEST_CASE("Math::ToQuaternion(Euler)", "[math_to_quaternion_euler]")
 	q = Math::ToQuaternion(e);
 	REQUIRE(q.Magnitude() == Approx(1.0));
 }
+
+TEST_CASE("Math::Translate", "[math_translate]")
+{
+	const auto identity = Matrix4::Identity();
+	const auto m = Math::Translate(Vector3(1.0, 2.0, 3.0));
+	REQUIRE(m[0] == identity[0]);
+	REQUIRE(m[1] == identity[1]);
+	REQUIRE(m[2] == identity[2]);
+	REQUIRE(m[3] == identity[3]);
+	REQUIRE(m[4] == identity[4]);
+	REQUIRE(m[5] == identity[5]);
+	REQUIRE(m[6] == identity[6]);
+	REQUIRE(m[7] == identity[7]);
+	REQUIRE(m[8] == identity[8]);
+	REQUIRE(m[9] == identity[9]);
+	REQUIRE(m[10] == identity[10]);
+	REQUIRE(m[11] == identity[11]);
+	REQUIRE(m[12] == 1.0);
+	REQUIRE(m[13] == 2.0);
+	REQUIRE(m[14] == 3.0);
+	REQUIRE(m[15] == identity[15]);
+}
+
+TEST_CASE("Math::Rotate", "[math_rotate]")
+{
+	const auto identity = Matrix4::Identity();
+	const auto noRotate = Math::Rotate(0.0, Vector3(1.0, 0.0, 0.0));
+	for (size_t i = 0; i < Matrix4::Size(); ++i)
+	{
+		REQUIRE(noRotate[i] == identity[i]);
+	}
+
+	const auto rotate90X = Math::Rotate(90.0, Vector3(1.0, 0.0, 0.0));
+	REQUIRE(rotate90X[0] == Approx(identity[0]));
+	REQUIRE(rotate90X[1] == identity[1]);
+	REQUIRE(rotate90X[2] == identity[2]);
+	REQUIRE(rotate90X[3] == identity[3]);
+	REQUIRE(rotate90X[4] == identity[4]);
+	REQUIRE(rotate90X[5] == Approx(0.0));
+	REQUIRE(rotate90X[6] == Approx(1.0));
+	REQUIRE(rotate90X[7] == identity[7]);
+	REQUIRE(rotate90X[8] == identity[8]);
+	REQUIRE(rotate90X[9] == Approx(-1.0));
+	REQUIRE(rotate90X[10] == Approx(0.0));
+	REQUIRE(rotate90X[11] == identity[11]);
+	REQUIRE(rotate90X[12] == identity[12]);
+	REQUIRE(rotate90X[13] == identity[13]);
+	REQUIRE(rotate90X[14] == identity[14]);
+	REQUIRE(rotate90X[15] == identity[15]);
+
+	const auto rotate90Y = Math::Rotate(90.0, Vector3(0.0, 1.0, 0.0));
+	REQUIRE(rotate90Y[0] == Approx(0.0));
+	REQUIRE(rotate90Y[1] == identity[1]);
+	REQUIRE(rotate90Y[2] == Approx(-1.0));
+	REQUIRE(rotate90Y[3] == identity[3]);
+	REQUIRE(rotate90Y[4] == identity[4]);
+	REQUIRE(rotate90Y[5] == Approx(identity[5]));
+	REQUIRE(rotate90Y[6] == Approx(identity[6]));
+	REQUIRE(rotate90Y[7] == identity[7]);
+	REQUIRE(rotate90Y[8] == Approx(1.0));
+	REQUIRE(rotate90Y[9] == Approx(identity[9]));
+	REQUIRE(rotate90Y[10] == Approx(0.0));
+	REQUIRE(rotate90Y[11] == identity[11]);
+	REQUIRE(rotate90Y[12] == identity[12]);
+	REQUIRE(rotate90Y[13] == identity[13]);
+	REQUIRE(rotate90Y[14] == identity[14]);
+	REQUIRE(rotate90Y[15] == identity[15]);
+
+	const auto rotate90Z = Math::Rotate(90.0, Vector3(0.0, 0.0, 1.0));
+	REQUIRE(rotate90Z[0] == Approx(0.0));
+	REQUIRE(rotate90Z[1] == Approx(1.0));
+	REQUIRE(rotate90Z[2] == identity[2]);
+	REQUIRE(rotate90Z[3] == identity[3]);
+	REQUIRE(rotate90Z[4] == Approx(-1.0));
+	REQUIRE(rotate90Z[5] == Approx(0.0));
+	REQUIRE(rotate90Z[6] == identity[6]);
+	REQUIRE(rotate90Z[7] == identity[7]);
+	REQUIRE(rotate90Z[8] == identity[8]);
+	REQUIRE(rotate90Z[9] == identity[9]);
+	REQUIRE(rotate90Z[10] == Approx(identity[10]));
+	REQUIRE(rotate90Z[11] == identity[11]);
+	REQUIRE(rotate90Z[12] == identity[12]);
+	REQUIRE(rotate90Z[13] == identity[13]);
+	REQUIRE(rotate90Z[14] == identity[14]);
+	REQUIRE(rotate90Z[15] == identity[15]);
+
+	const auto m1 = Math::Rotate(45.0, Vector3(2, 0, 0));
+	const auto m2 = Math::Rotate(45.0, Vector3(1, 0, 0));
+	for (size_t i = 0; i < Matrix4::Size(); ++i)
+	{
+		REQUIRE(m1[i] == Approx(m2[i]));
+	}
+}
+
+TEST_CASE("Math::Scale", "[math_scale]")
+{
+	const auto identity = Matrix4::Identity();
+	const auto m = Math::Scale(Vector3(1.0, 2.0, 3.0));
+	REQUIRE(m[0] == 1.0);
+	REQUIRE(m[1] == identity[1]);
+	REQUIRE(m[2] == identity[2]);
+	REQUIRE(m[3] == identity[3]);
+	REQUIRE(m[4] == identity[4]);
+	REQUIRE(m[5] == 2.0);
+	REQUIRE(m[6] == identity[6]);
+	REQUIRE(m[7] == identity[7]);
+	REQUIRE(m[8] == identity[8]);
+	REQUIRE(m[9] == identity[9]);
+	REQUIRE(m[10] == 3.0);
+	REQUIRE(m[11] == identity[11]);
+	REQUIRE(m[12] == identity[12]);
+	REQUIRE(m[13] == identity[13]);
+	REQUIRE(m[14] == identity[14]);
+	REQUIRE(m[15] == identity[15]);
+}
