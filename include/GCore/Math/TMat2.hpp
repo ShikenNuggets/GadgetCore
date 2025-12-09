@@ -38,6 +38,20 @@ namespace Gadget
 			return m.at(i);
 		}
 
+		inline constexpr TMat2 operator*(const TMat2& m_) const
+		{
+			return TMat2(
+				//COLUMN 1
+				Math::Dot2D(/*A*/ m[0], m[2], /*B*/ m_[0], m_[1]),
+				Math::Dot2D(/*A*/ m[1], m[3], /*B*/ m_[0], m_[1]),
+				//COLUMN 2
+				Math::Dot2D(/*A*/ m[0], m[2], /*B*/ m_[2], m_[3]),
+				Math::Dot2D(/*A*/ m[1], m[3], /*B*/ m_[2], m_[3])
+			);
+		}
+
+		inline constexpr void operator*=(const TMat2& m_){ *this = *this * m_; }
+
 		static inline constexpr TMat2 Identity()
 		{
 			return TMat2(1.0, 0.0,

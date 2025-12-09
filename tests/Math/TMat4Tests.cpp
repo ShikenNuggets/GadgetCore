@@ -54,6 +54,93 @@ TEST_CASE("TMat4::operator[]", "[tmat4_operator_array]")
 	REQUIRE_THROWS(mat[TMat4<double>::Size()]);
 }
 
+TEST_CASE("TMat4::operator*(TMat4)", "[tmat4_operator_*_tmat4]")
+{
+	const auto identity = TMat4<double>::Identity();
+	const auto zero = TMat4<double>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	const auto testMat1 = TMat4<double>(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+	const auto testMat2 = TMat4<double>(16.0, 15.0, 14.0, 13.0, 12.0, 11.0, 10.0, 9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0);
+
+	const auto resultA = identity * testMat1;
+	for (size_t i = 0; i < TMat4<double>::Size(); ++i)
+	{
+		REQUIRE(resultA[i] == testMat1[i]);
+	}
+
+	const auto resultB = testMat1 * identity;
+	for (size_t i = 0; i < TMat4<double>::Size(); ++i)
+	{
+		REQUIRE(resultB[i] == testMat1[i]);
+	}
+
+	const auto resultC = zero * testMat1;
+	for (size_t i = 0; i < TMat4<double>::Size(); ++i)
+	{
+		REQUIRE(resultC[i] == zero[i]);
+	}
+
+	const auto resultD = testMat1 * testMat2;
+	REQUIRE(resultD[0] == 386.0);
+	REQUIRE(resultD[1] == 444.0);
+	REQUIRE(resultD[2] == 502.0);
+	REQUIRE(resultD[3] == 560.0);
+
+	REQUIRE(resultD[4] == 274.0);
+	REQUIRE(resultD[5] == 316.0);
+	REQUIRE(resultD[6] == 358.0);
+	REQUIRE(resultD[7] == 400.0);
+
+	REQUIRE(resultD[8] == 162.0);
+	REQUIRE(resultD[9] == 188.0);
+	REQUIRE(resultD[10] == 214.0);
+	REQUIRE(resultD[11] == 240.0);
+
+	REQUIRE(resultD[12] == 50.0);
+	REQUIRE(resultD[13] == 60.0);
+	REQUIRE(resultD[14] == 70.0);
+	REQUIRE(resultD[15] == 80.0);
+}
+
+TEST_CASE("TMat4::operator*=(TMat4)", "[tmat4_operator_*=_tmat4]")
+{
+	const auto identity = TMat4<double>::Identity();
+	const auto zero = TMat4<double>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	const auto testMat1 = TMat4<double>(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+	const auto testMat2 = TMat4<double>(16.0, 15.0, 14.0, 13.0, 12.0, 11.0, 10.0, 9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0);
+	
+	const auto truthA = identity * testMat1;
+	auto resultA = identity;
+	resultA *= testMat1;
+	for (size_t i = 0; i < TMat4<double>::Size(); ++i)
+	{
+		REQUIRE(resultA[i] == truthA[i]);
+	}
+
+	const auto truthB = testMat1 * identity;
+	auto resultB = testMat1;
+	resultB *= identity;
+	for (size_t i = 0; i < TMat4<double>::Size(); ++i)
+	{
+		REQUIRE(resultB[i] == truthB[i]);
+	}
+
+	const auto truthC = zero * testMat1;
+	auto resultC = zero;
+	resultC *= testMat1;
+	for (size_t i = 0; i < TMat4<double>::Size(); ++i)
+	{
+		REQUIRE(resultC[i] == truthC[i]);
+	}
+
+	const auto truthD = testMat1 * testMat2;
+	auto resultD = testMat1;
+	resultD *= testMat2;
+	for (size_t i = 0; i < TMat4<double>::Size(); ++i)
+	{
+		REQUIRE(resultD[i] == truthD[i]);
+	}
+}
+
 TEST_CASE("TMat4::Identity", "[tmat4_identity]")
 {
 	const auto identity = TMat4<double>::Identity();

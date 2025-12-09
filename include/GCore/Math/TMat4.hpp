@@ -54,6 +54,34 @@ namespace Gadget
 			return m.at(i);
 		}
 
+		TMat4 operator*(const TMat4& m_) const
+		{
+			return TMat4(
+				//COLUMN 1
+				Math::Dot4D(/*A*/ m[0], m[4], m[8], m[12], /*B*/ m_[0], m_[1], m_[2], m_[3]),
+				Math::Dot4D(/*A*/ m[1], m[5], m[9], m[13], /*B*/ m_[0], m_[1], m_[2], m_[3]),
+				Math::Dot4D(/*A*/ m[2], m[6], m[10], m[14], /*B*/ m_[0], m_[1], m_[2], m_[3]),
+				Math::Dot4D(/*A*/ m[3], m[7], m[11], m[15], /*B*/ m_[0], m_[1], m_[2], m_[3]),
+				//COLUMN 2
+				Math::Dot4D(/*A*/ m[0], m[4], m[8], m[12], /*B*/ m_[4], m_[5], m_[6], m_[7]),
+				Math::Dot4D(/*A*/ m[1], m[5], m[9], m[13], /*B*/ m_[4], m_[5], m_[6], m_[7]),
+				Math::Dot4D(/*A*/ m[2], m[6], m[10], m[14], /*B*/ m_[4], m_[5], m_[6], m_[7]),
+				Math::Dot4D(/*A*/ m[3], m[7], m[11], m[15], /*B*/ m_[4], m_[5], m_[6], m_[7]),
+				//COLUMN 3
+				Math::Dot4D(/*A*/ m[0], m[4], m[8], m[12], /*B*/ m_[8], m_[9], m_[10], m_[11]),
+				Math::Dot4D(/*A*/ m[1], m[5], m[9], m[13], /*B*/ m_[8], m_[9], m_[10], m_[11]),
+				Math::Dot4D(/*A*/ m[2], m[6], m[10], m[14], /*B*/ m_[8], m_[9], m_[10], m_[11]),
+				Math::Dot4D(/*A*/ m[3], m[7], m[11], m[15], /*B*/ m_[8], m_[9], m_[10], m_[11]),
+				//COLUMN 4
+				Math::Dot4D(/*A*/ m[0], m[4], m[8], m[12], /*B*/ m_[12], m_[13], m_[14], m_[15]),
+				Math::Dot4D(/*A*/ m[1], m[5], m[9], m[13], /*B*/ m_[12], m_[13], m_[14], m_[15]),
+				Math::Dot4D(/*A*/ m[2], m[6], m[10], m[14], /*B*/ m_[12], m_[13], m_[14], m_[15]),
+				Math::Dot4D(/*A*/ m[3], m[7], m[11], m[15], /*B*/ m_[12], m_[13], m_[14], m_[15])
+			);
+		}
+
+		inline constexpr void operator*=(const TMat4& m_){ *this = *this * m_; }
+
 		static inline constexpr TMat4 Identity()
 		{
 			return TMat4(1.0, 0.0, 0.0, 0.0,
@@ -109,6 +137,6 @@ namespace Gadget
 		}
 
 	private:
-		std::array<T, 4 * 4> m;
+		std::array<T, Size()> m;
 	};
 }

@@ -45,6 +45,26 @@ namespace Gadget
 			return m.at(i);
 		}
 
+		inline constexpr TMat3 operator*(const TMat3& m_) const
+		{
+			return TMat3(
+				//COLUMN 1
+				Math::Dot3D(/*A*/ m[0], m[3], m[6], /*B*/ m_[0], m_[1], m_[2]),
+				Math::Dot3D(/*A*/ m[1], m[4], m[7], /*B*/ m_[0], m_[1], m_[2]),
+				Math::Dot3D(/*A*/ m[2], m[5], m[8], /*B*/ m_[0], m_[1], m_[2]),
+				//COLUMN 2
+				Math::Dot3D(/*A*/ m[0], m[3], m[6], /*B*/ m_[3], m_[4], m_[5]),
+				Math::Dot3D(/*A*/ m[1], m[4], m[7], /*B*/ m_[3], m_[4], m_[5]),
+				Math::Dot3D(/*A*/ m[2], m[5], m[8], /*B*/ m_[3], m_[4], m_[5]),
+				//COLUMN 3
+				Math::Dot3D(/*A*/ m[0], m[3], m[6], /*B*/ m_[6], m_[7], m_[8]),
+				Math::Dot3D(/*A*/ m[1], m[4], m[7], /*B*/ m_[6], m_[7], m_[8]),
+				Math::Dot3D(/*A*/ m[2], m[5], m[8], /*B*/ m_[6], m_[7], m_[8])
+			);
+		}
+
+		inline constexpr void operator*=(const TMat3& m_){ *this = *this * m_; }
+
 		static inline constexpr TMat3 Identity()
 		{
 			return TMat3(1.0, 0.0, 0.0,

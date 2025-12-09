@@ -19,7 +19,7 @@ TEST_CASE("TMat2::TMat2", "[tmat2_constructor]")
 TEST_CASE("TMat2::TMat2(T...)", "[tmat2_constructor_t]")
 {
 	const auto doubleMat2 = TMat2<double>(0.0, 1.0, 2.0, 3.0);
-	for(size_t i = 0; i < TMat2<double>::Size(); ++i)
+	for (size_t i = 0; i < TMat2<double>::Size(); ++i)
 	{
 		REQUIRE(doubleMat2[i] == static_cast<double>(i));
 	}
@@ -40,6 +40,78 @@ TEST_CASE("TMat2::operator[]", "[tmat2_operator_array]")
 
 	REQUIRE_THROWS(mat[-1]);
 	REQUIRE_THROWS(mat[TMat2<double>::Size()]);
+}
+
+TEST_CASE("TMat2::operator*(TMat2)", "[tmat2_operator_*_tmat2]")
+{
+	const auto identity = TMat2<double>::Identity();
+	const auto zero = TMat2<double>(0.0, 0.0, 0.0, 0.0);
+	const auto testMat1 = TMat2<double>(1.0, 2.0, 3.0, 4.0);
+	const auto testMat2 = TMat2<double>(5.0, 6.0, 7.0, 8.0);
+	
+	const auto resultA = identity * testMat1;
+	for (size_t i = 0; i < TMat2<double>::Size(); ++i)
+	{
+		REQUIRE(resultA[i] == testMat1[i]);
+	}
+
+	const auto resultB = testMat1 * identity;
+	for (size_t i = 0; i < TMat2<double>::Size(); ++i)
+	{
+		REQUIRE(resultB[i] == testMat1[i]);
+	}
+
+	const auto resultC = zero * testMat1;
+	for (size_t i = 0; i < TMat2<double>::Size(); ++i)
+	{
+		REQUIRE(resultC[i] == zero[i]);
+	}
+
+	const auto resultD = testMat1 * testMat2;
+	REQUIRE(resultD[0] == 23.0);
+	REQUIRE(resultD[1] == 34.0);
+	REQUIRE(resultD[2] == 31.0);
+	REQUIRE(resultD[3] == 46.0);
+}
+
+TEST_CASE("TMat2::operator*=(TMat2)", "[tmat2_operator_*=_tmat2]")
+{
+	const auto identity = TMat2<double>::Identity();
+	const auto zero = TMat2<double>(0.0, 0.0, 0.0, 0.0);
+	const auto testMat1 = TMat2<double>(1.0, 2.0, 3.0, 4.0);
+	const auto testMat2 = TMat2<double>(5.0, 6.0, 7.0, 8.0);
+	
+	const auto truthA = identity * testMat1;
+	auto resultA = identity;
+	resultA *= testMat1;
+	for (size_t i = 0; i < TMat2<double>::Size(); ++i)
+	{
+		REQUIRE(resultA[i] == truthA[i]);
+	}
+
+	const auto truthB = testMat1 * identity;
+	auto resultB = testMat1;
+	resultB *= identity;
+	for (size_t i = 0; i < TMat2<double>::Size(); ++i)
+	{
+		REQUIRE(resultB[i] == truthB[i]);
+	}
+
+	const auto truthC = zero * testMat1;
+	auto resultC = zero;
+	resultC *= testMat1;
+	for (size_t i = 0; i < TMat2<double>::Size(); ++i)
+	{
+		REQUIRE(resultC[i] == truthC[i]);
+	}
+
+	const auto truthD = testMat1 * testMat2;
+	auto resultD = testMat1;
+	resultD *= testMat2;
+	for (size_t i = 0; i < TMat2<double>::Size(); ++i)
+	{
+		REQUIRE(resultD[i] == truthD[i]);
+	}
 }
 
 TEST_CASE("TMat2::Identity", "[tmat2_identity]")

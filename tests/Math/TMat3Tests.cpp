@@ -47,6 +47,85 @@ TEST_CASE("TMat3::operator[]", "[tmat3_operator_array]")
 	REQUIRE_THROWS(mat[TMat3<double>::Size()]);
 }
 
+TEST_CASE("TMat3::operator*(TMat3)", "[tmat3_operator_*_tmat3]")
+{
+	const auto identity = TMat3<double>::Identity();
+	const auto zero = TMat3<double>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	const auto testMat1 = TMat3<double>(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0);
+	const auto testMat2 = TMat3<double>(9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0);
+
+	const auto resultA = identity * testMat1;
+	for (size_t i = 0; i < TMat3<double>::Size(); ++i)
+	{
+		REQUIRE(resultA[i] == testMat1[i]);
+	}
+
+	const auto resultB = testMat1 * identity;
+	for (size_t i = 0; i < TMat3<double>::Size(); ++i)
+	{
+		REQUIRE(resultB[i] == testMat1[i]);
+	}
+
+	const auto resultC = zero * testMat1;
+	for (size_t i = 0; i < TMat3<double>::Size(); ++i)
+	{
+		REQUIRE(resultC[i] == zero[i]);
+	}
+
+	const auto resultD = testMat1 * testMat2;
+	REQUIRE(resultD[0] ==  90.0);
+	REQUIRE(resultD[1] ==  114.0);
+	REQUIRE(resultD[2] ==  138.0);
+
+	REQUIRE(resultD[3] ==  54.0);
+	REQUIRE(resultD[4] ==  69.0);
+	REQUIRE(resultD[5] ==  84.0);
+
+	REQUIRE(resultD[6] == 18.0);
+	REQUIRE(resultD[7] == 24.0);
+	REQUIRE(resultD[8] ==  30.0);
+}
+
+TEST_CASE("TMat3::operator*=(TMat3)", "[tmat3_operator_*=_tmat3]")
+{
+	const auto identity = TMat3<double>::Identity();
+	const auto zero = TMat3<double>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	const auto testMat1 = TMat3<double>(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0);
+	const auto testMat2 = TMat3<double>(9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0);
+	
+	const auto truthA = identity * testMat1;
+	auto resultA = identity;
+	resultA *= testMat1;
+	for (size_t i = 0; i < TMat3<double>::Size(); ++i)
+	{
+		REQUIRE(resultA[i] == truthA[i]);
+	}
+
+	const auto truthB = testMat1 * identity;
+	auto resultB = testMat1;
+	resultB *= identity;
+	for (size_t i = 0; i < TMat3<double>::Size(); ++i)
+	{
+		REQUIRE(resultB[i] == truthB[i]);
+	}
+
+	const auto truthC = zero * testMat1;
+	auto resultC = zero;
+	resultC *= testMat1;
+	for (size_t i = 0; i < TMat3<double>::Size(); ++i)
+	{
+		REQUIRE(resultC[i] == truthC[i]);
+	}
+
+	const auto truthD = testMat1 * testMat2;
+	auto resultD = testMat1;
+	resultD *= testMat2;
+	for (size_t i = 0; i < TMat3<double>::Size(); ++i)
+	{
+		REQUIRE(resultD[i] == truthD[i]);
+	}
+}
+
 TEST_CASE("TMat3::Identity", "[tmat3_identity]")
 {
 	const auto identity = TMat3<double>::Identity();
