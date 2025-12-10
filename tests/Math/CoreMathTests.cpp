@@ -202,6 +202,39 @@ TEST_CASE("Math::Tan", "[math_tan]")
 	REQUIRE(Math::IsNear(Math::Tan(270.0), std::tan(3 * std::numbers::pi_v<double> / 2.0)));
 }
 
+TEST_CASE("Math::AsinR", "[math_asin_r]")
+{
+	REQUIRE(Math::IsNear(Math::AsinR(0.0), Math::DegreesToRadians(0.0)));
+	REQUIRE(Math::IsNear(Math::AsinR(0.5), Math::DegreesToRadians(30.0)));
+	REQUIRE(Math::IsNear(Math::AsinR(1.0), Math::DegreesToRadians(90.0)));
+	REQUIRE(Math::IsNear(Math::AsinR(-1.0), Math::DegreesToRadians(-90.0)));
+}
+
+TEST_CASE("Math::AcosR", "[math_acos_r]")
+{
+	REQUIRE(Math::IsNear(Math::AcosR(1.0), Math::DegreesToRadians(0.0)));
+	REQUIRE(Math::IsNear(Math::AcosR(0.5), Math::DegreesToRadians(60.0)));
+	REQUIRE(Math::IsNear(Math::AcosR(0.0), Math::DegreesToRadians(90.0)));
+	REQUIRE(Math::IsNear(Math::AcosR(-1.0), Math::DegreesToRadians(180.0)));
+}
+
+TEST_CASE("Math::AtanR", "[math_atan_r]")
+{
+	REQUIRE(Math::IsNear(Math::AtanR(0.0), Math::DegreesToRadians(0.0)));
+	REQUIRE(Math::IsNear(Math::AtanR(1.0), Math::DegreesToRadians(45.0)));
+	REQUIRE(Math::IsNear(Math::AtanR(-1.0), Math::DegreesToRadians(-45.0)));
+	REQUIRE(Math::IsNear(Math::AtanR(10.0), Math::DegreesToRadians(84.289406)));
+}
+
+TEST_CASE("Math::Atan2R", "[math_atan2_r]")
+{
+	REQUIRE(Math::IsNear(Math::Atan2R(0.0, 0.0), Math::DegreesToRadians(0.0)));
+	REQUIRE(Math::IsNear(Math::Atan2R(1.0, 1.0), Math::DegreesToRadians(45.0)));
+	REQUIRE(Math::IsNear(Math::Atan2R(-1.0, -1.0), Math::DegreesToRadians(-135.0)));
+	REQUIRE(Math::IsNear(Math::Atan2R(1.0, 0.0), Math::DegreesToRadians(90.0)));
+	REQUIRE(Math::IsNear(Math::Atan2R(0.0, 1.0), Math::DegreesToRadians(0.0)));
+}
+
 TEST_CASE("Math::Asin", "[math_asin]")
 {
 	REQUIRE(Math::IsNear(Math::Asin(0.0), 0.0));

@@ -151,27 +151,51 @@ namespace Gadget::Math
 	}
 
 	template <FloatLike T>
+	static inline T AsinR(T sin)
+	{
+		return std::asin(sin); // TODO - constexpr in C++26
+	}
+
+	template <FloatLike T>
+	static inline T AcosR(T cos)
+	{
+		return std::acos(cos); // TODO - constexpr in C++26
+	}
+
+	template <FloatLike T>
+	static inline T AtanR(T tan)
+	{
+		return std::atan(tan); // TODO - constexpr in C++26
+	}
+
+	template <FloatLike T>
+	static inline T Atan2R(T y, T x)
+	{
+		return std::atan2(y, x); // TODO - constexpr in C++26
+	}
+
+	template <FloatLike T>
 	static inline T Asin(T sin)
 	{
-		return RadiansToDegrees(std::asin(sin)); // TODO - constexpr in C++26
+		return RadiansToDegrees(AsinR(sin));
 	}
 
 	template <FloatLike T>
 	static inline T Acos(T cos)
 	{
-		return RadiansToDegrees(std::acos(cos)); // TODO - constexpr in C++26
+		return RadiansToDegrees(AcosR(cos));
 	}
 
 	template <FloatLike T>
 	static inline T Atan(T tan)
 	{
-		return RadiansToDegrees(std::atan(tan)); // TODO - constexpr in C++26
+		return RadiansToDegrees(AtanR(tan));
 	}
 
 	template <FloatLike T>
 	static inline T Atan2(T y, T x)
 	{
-		return RadiansToDegrees(std::atan2(y, x)); // TODO - constexpr in C++26
+		return RadiansToDegrees(Atan2R(y, x));
 	}
 
 	static inline bool IsPrime(uint64_t num)
