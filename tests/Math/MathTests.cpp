@@ -5,6 +5,33 @@
 using namespace Gadget;
 using Catch::Approx;
 
+TEST_CASE("Math::ToEuler(Quaternion)", "[math_to_euler_quaternion]")
+{
+	auto q = Quaternion::Identity();
+	auto e = Math::ToEuler(q);
+	REQUIRE(e.x == 0.0);
+	REQUIRE(e.y == 0.0);
+	REQUIRE(e.z == 0.0);
+
+	q = Quaternion(Math::CosR(Math::Pi / 4.0), 0.0, Math::SinR(Math::Pi / 4.0), 0.0);
+	e = Math::ToEuler(q);
+	REQUIRE(e.x == Approx(0.0));
+	REQUIRE(e.y == Approx(90.0));
+	REQUIRE(e.z == Approx(0.0));
+
+	q = Quaternion(Math::CosR(Math::Pi / 4.0), Math::SinR(Math::Pi / 4.0), 0.0, 0.0);
+	e = Math::ToEuler(q);
+	REQUIRE(e.x == Approx(90.0));
+	REQUIRE(e.y == Approx(0.0));
+	REQUIRE(e.z == Approx(0.0));
+
+	q = Quaternion(Math::CosR(Math::Pi / 4.0), 0.0, 0.0, Math::SinR(Math::Pi / 4.0));
+	e = Math::ToEuler(q);
+	REQUIRE(e.x == Approx(0.0));
+	REQUIRE(e.y == Approx(0.0));
+	REQUIRE(e.z == Approx(90.0));
+}
+
 TEST_CASE("Math::ToQuaternion(Euler)", "[math_to_quaternion_euler]")
 {
 	auto e = Euler();

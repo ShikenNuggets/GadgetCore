@@ -9,6 +9,46 @@
 namespace Gadget::Math
 {
 	template <FloatLike T>
+	inline constexpr TEuler<T> ToEuler(const TQuat<T>& quat) noexcept
+	{
+		T heading = 0.0;
+		T attitude = 0.0;
+		T bank = 0.0;
+
+		const auto sqw = quat.w * quat.w;
+		const auto sqx = quat.x * quat.x;
+		const auto sqy = quat.y * quat.y;
+		const auto sqz = quat.z * quat.z;
+		const auto unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
+		const auto test = (quat.x * quat.y) + (quat.z * quat.w);
+
+		if (test > 0.499 * unit)
+		{
+			// singularity at north pole
+			heading = 2.0 * Math::Atan2R(quat.x, quat.w);
+			attitude = Math::TPi<T> / 2.0;
+			bank = 0.0f;
+			return TEuler<T>(Math::RadiansToDegrees(bank), Math::RadiansToDegrees(heading), Math::RadiansToDegrees(attitude));
+		}
+		else if (test < -0.499 * unit)
+		{
+			// singularity at south pole
+			heading = -2.0 * Math::Atan2R(quat.x, quat.w);
+			attitude = -Math::TPi<T> / 2.0;
+			bank = 0.0;
+			return TEuler<T>(Math::RadiansToDegrees(bank), Math::RadiansToDegrees(heading), Math::RadiansToDegrees(attitude));
+		}
+		else
+		{
+			heading = Math::Atan2R(2.0 * quat.y * quat.w - 2.0 * quat.x * quat.z, sqx - sqy - sqz + sqw);
+			attitude = Math::AsinR(2.0 * test / unit);
+			bank = Math::Atan2R(2.0 * quat.x * quat.w - 2.0 * quat.y * quat.z, -sqx + sqy - sqz + sqw);
+		}
+		
+		return TEuler<T>(Math::RadiansToDegrees(bank), Math::RadiansToDegrees(heading), Math::RadiansToDegrees(attitude));
+	}
+
+	template <FloatLike T>
 	inline constexpr TQuat<T> ToQuaternion(const TEuler<T>& euler) noexcept
 	{
 		const auto bank = DegreesToRadians(euler.x);
