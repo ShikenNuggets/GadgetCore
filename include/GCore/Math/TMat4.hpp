@@ -123,16 +123,16 @@ namespace Gadget
 			);
 		}
 
-		static inline constexpr TMat4 Orthographic(T left, T right, T bottom, T top, T near = -1.0, T far = 1.0)
+		static inline constexpr TMat4 Orthographic(T left, T right, T bottom, T top, T nearPlane = -1.0, T farPlane = 1.0)
 		{
 			auto ortho = TMat4();
 
 			ortho[0] = 2.0 / (right - left);
 			ortho[5] = 2.0 / (top - bottom);
-			ortho[10] = -2.0 / (far - near);
+			ortho[10] = -2.0 / (farPlane - nearPlane);
 			ortho[12] = -(right + left) / (right - left);
 			ortho[13] = -(top + bottom) / (top - bottom);
-			ortho[14] = -(far + near) / (far - near);
+			ortho[14] = -(farPlane + nearPlane) / (farPlane - nearPlane);
 			ortho[15] = 1.0;
 
 			return ortho;
