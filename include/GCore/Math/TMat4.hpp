@@ -123,6 +123,31 @@ namespace Gadget
 			);
 		}
 
+		static inline constexpr TMat4 Orthographic(T left, T right, T bottom, T top, T near = -1.0, T far = 1.0)
+		{
+			auto ortho = TMat4();
+
+			ortho[0] = 2.0 / (right - left);
+			ortho[5] = 2.0 / (top - bottom);
+			ortho[10] = -2.0 / (far - near);
+			ortho[12] = -(right + left) / (right - left);
+			ortho[13] = -(top + bottom) / (top - bottom);
+			ortho[14] = -(far + near) / (far - near);
+			ortho[15] = 1.0;
+
+			return ortho;
+		}
+
+		static inline constexpr TMat4 Perspective(T fov, T aspect, T nearPlane, T farPlane)
+		{
+			const auto cot = 1.0 / Math::Tan(fov * 0.5);
+			return TMat4(cot / aspect, 0.0, 0.0, 0.0,
+				0.0, cot, 0.0, 0.0,
+				0.0, 0.0, (nearPlane + farPlane) / (nearPlane - farPlane), -1.0,
+				0.0, 0.0, (2.0 * nearPlane * farPlane) / (nearPlane - farPlane), 0.0
+			);
+		}
+
 		inline constexpr bool IsValid() const
 		{
 			for (const auto& v : m)
