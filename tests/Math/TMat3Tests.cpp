@@ -142,6 +142,28 @@ TEST_CASE("TMat3::Identity", "[tmat3_identity]")
 	REQUIRE(identity[8] == 1.0);
 }
 
+TEST_CASE("TMat3::Transpose", "[tmat3_transpose]")
+{
+	const auto identity = TMat3<double>::Identity();
+	const auto transposeIdentity = identity.Transpose();
+	REQUIRE(transposeIdentity[0] == identity[0]);
+	REQUIRE(transposeIdentity[1] == identity[1]);
+	REQUIRE(transposeIdentity[2] == identity[2]);
+	REQUIRE(transposeIdentity[3] == identity[3]);
+
+	const auto mat = TMat3<double>(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+	const auto trMat = mat.Transpose();
+	REQUIRE(trMat[0] == mat[0]);
+	REQUIRE(trMat[1] == mat[3]);
+	REQUIRE(trMat[2] == mat[6]);
+	REQUIRE(trMat[3] == mat[1]);
+	REQUIRE(trMat[4] == mat[4]);
+	REQUIRE(trMat[5] == mat[7]);
+	REQUIRE(trMat[6] == mat[2]);
+	REQUIRE(trMat[7] == mat[5]);
+	REQUIRE(trMat[8] == mat[8]);
+}
+
 TEST_CASE("TMat3::Determinant", "[tmat3_determinant]")
 {
 	const auto identity = TMat3<double>::Identity();

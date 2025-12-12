@@ -165,6 +165,35 @@ TEST_CASE("TMat4::Identity", "[tmat4_identity]")
 	REQUIRE(identity[15] == 1.0);
 }
 
+TEST_CASE("TMat4::Transpose", "[tmat4_transpose]")
+{
+	const auto identity = TMat4<double>::Identity();
+	const auto transposeIdentity = identity.Transpose();
+	REQUIRE(transposeIdentity[0] == identity[0]);
+	REQUIRE(transposeIdentity[1] == identity[1]);
+	REQUIRE(transposeIdentity[2] == identity[2]);
+	REQUIRE(transposeIdentity[3] == identity[3]);
+
+	const auto mat = TMat4<double>(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0);
+	const auto trMat = mat.Transpose();
+	REQUIRE(trMat[0] == mat[0]);
+	REQUIRE(trMat[1] == mat[4]);
+	REQUIRE(trMat[2] == mat[8]);
+	REQUIRE(trMat[3] == mat[12]);
+	REQUIRE(trMat[4] == mat[1]);
+	REQUIRE(trMat[5] == mat[5]);
+	REQUIRE(trMat[6] == mat[9]);
+	REQUIRE(trMat[7] == mat[13]);
+	REQUIRE(trMat[8] == mat[2]);
+	REQUIRE(trMat[9] == mat[6]);
+	REQUIRE(trMat[10] == mat[10]);
+	REQUIRE(trMat[11] == mat[14]);
+	REQUIRE(trMat[12] == mat[3]);
+	REQUIRE(trMat[13] == mat[7]);
+	REQUIRE(trMat[14] == mat[11]);
+	REQUIRE(trMat[15] == mat[15]);
+}
+
 TEST_CASE("TMat4::Determinant", "[tmat4_determinant]")
 {
 	const auto identity = TMat4<double>::Identity();

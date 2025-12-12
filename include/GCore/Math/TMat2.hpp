@@ -59,6 +59,14 @@ namespace Gadget
 			);
 		}
 
+		inline constexpr TMat2 Transpose() const
+		{
+			return TMat2(
+				m[0], m[2],
+				m[1], m[3]
+			);
+		}
+
 		inline constexpr T Determinant() const noexcept
 		{
 			return (m[0] * m[3]) - (m[2] * m[1]);
