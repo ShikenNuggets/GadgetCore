@@ -71,6 +71,21 @@ TEST_CASE("Math::ToQuaternion(Euler)", "[math_to_quaternion_euler]")
 	REQUIRE(q.Magnitude() == Approx(1.0));
 }
 
+TEST_CASE("Math::ToMatrix3(TMat4)", "[math_to_matrix3_tmat4]")
+{
+	const auto mat4 = Matrix4(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0);
+	const auto mat3 = Math::ToMatrix3(mat4);
+	REQUIRE(mat3[0] == mat4[0]);
+	REQUIRE(mat3[1] == mat4[1]);
+	REQUIRE(mat3[2] == mat4[2]);
+	REQUIRE(mat3[3] == mat4[4]);
+	REQUIRE(mat3[4] == mat4[5]);
+	REQUIRE(mat3[5] == mat4[6]);
+	REQUIRE(mat3[6] == mat4[8]);
+	REQUIRE(mat3[7] == mat4[9]);
+	REQUIRE(mat3[8] == mat4[10]);
+}
+
 TEST_CASE("Math::ToMatrix4(TMat3)", "[math_to_matrix4_tmat3]")
 {
 	const auto mat3 = Matrix3(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);

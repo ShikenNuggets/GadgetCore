@@ -72,6 +72,16 @@ namespace Gadget::Math
 	}
 
 	template <FloatLike T>
+	inline constexpr TMat3<T> ToMatrix3(const TMat4<T>& inMat)
+	{
+		auto mat = TMat3<T>::Identity();
+		mat[0] = inMat[0];	mat[1] = inMat[1];	mat[2] = inMat[2];
+		mat[3] = inMat[4];	mat[4] = inMat[5];	mat[5] = inMat[6];
+		mat[6] = inMat[8];	mat[7] = inMat[9];	mat[8] = inMat[10];
+		return mat;
+	}
+
+	template <FloatLike T>
 	inline constexpr TMat4<T> ToMatrix4(const TMat3<T>& inMat)
 	{
 		auto mat = TMat4<T>::Identity();
