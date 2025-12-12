@@ -72,6 +72,16 @@ namespace Gadget::Math
 	}
 
 	template <FloatLike T>
+	inline constexpr TMat4<T> ToMatrix4(const TMat3<T>& inMat)
+	{
+		auto mat = TMat4<T>::Identity();
+		mat[0] = inMat[0];	mat[4] = inMat[3];	mat[8] = inMat[6];
+		mat[1] = inMat[1];	mat[5] = inMat[4];	mat[9] = inMat[7];
+		mat[2] = inMat[2];	mat[6] = inMat[5];	mat[10] = inMat[8];
+		return mat;
+	}
+
+	template <FloatLike T>
 	inline constexpr TMat4<T> ToMatrix4(const TQuat<T>& quat)
 	{
 		const auto q = quat.Normal();

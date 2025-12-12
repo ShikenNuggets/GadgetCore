@@ -71,6 +71,28 @@ TEST_CASE("Math::ToQuaternion(Euler)", "[math_to_quaternion_euler]")
 	REQUIRE(q.Magnitude() == Approx(1.0));
 }
 
+TEST_CASE("Math::ToMatrix4(TMat3)", "[math_to_matrix4_tmat3]")
+{
+	const auto mat3 = Matrix3(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+	const auto mat4 = Math::ToMatrix4(mat3);
+	REQUIRE(mat4[0] == mat3[0]);
+	REQUIRE(mat4[1] == mat3[1]);
+	REQUIRE(mat4[2] == mat3[2]);
+	REQUIRE(mat4[3] == 0.0);
+	REQUIRE(mat4[4] == mat3[3]);
+	REQUIRE(mat4[5] == mat3[4]);
+	REQUIRE(mat4[6] == mat3[5]);
+	REQUIRE(mat4[7] == 0.0);
+	REQUIRE(mat4[8] == mat3[6]);
+	REQUIRE(mat4[9] == mat3[7]);
+	REQUIRE(mat4[10] == mat3[8]);
+	REQUIRE(mat4[11] == 0.0);
+	REQUIRE(mat4[12] == 0.0);
+	REQUIRE(mat4[13] == 0.0);
+	REQUIRE(mat4[14] == 0.0);
+	REQUIRE(mat4[15] == 1.0);
+}
+
 TEST_CASE("Math::ToMatrix4(TQuat)", "[math_to_matrix4_quat]")
 {
 	const auto qIdentity = Quaternion::Identity();
