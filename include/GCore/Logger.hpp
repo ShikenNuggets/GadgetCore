@@ -46,6 +46,7 @@ namespace Gadget::Logger
 				return "INFO";
 			case Severity::Verbose:
 				return "VERBOSE";
+			default:
 				break;
 		}
 

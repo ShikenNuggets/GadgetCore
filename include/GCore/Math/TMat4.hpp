@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <array>
 #include <cstdint>
 
@@ -160,15 +161,7 @@ namespace Gadget
 
 		inline constexpr bool IsValid() const
 		{
-			for (const auto& v : m)
-			{
-				if (!Math::IsValidNumber(v))
-				{
-					return false;
-				}
-			}
-
-			return true;
+			return std::ranges::all_of(m, [](const auto& v){ return Math::IsValidNumber(v); });
 		}
 
 	private:

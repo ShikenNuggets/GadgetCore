@@ -106,7 +106,8 @@ namespace Gadget::Math
 		{
 			return min;
 		}
-		else if (value > max)
+		
+		if (value > max)
 		{
 			return max;
 		}

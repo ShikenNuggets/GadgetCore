@@ -30,7 +30,7 @@ namespace Gadget
 		void HandleEvents();
 
 	private:
-		SDL_Window* windowPtr;
+		SDL_Window* windowPtr = nullptr;
 		ScreenCoordinate size;
 		ScreenCoordinate position;
 		RenderAPI renderAPI;

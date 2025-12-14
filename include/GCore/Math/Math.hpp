@@ -28,7 +28,6 @@ namespace Gadget::Math
 			heading = 2.0 * Math::Atan2R(quat.x, quat.w);
 			attitude = Math::TPi<T> / 2.0;
 			bank = 0.0f;
-			return TEuler<T>(Math::RadiansToDegrees(bank), Math::RadiansToDegrees(heading), Math::RadiansToDegrees(attitude));
 		}
 		else if (test < -0.499 * unit)
 		{
@@ -36,7 +35,6 @@ namespace Gadget::Math
 			heading = -2.0 * Math::Atan2R(quat.x, quat.w);
 			attitude = -Math::TPi<T> / 2.0;
 			bank = 0.0;
-			return TEuler<T>(Math::RadiansToDegrees(bank), Math::RadiansToDegrees(heading), Math::RadiansToDegrees(attitude));
 		}
 		else
 		{
@@ -128,11 +126,11 @@ namespace Gadget::Math
 	template <FloatLike T>
 	inline constexpr TMat4<T> Rotate(T angle, const TVec3<T>& vec)
 	{
-		TVec3<T> rotAxis = vec.Normal();
-		const float radAngle = Math::DegreesToRadians(angle);
-		const float cosAngle = Math::CosR(radAngle);
-		const float sinAngle = Math::SinR(radAngle);
-		const float cosM = (1.0 - cosAngle);
+		const TVec3<T> rotAxis = vec.Normal();
+		const auto radAngle = Math::DegreesToRadians(angle);
+		const auto cosAngle = Math::CosR(radAngle);
+		const auto sinAngle = Math::SinR(radAngle);
+		const auto cosM = (1.0 - cosAngle);
 
 		TMat4<T> m;
 		m[0] = (rotAxis.x * rotAxis.x * cosM) + cosAngle;
