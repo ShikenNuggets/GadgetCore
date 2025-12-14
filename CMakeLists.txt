@@ -7,6 +7,7 @@ project ("GadgetCore" LANGUAGES CXX)
 # --------------------------------------- #
 include(FetchContent)
 
+set(BUILD_SHARED_LIBS OFF)
 FetchContent_Declare(
 	catch2
 	GIT_REPOSITORY https://github.com/catchorg/Catch2.git
