@@ -50,7 +50,11 @@ find_program(CLANG_TIDY_EXE NAMES clang-tidy)
 
 if (CLANG_TIDY_EXE)
 	message(STATUS "clang-tidy checks enabled")
-	set(CMAKE_CXX_CLANG_TIDY clang-tidy "-extra-arg=${EXCEPTION_FLAG}")
+	set(CMAKE_CXX_CLANG_TIDY
+		clang-tidy
+		"-extra-arg=${EXCEPTION_FLAG}"
+		"--header-filter=.*[/\\]include[/\\]GCore[/\\]"
+	)
 else()
 	message(STATUS "clang-tidy not found, will not run checks")
 endif()
