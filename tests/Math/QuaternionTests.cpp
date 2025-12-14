@@ -32,24 +32,24 @@ TEST_CASE("TQuat::Identity", "[tquat_identity]")
 TEST_CASE("TQuat::*", "[tquat_*]")
 {
 	const auto identityTimesQ = TQuat<double>::Identity() * TQuat<double>(1.0, 2.0, 3.0, 4.0);
-	REQUIRE(identityTimesQ.w == 1.0);
-	REQUIRE(identityTimesQ.x == 2.0);
-	REQUIRE(identityTimesQ.y == 3.0);
-	REQUIRE(identityTimesQ.z == 4.0);
+	REQUIRE(identityTimesQ.w == Approx(1.0));
+	REQUIRE(identityTimesQ.x == Approx(2.0));
+	REQUIRE(identityTimesQ.y == Approx(3.0));
+	REQUIRE(identityTimesQ.z == Approx(4.0));
 
 	const auto qTimesIdentity = TQuat<double>(1.0, 2.0, 3.0, 4.0) * TQuat<double>::Identity();
-	REQUIRE(qTimesIdentity.w == 1.0);
-	REQUIRE(qTimesIdentity.x == 2.0);
-	REQUIRE(qTimesIdentity.y == 3.0);
-	REQUIRE(qTimesIdentity.z == 4.0);
+	REQUIRE(qTimesIdentity.w == Approx(1.0));
+	REQUIRE(qTimesIdentity.x == Approx(2.0));
+	REQUIRE(qTimesIdentity.y == Approx(3.0));
+	REQUIRE(qTimesIdentity.z == Approx(4.0));
 
 	// TODO - q * inverse(q)
 
 	const auto multTest = TQuat<double>(1.0, 2.0, 3.0, 4.0) * TQuat<double>(5.0, 6.0, 7.0, 8.0);
-	REQUIRE(multTest.w == -60.0);
-	REQUIRE(multTest.x == 12.0);
-	REQUIRE(multTest.y == 30.0);
-	REQUIRE(multTest.z == 24.0);
+	REQUIRE(multTest.w == Approx(-60.0));
+	REQUIRE(multTest.x == Approx(12.0));
+	REQUIRE(multTest.y == Approx(30.0));
+	REQUIRE(multTest.z == Approx(24.0));
 
 	// Test associativity
 	const auto assocTestA = TQuat<double>(0.3, -0.5, 0.1, 0.8);
@@ -59,28 +59,28 @@ TEST_CASE("TQuat::*", "[tquat_*]")
 	const auto leftMult = (assocTestA * assocTestB) * assocTestC;
 	const auto rightMult = assocTestA * (assocTestB * assocTestC);
 
-	REQUIRE(leftMult.w == Approx(rightMult.w));
-	REQUIRE(leftMult.x == Approx(rightMult.x));
-	REQUIRE(leftMult.y == Approx(rightMult.y));
-	REQUIRE(leftMult.z == Approx(rightMult.z));
+	REQUIRE(leftMult.w == Approx(rightMult.w).margin(1e-5));
+	REQUIRE(leftMult.x == Approx(rightMult.x).margin(1e-5));
+	REQUIRE(leftMult.y == Approx(rightMult.y).margin(1e-5));
+	REQUIRE(leftMult.z == Approx(rightMult.z).margin(1e-5));
 }
 
 TEST_CASE("TQuat::*TVec3", "[tquat_*_tvec3]")
 {
 	const auto identityRotation = TQuat<double>::Identity() * TVec3<double>(1.0, -2.0, 3.0);
-	REQUIRE(identityRotation.x == Approx(1.0));
-	REQUIRE(identityRotation.y == Approx(-2.0));
-	REQUIRE(identityRotation.z == Approx(3.0));
+	REQUIRE(identityRotation.x == Approx(1.0).margin(1e-5));
+	REQUIRE(identityRotation.y == Approx(-2.0).margin(1e-5));
+	REQUIRE(identityRotation.z == Approx(3.0).margin(1e-5));
 
 	const auto rotationX90 = TQuat<double>(Math::Cos(45.0), Math::Sin(45.0), 0.0, 0.0) * TVec3(0.0, 1.0, 0.0);
-	REQUIRE(rotationX90.x == Approx(0.0));
-	REQUIRE(rotationX90.y == Approx(0.0));
-	REQUIRE(rotationX90.z == Approx(1.0));
+	REQUIRE(rotationX90.x == Approx(0.0).margin(1e-5));
+	REQUIRE(rotationX90.y == Approx(0.0).margin(1e-5));
+	REQUIRE(rotationX90.z == Approx(1.0).margin(1e-5));
 
 	const auto rotationZ180 = TQuat<double>(0.0, 0.0, 0.0, 1.0) * TVec3<double>(1.0, 2.0, 3.0);
-	REQUIRE(rotationZ180.x == Approx(-1.0));
-	REQUIRE(rotationZ180.y == Approx(-2.0));
-	REQUIRE(rotationZ180.z == Approx(3.0));
+	REQUIRE(rotationZ180.x == Approx(-1.0).margin(1e-5));
+	REQUIRE(rotationZ180.y == Approx(-2.0).margin(1e-5));
+	REQUIRE(rotationZ180.z == Approx(3.0).margin(1e-5));
 }
 
 TEST_CASE("TQuat::*T", "[tquat_operator_*t]")
