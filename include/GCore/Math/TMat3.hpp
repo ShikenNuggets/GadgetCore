@@ -35,17 +35,17 @@ namespace Gadget
 			m[8] = c3;
 		}
 
-		inline constexpr T operator [](size_t i) const
+		[[nodiscard]] inline constexpr T operator [](size_t i) const
 		{
 			return m.at(i);
 		}
 
-		inline constexpr T& operator[](size_t i)
+		[[nodiscard]] inline constexpr T& operator[](size_t i)
 		{
 			return m.at(i);
 		}
 
-		inline constexpr TMat3 operator*(const TMat3& m_) const
+		[[nodiscard]] inline constexpr TMat3 operator*(const TMat3& m_) const
 		{
 			return TMat3(
 				//COLUMN 1
@@ -65,7 +65,7 @@ namespace Gadget
 
 		inline constexpr void operator*=(const TMat3& m_){ *this = *this * m_; }
 
-		static inline constexpr TMat3 Identity()
+		[[nodiscard]] static inline constexpr TMat3 Identity()
 		{
 			return TMat3(1.0, 0.0, 0.0,
 				0.0, 1.0, 0.0,
@@ -73,7 +73,7 @@ namespace Gadget
 			);
 		}
 
-		inline constexpr TMat3 Transpose() const
+		[[nodiscard]] inline constexpr TMat3 Transpose() const
 		{
 			return TMat3(
 				m[0], m[3], m[6],
@@ -82,14 +82,14 @@ namespace Gadget
 			);
 		}
 
-		inline constexpr T Determinant() const noexcept
+		[[nodiscard]] inline constexpr T Determinant() const noexcept
 		{
 			return m[0] * (m[4] * m[8] - m[7] * m[5]) -
 				m[1] * (m[3] * m[8] - m[5] * m[6]) +
 				m[2] * (m[3] * m[7] - m[4] * m[6]);
 		}
 
-		inline constexpr TMat3 Inverse() const noexcept
+		[[nodiscard]] inline constexpr TMat3 Inverse() const noexcept
 		{
 			const auto invDet = Math::SafeDivide(1.0, Determinant());
 			return TMat3(
@@ -105,7 +105,7 @@ namespace Gadget
 			);
 		}
 
-		inline constexpr bool IsValid() const
+		[[nodiscard]] inline constexpr bool IsValid() const
 		{
 			return std::ranges::all_of(m, [](const auto& v){ return Math::IsValidNumber(v); });
 		}

@@ -45,17 +45,17 @@ namespace Gadget
 			m[15] = d4;
 		}
 
-		inline constexpr T operator [](size_t i) const
+		[[nodiscard]] inline constexpr T operator [](size_t i) const
 		{
 			return m.at(i);
 		}
 
-		inline constexpr T& operator[](size_t i)
+		[[nodiscard]] inline constexpr T& operator[](size_t i)
 		{
 			return m.at(i);
 		}
 
-		TMat4 operator*(const TMat4& m_) const
+		[[nodiscard]] TMat4 operator*(const TMat4& m_) const
 		{
 			return TMat4(
 				//COLUMN 1
@@ -83,7 +83,7 @@ namespace Gadget
 
 		inline constexpr void operator*=(const TMat4& m_){ *this = *this * m_; }
 
-		static inline constexpr TMat4 Identity()
+		[[nodiscard]] static inline constexpr TMat4 Identity()
 		{
 			return TMat4(1.0, 0.0, 0.0, 0.0,
 				0.0, 1.0, 0.0, 0.0,
@@ -92,7 +92,7 @@ namespace Gadget
 			);
 		}
 
-		inline constexpr TMat4 Transpose() const
+		[[nodiscard]] inline constexpr TMat4 Transpose() const
 		{
 			return TMat4(
 				m[0], m[4], m[8], m[12],
@@ -102,7 +102,7 @@ namespace Gadget
 			);
 		}
 
-		inline constexpr T Determinant() const noexcept
+		[[nodiscard]] inline constexpr T Determinant() const noexcept
 		{
 			return
 				m[0] * (m[5] * m[10] * m[15] - m[5] * m[11] * m[14] - m[9] * m[6] * m[15] + m[9] * m[7] * m[14] + m[13] * m[6] * m[11] - m[13] * m[7] * m[10])
@@ -111,7 +111,7 @@ namespace Gadget
 				- m[12] * (m[1] * m[6] * m[11] - m[1] * m[10] * m[7] - m[5] * m[2] * m[11] + m[5] * m[8] * m[3] + m[9] * m[2] * m[7] - m[9] * m[8] * m[3]);
 		}
 
-		inline constexpr TMat4 Inverse() const noexcept
+		[[nodiscard]] inline constexpr TMat4 Inverse() const noexcept
 		{
 			const auto invDet = Math::SafeDivide(1.0, Determinant());
 			return TMat4<T>(
@@ -134,7 +134,7 @@ namespace Gadget
 			);
 		}
 
-		static inline constexpr TMat4 Orthographic(T left, T right, T bottom, T top, T nearPlane = -1.0, T farPlane = 1.0)
+		[[nodiscard]] static inline constexpr TMat4 Orthographic(T left, T right, T bottom, T top, T nearPlane = -1.0, T farPlane = 1.0)
 		{
 			auto ortho = TMat4();
 
@@ -149,7 +149,7 @@ namespace Gadget
 			return ortho;
 		}
 
-		static inline constexpr TMat4 Perspective(T fov, T aspect, T nearPlane, T farPlane)
+		[[nodiscard]] static inline constexpr TMat4 Perspective(T fov, T aspect, T nearPlane, T farPlane)
 		{
 			const auto cot = 1.0 / Math::Tan(fov * 0.5);
 			return TMat4(cot / aspect, 0.0, 0.0, 0.0,
@@ -159,7 +159,7 @@ namespace Gadget
 			);
 		}
 
-		inline constexpr bool IsValid() const
+		[[nodiscard]] inline constexpr bool IsValid() const
 		{
 			return std::ranges::all_of(m, [](const auto& v){ return Math::IsValidNumber(v); });
 		}

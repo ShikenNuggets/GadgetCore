@@ -9,7 +9,7 @@
 namespace Gadget::Math
 {
 	template <FloatLike T>
-	inline constexpr TEuler<T> ToEuler(const TQuat<T>& quat) noexcept
+	[[nodiscard]] inline constexpr TEuler<T> ToEuler(const TQuat<T>& quat) noexcept
 	{
 		T heading = 0.0;
 		T attitude = 0.0;
@@ -47,7 +47,7 @@ namespace Gadget::Math
 	}
 
 	template <FloatLike T>
-	inline constexpr TQuat<T> ToQuaternion(const TEuler<T>& euler) noexcept
+	[[nodiscard]] inline constexpr TQuat<T> ToQuaternion(const TEuler<T>& euler) noexcept
 	{
 		const auto bank = DegreesToRadians(euler.x);
 		const auto heading = DegreesToRadians(euler.y);
@@ -70,7 +70,7 @@ namespace Gadget::Math
 	}
 
 	template <FloatLike T>
-	inline constexpr TMat3<T> ToMatrix3(const TMat4<T>& inMat)
+	[[nodiscard]] inline constexpr TMat3<T> ToMatrix3(const TMat4<T>& inMat)
 	{
 		auto mat = TMat3<T>::Identity();
 		mat[0] = inMat[0];	mat[1] = inMat[1];	mat[2] = inMat[2];
@@ -80,7 +80,7 @@ namespace Gadget::Math
 	}
 
 	template <FloatLike T>
-	inline constexpr TMat4<T> ToMatrix4(const TMat3<T>& inMat)
+	[[nodiscard]] inline constexpr TMat4<T> ToMatrix4(const TMat3<T>& inMat)
 	{
 		auto mat = TMat4<T>::Identity();
 		mat[0] = inMat[0];	mat[4] = inMat[3];	mat[8] = inMat[6];
@@ -90,7 +90,7 @@ namespace Gadget::Math
 	}
 
 	template <FloatLike T>
-	inline constexpr TMat4<T> ToMatrix4(const TQuat<T>& quat)
+	[[nodiscard]] inline constexpr TMat4<T> ToMatrix4(const TQuat<T>& quat)
 	{
 		const auto q = quat.Normal();
 		const auto x2 = q.x * q.x;
@@ -113,7 +113,7 @@ namespace Gadget::Math
 	}
 
 	template <FloatLike T>
-	inline constexpr TMat4<T> Translate(const TVec3<T>& v)
+	[[nodiscard]] inline constexpr TMat4<T> Translate(const TVec3<T>& v)
 	{
 		return TMat4<T>(
 			1.0, 0.0, 0.0, 0.0,
@@ -124,7 +124,7 @@ namespace Gadget::Math
 	}
 
 	template <FloatLike T>
-	inline constexpr TMat4<T> Rotate(T angle, const TVec3<T>& vec)
+	[[nodiscard]] inline constexpr TMat4<T> Rotate(T angle, const TVec3<T>& vec)
 	{
 		const TVec3<T> rotAxis = vec.Normal();
 		const auto radAngle = Math::DegreesToRadians(angle);
@@ -153,7 +153,7 @@ namespace Gadget::Math
 	}
 
 	template <FloatLike T>
-	inline constexpr TMat4<T> Scale(const TVec3<T>& v)
+	[[nodiscard]] inline constexpr TMat4<T> Scale(const TVec3<T>& v)
 	{
 		return TMat4<T>(
 			v.x, 0.0, 0.0, 0.0,

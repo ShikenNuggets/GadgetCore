@@ -44,32 +44,32 @@ namespace Gadget::Math
 	static constexpr uint64_t LargestPrime = 18'446'744'073'709'551'557ULL; //Largest prime number that can be represented by a 64 bit integer
 
 	template <FloatLike T>
-	static inline constexpr bool IsValidNumber(T value)
+	[[nodiscard]] static inline constexpr bool IsValidNumber(T value)
 	{
 		return !std::isnan(value) && !std::isinf(value);
 	}
 
 	template <Numeric T>
-	static inline constexpr T DegreesToRadians(T angle){ return angle * (Pi / 180.0); }
+	[[nodiscard]] static inline constexpr T DegreesToRadians(T angle){ return angle * (Pi / 180.0); }
 
 	template <Numeric T>
-	static inline constexpr T RadiansToDegrees(T angle){ return angle * (180.0 / Pi); }
+	[[nodiscard]] static inline constexpr T RadiansToDegrees(T angle){ return angle * (180.0 / Pi); }
 
 	template <Numeric T>
-	static inline T Sqrt(T value)
+	[[nodiscard]] static inline T Sqrt(T value)
 	{
 		// TODO - constexpr in C++26
 		return std::sqrt(value);
 	}
 
 	template<FloatLike T>
-	static inline constexpr bool IsNearZero(T value_) noexcept{ return value_ <= TNearZero<T> && value_ >= -TNearZero<T>; }
+	[[nodiscard]] static inline constexpr bool IsNearZero(T value_) noexcept{ return value_ <= TNearZero<T> && value_ >= -TNearZero<T>; }
 
 	template <FloatLike T>
-	static inline constexpr bool IsNear(T a_, T b_) noexcept{ return IsNearZero(a_ - b_); }
+	[[nodiscard]] static inline constexpr bool IsNear(T a_, T b_) noexcept{ return IsNearZero(a_ - b_); }
 
 	template <FloatLike T>
-	static inline constexpr T SafeDivide(T a_, T b_) noexcept
+	[[nodiscard]] static inline constexpr T SafeDivide(T a_, T b_) noexcept
 	{
 		if (IsNearZero(b_))
 		{
@@ -80,7 +80,7 @@ namespace Gadget::Math
 	}
 
 	template <Numeric T>
-	static inline constexpr T Abs(T value) noexcept
+	[[nodiscard]] static inline constexpr T Abs(T value) noexcept
 	{
 		if (value < 0.0)
 		{
@@ -91,16 +91,16 @@ namespace Gadget::Math
 	}
 
 	template <FloatLike T>
-	static inline constexpr T Dot2D(T aa_, T ab_, T ba_, T bb_) noexcept{ return (aa_ * ba_) + (ab_ * bb_); }
+	[[nodiscard]] static inline constexpr T Dot2D(T aa_, T ab_, T ba_, T bb_) noexcept{ return (aa_ * ba_) + (ab_ * bb_); }
 
 	template <FloatLike T>
-	static inline constexpr T Dot3D(T aa_, T ab_, T ac_, T ba_, T bb_, T bc_) noexcept{ return (aa_ * ba_) + (ab_ * bb_) + (ac_ * bc_); }
+	[[nodiscard]] static inline constexpr T Dot3D(T aa_, T ab_, T ac_, T ba_, T bb_, T bc_) noexcept{ return (aa_ * ba_) + (ab_ * bb_) + (ac_ * bc_); }
 
 	template <FloatLike T>
-	static inline constexpr T Dot4D(T aa_, T ab_, T ac_, T ad_, T ba_, T bb_, T bc_, T bd_) noexcept{ return (aa_ * ba_) + (ab_ * bb_) + (ac_ * bc_) + (ad_ * bd_); }
+	[[nodiscard]] static inline constexpr T Dot4D(T aa_, T ab_, T ac_, T ad_, T ba_, T bb_, T bc_, T bd_) noexcept{ return (aa_ * ba_) + (ab_ * bb_) + (ac_ * bc_) + (ad_ * bd_); }
 
 	template <Numeric T>
-	static inline constexpr T Clamp(T min, T max, T value) noexcept
+	[[nodiscard]] static inline constexpr T Clamp(T min, T max, T value) noexcept
 	{
 		if (value < min)
 		{
@@ -116,90 +116,90 @@ namespace Gadget::Math
 	}
 
 	template <FloatLike T>
-	static inline T SinR(T radians)
+	[[nodiscard]] static inline T SinR(T radians)
 	{
 		return std::sin(radians); // TODO - constexpr in C++26
 	}
 
 	template <FloatLike T>
-	static inline T CosR(T radians)
+	[[nodiscard]] static inline T CosR(T radians)
 	{
 		return std::cos(radians); // TODO - constexpr in C++26
 	}
 
 	template <FloatLike T>
-	static inline T TanR(T radians)
+	[[nodiscard]] static inline T TanR(T radians)
 	{
 		return std::tan(radians); // TODO - constexpr in C++26
 	}
 
 	template <FloatLike T>
-	static inline T Sin(T degrees)
+	[[nodiscard]] static inline T Sin(T degrees)
 	{
 		return SinR(DegreesToRadians(degrees));
 	}
 
 	template <FloatLike T>
-	static inline T Cos(T degrees)
+	[[nodiscard]] static inline T Cos(T degrees)
 	{
 		return CosR(DegreesToRadians(degrees));
 	}
 
 	template <FloatLike T>
-	static inline T Tan(T degrees)
+	[[nodiscard]] static inline T Tan(T degrees)
 	{
 		return TanR(DegreesToRadians(degrees));
 	}
 
 	template <FloatLike T>
-	static inline T AsinR(T sin)
+	[[nodiscard]] static inline T AsinR(T sin)
 	{
 		return std::asin(sin); // TODO - constexpr in C++26
 	}
 
 	template <FloatLike T>
-	static inline T AcosR(T cos)
+	[[nodiscard]] static inline T AcosR(T cos)
 	{
 		return std::acos(cos); // TODO - constexpr in C++26
 	}
 
 	template <FloatLike T>
-	static inline T AtanR(T tan)
+	[[nodiscard]] static inline T AtanR(T tan)
 	{
 		return std::atan(tan); // TODO - constexpr in C++26
 	}
 
 	template <FloatLike T>
-	static inline T Atan2R(T y, T x)
+	[[nodiscard]] static inline T Atan2R(T y, T x)
 	{
 		return std::atan2(y, x); // TODO - constexpr in C++26
 	}
 
 	template <FloatLike T>
-	static inline T Asin(T sin)
+	[[nodiscard]] static inline T Asin(T sin)
 	{
 		return RadiansToDegrees(AsinR(sin));
 	}
 
 	template <FloatLike T>
-	static inline T Acos(T cos)
+	[[nodiscard]] static inline T Acos(T cos)
 	{
 		return RadiansToDegrees(AcosR(cos));
 	}
 
 	template <FloatLike T>
-	static inline T Atan(T tan)
+	[[nodiscard]] static inline T Atan(T tan)
 	{
 		return RadiansToDegrees(AtanR(tan));
 	}
 
 	template <FloatLike T>
-	static inline T Atan2(T y, T x)
+	[[nodiscard]] static inline T Atan2(T y, T x)
 	{
 		return RadiansToDegrees(Atan2R(y, x));
 	}
 
-	static inline bool IsPrime(uint64_t num)
+	[[nodiscard]] static inline bool IsPrime(uint64_t num)
 	{
 		if (num <= 1)
 		{
@@ -228,7 +228,8 @@ namespace Gadget::Math
 		return true;
 	}
 
-	static inline uint64_t NextPrime(uint64_t start){
+	[[nodiscard]] static inline uint64_t NextPrime(uint64_t start)
+	{
 		if (start >= LargestPrime)
 		{
 			return 0;
@@ -246,14 +247,14 @@ namespace Gadget::Math
 	}
 
 	template <FloatLike T>
-	static inline constexpr bool IsInteger(T value)
+	[[nodiscard]] static inline constexpr bool IsInteger(T value)
 	{
 		const auto floor = static_cast<int64_t>(std::floor(value));
 		return IsNear(static_cast<T>(floor), value);
 	}
 
 	template <FloatLike T>
-	static inline constexpr T RemapRange(T value, T oldMin, T oldMax, T newMin, T newMax)
+	[[nodiscard]] static inline constexpr T RemapRange(T value, T oldMin, T oldMax, T newMin, T newMax)
 	{
 		if (oldMin == oldMax || newMin == newMax)
 		{
@@ -266,5 +267,5 @@ namespace Gadget::Math
 	}
 
 	template <FloatLike T>
-	static inline constexpr T Lerp(T a, T b, T t) noexcept{ return a + (t * (b - a)); }
+	[[nodiscard]] static inline constexpr T Lerp(T a, T b, T t) noexcept{ return a + (t * (b - a)); }
 }
