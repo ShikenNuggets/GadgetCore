@@ -51,6 +51,7 @@
 						"installDir": "${sourceDir}/out/install/${presetName}",
 						"cacheVariables": {
 								"CMAKE_BUILD_TYPE": "Debug"
+								"SDL_UNIX_CONSOLE_BUILD": "ON"
 						},
 						"condition": {
 								"type": "equals",
