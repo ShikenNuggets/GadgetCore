@@ -7,6 +7,7 @@ Checks: '
   google-*,
     -google-build-using-namespace, # Using non-std namespace in headers is generally OK,
     -google-objc-*, # No Objective C here,
+    -google-readability-namespace-comments, # No thanks,
     -google-readability-todo, # Very internal Google specific,
     
   misc-*,
@@ -24,6 +25,8 @@ Checks: '
   readability-*,
     -readability-identifier-length, # Sometimes your variables SHOULD be short,
     -readability-function-cognitive-complexity, # Not a fan of this metric,
+    -readability-math-missing-parentheses, # There are times when this is unclear but this warning is too aggressive for general use,
+    -readability-redundant-inline-specifier, # Redundancy is OK,
     -readability-uppercase-literal-suffix, # Not sure why this check exists,
 '
 
@@ -50,6 +53,9 @@ CheckOptions:
    value: true
    
  - key: cppcoreguidelines-special-member-functions.AllowImplicitlyDeletedCopyOrMove
+   value: true
+
+ - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
    value: true
    
  - key: misc-unused-parameters.IgnoreVirtual
