@@ -65,6 +65,33 @@
 						}
 				},
 				{
+						"name": "linux-gcc-cov",
+						"displayName": "Linux GCC Test Coverage",
+						"generator": "Ninja",
+						"binaryDir": "${sourceDir}/out/build/${presetName}",
+						"installDir": "${sourceDir}/out/install/${presetName}",
+						"cacheVariables": {
+								"CMAKE_BUILD_TYPE": "Debug",
+								"SDL_UNIX_CONSOLE_BUILD": "ON",
+								"CMAKE_C_COMPILER": "gcc-14",
+								"CMAKE_CXX_COMPILER": "g++-14",
+								"CMAKE_C_FLAGS": "-Og -g -fprofile-arcs -ftest-coverage",
+								"CMAKE_CXX_FLAGS": "-Og -g -fprofile-arcs -ftest-coverage",
+								"CMAKE_CXX_SCAN_FOR_MODULES": "OFF",
+									"CMAKE_DEPENDENCY_SCAN_FORMAT": ""
+						},
+						"condition": {
+								"type": "equals",
+								"lhs": "${hostSystemName}",
+								"rhs": "Linux"
+						},
+						"vendor": {
+								"microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
+										"sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"
+								}
+						}
+				},
+				{
 						"name": "macos-debug",
 						"displayName": "macOS Debug",
 						"generator": "Ninja",
