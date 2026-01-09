@@ -1,9 +1,12 @@
 #pragma once
 
+#include <span>
+
 #include "CoreMath.hpp"
 #include "Euler.hpp"
 #include "Matrix.hpp"
 #include "Quaternion.hpp"
+#include "Rect.hpp"
 #include "Vector.hpp"
 
 namespace Gadget::Math
@@ -161,5 +164,17 @@ namespace Gadget::Math
 			0.0, 0.0, v.z, 0.0,
 			0.0, 0.0, 0.0, 1.0
 		);
+	}
+
+	template <FloatLike T>
+	[[nodiscard]] inline constexpr TRect<T> CalculateBounds(std::span<TVec2<T>> verts)
+	{
+		TRect<T> result;
+		for (const auto& v : verts)
+		{
+			result.AddBounds(v);
+		}
+
+		return result;
 	}
 }

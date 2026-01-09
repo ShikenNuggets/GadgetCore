@@ -266,3 +266,17 @@ TEST_CASE("Math::Scale", "[math_scale]")
 	REQUIRE(m[14] == identity[14]);
 	REQUIRE(m[15] == identity[15]);
 }
+
+TEST_CASE("Math::CalculateBounds", "[math_calculate_bounds]")
+{
+	std::vector<Vector2> vecs;
+	vecs.emplace_back(1.0, 2.0);
+	vecs.emplace_back(3.0, 4.0);
+	vecs.emplace_back(5.0, 6.0);
+
+	const auto bounds = Math::CalculateBounds<Math::GFloat>(vecs);
+	REQUIRE(bounds.min.x == 1.0);
+	REQUIRE(bounds.min.y == 2.0);
+	REQUIRE(bounds.max.x == 5.0);
+	REQUIRE(bounds.max.y == 6.0);
+}
