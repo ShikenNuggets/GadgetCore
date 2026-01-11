@@ -5,6 +5,8 @@
 #include <cstdint>
 
 #include "CoreMath.hpp"
+#include "TVec3.hpp"
+#include "TVec4.hpp"
 
 namespace Gadget
 {
@@ -78,6 +80,25 @@ namespace Gadget
 				Math::Dot4D(/*A*/ m[1], m[5], m[9], m[13], /*B*/ m_[12], m_[13], m_[14], m_[15]),
 				Math::Dot4D(/*A*/ m[2], m[6], m[10], m[14], /*B*/ m_[12], m_[13], m_[14], m_[15]),
 				Math::Dot4D(/*A*/ m[3], m[7], m[11], m[15], /*B*/ m_[12], m_[13], m_[14], m_[15])
+			);
+		}
+
+		[[nodiscard]] inline constexpr TVec3<T> operator*(const TVec3<T>& v) const
+		{
+			return TVec3<T>(
+				Math::Dot4D(/*A*/ m[0], m[4], m[8], m[12], /*B*/ v.x, v.y, v.z, 1.0),
+				Math::Dot4D(/*A*/ m[1], m[5], m[9], m[13], /*B*/ v.x, v.y, v.z, 1.0),
+				Math::Dot4D(/*A*/ m[2], m[6], m[10], m[14], /*B*/ v.x, v.y, v.z, 1.0)
+			);
+		}
+
+		[[nodiscard]] inline constexpr TVec4<T> operator*(const TVec4<T>& v) const
+		{
+			return TVec4<T>(
+				Math::Dot4D(/*A*/ m[0], m[4], m[8], m[12], /*B*/ v.x, v.y, v.z, v.w),
+				Math::Dot4D(/*A*/ m[1], m[5], m[9], m[13], /*B*/ v.x, v.y, v.z, v.w),
+				Math::Dot4D(/*A*/ m[2], m[6], m[10], m[14], /*B*/ v.x, v.y, v.z, v.w),
+				Math::Dot4D(/*A*/ m[3], m[7], m[11], m[15], /*B*/ v.x, v.y, v.z, v.w)
 			);
 		}
 

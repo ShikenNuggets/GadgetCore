@@ -1,5 +1,6 @@
 ﻿#include <catch2/catch_all.hpp>
 
+#include "GCore/Math/Math.hpp"
 #include "GCore/Math/TMat4.hpp"
 
 using namespace Gadget;
@@ -99,6 +100,49 @@ TEST_CASE("TMat4::operator*(TMat4)", "[tmat4_operator_*_tmat4]")
 	REQUIRE(resultD[13] == 60.0);
 	REQUIRE(resultD[14] == 70.0);
 	REQUIRE(resultD[15] == 80.0);
+}
+
+TEST_CASE("TMat4::operator*(TVec3)", "[tmat4_operator_*_tvec3]")
+{
+	const auto identity = TMat4<double>::Identity();
+	const auto testVec = TVec3<double>(1.0, 2.0, 3.0);
+	
+	const auto resultA = identity * testVec;
+	REQUIRE(resultA.x == Approx(testVec.x));
+	REQUIRE(resultA.y == Approx(testVec.y));
+	REQUIRE(resultA.z == Approx(testVec.z));
+
+	const auto translate = Math::Translate(TVec3<double>(10.0, 20.0, 30.0));
+	const auto resultB = translate * testVec;
+	REQUIRE(resultB.x == Approx(11.0));
+	REQUIRE(resultB.y == Approx(22.0));
+	REQUIRE(resultB.z == Approx(33.0));
+}
+
+TEST_CASE("TMat4::operator*(TVec4)", "[tmat4_operator_*_tvec4]")
+{
+	const auto identity = TMat4<double>::Identity();
+	const auto testVec = TVec4<double>(1.0, 2.0, 3.0, 1.0);
+
+	const auto resultA = identity * testVec;
+	REQUIRE(resultA.x == Approx(testVec.x));
+	REQUIRE(resultA.y == Approx(testVec.y));
+	REQUIRE(resultA.z == Approx(testVec.z));
+	REQUIRE(resultA.w == Approx(testVec.w));
+
+	const auto translate = Math::Translate(TVec3<double>(10.0, 20.0, 30.0));
+	const auto resultB = translate * testVec;
+	CHECK(resultB.x == Approx(11.0));
+	CHECK(resultB.y == Approx(22.0));
+	CHECK(resultB.z == Approx(33.0));
+	CHECK(resultB.w == Approx(1.0));
+
+	const auto directionVec = TVec4<double>(1.0, 2.0, 3.0, 0.0);
+	const auto resultC = translate * directionVec;
+	CHECK(resultC.x == Approx(1.0)); // No translation applied because w=0
+	CHECK(resultC.y == Approx(2.0));
+	CHECK(resultC.z == Approx(3.0));
+	CHECK(resultC.w == Approx(0.0));
 }
 
 TEST_CASE("TMat4::operator*=(TMat4)", "[tmat4_operator_*=_tmat4]")
