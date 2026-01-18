@@ -18,9 +18,11 @@ namespace Gadget
 			a(Math::Clamp(0.0f, 1.0f, a_))
 		{}
 
-		[[nodiscard]] inline constexpr Color operator*(Vector4 v) const noexcept{ return Color(r * v.x, g * v.y, b * v.z, a * v.w); }
+		[[nodiscard]] inline constexpr Color operator+(const Color& c) const noexcept{ return Color(r + c.r, g + c.g, b + c.b, a + c.a); }
+		[[nodiscard]] inline constexpr Color operator*(const Vector4& v) const noexcept{ return Color(r * v.x, g * v.y, b * v.z, a * v.w); }
 
-		inline constexpr void operator*=(Vector4 v) noexcept{ *this = *this * v; }
+		inline constexpr void operator+=(const Color& c) noexcept{ *this = *this + c; }
+		inline constexpr void operator*=(const Vector4& v) noexcept{ *this = *this * v; }
 
 		static inline constexpr float ToSRGBValue(float linearValue)
 		{

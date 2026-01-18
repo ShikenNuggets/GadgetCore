@@ -14,7 +14,16 @@ TEST_CASE("Color::Color", "[color_constructor]")
 	REQUIRE(color.a == 1.0f);
 }
 
-TEST_CASE("Color::operator*(Vector4)", "[color_operator_*(Vector4)]")
+TEST_CASE("Color::operator+(Color)", "[color_operator_+_color]")
+{
+	const auto color = Color(0.1, 0.2, 0.3, 1.0) + Color(0.2, 0.3, 0.4, 1.0);
+	REQUIRE(color.r == Approx(0.3));
+	REQUIRE(color.g == Approx(0.5));
+	REQUIRE(color.b == Approx(0.7));
+	// TODO - Adding alpha doesn't seem right...
+}
+
+TEST_CASE("Color::operator*(Vector4)", "[color_operator_*_vector4]")
 {
 	const auto color = Color(1.0, 0.5, 0.25, 0.6) * Vector4(0.5, 0.5, 0.5, 0.5);
 	REQUIRE(color.r == Approx(0.5));
@@ -23,7 +32,20 @@ TEST_CASE("Color::operator*(Vector4)", "[color_operator_*(Vector4)]")
 	REQUIRE(color.a == Approx(0.3));
 }
 
-TEST_CASE("Color::operator*=(Vector4)", "[color_operator_*=(Vector4)]")
+TEST_CASE("Color::operator+=(Color)", "[color_operator_+=_color_]")
+{
+	const auto baseCase = Color(0.1, 0.2, 0.3, 1.0) + Color(0.2, 0.3, 0.4, 1.0);
+	
+	auto color = Color(0.1, 0.2, 0.3, 1.0);
+	color += Color(0.2, 0.3, 0.4, 1.0);
+
+	REQUIRE(color.r == Approx(baseCase.r));
+	REQUIRE(color.g == Approx(baseCase.g));
+	REQUIRE(color.b == Approx(baseCase.b));
+	REQUIRE(color.a == Approx(baseCase.a));
+}
+
+TEST_CASE("Color::operator*=(Vector4)", "[color_operator_*=_vector4]")
 {
 	const auto baseCase = Color(1.0, 0.5, 0.25, 0.6) * Vector4(0.5, 0.5, 0.5, 0.5);;
 
