@@ -152,6 +152,22 @@ TEST_CASE("Math::ToMatrix4(TQuat)", "[math_to_matrix4_quat]")
 	}
 }
 
+TEST_CASE("Math::ToVector4(TVec3)", "[math_to_vector4_tvec3]")
+{
+	const auto vec = Vector3(1.0, 2.0, 3.0);
+	auto result = Gadget::Math::ToVector4(vec);
+	REQUIRE(result.x == vec.x);
+	REQUIRE(result.y == vec.y);
+	REQUIRE(result.z == vec.z);
+	REQUIRE(result.w == 1.0);
+
+	result = Gadget::Math::ToVector4(vec, 4.0);
+	REQUIRE(result.x == vec.x);
+	REQUIRE(result.y == vec.y);
+	REQUIRE(result.z == vec.z);
+	REQUIRE(result.w == 4.0);
+}
+
 TEST_CASE("Math::Translate", "[math_translate]")
 {
 	const auto identity = Matrix4::Identity();
