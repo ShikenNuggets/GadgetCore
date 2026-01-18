@@ -23,6 +23,15 @@ TEST_CASE("Color::operator+(Color)", "[color_operator_+_color]")
 	// TODO - Adding alpha doesn't seem right...
 }
 
+TEST_CASE("Color::operator*(float)", "[color_operator_*_float]")
+{
+	const auto color = Color(1.0, 0.5, 0.25, 0.6) * 0.5;
+	REQUIRE(color.r == Approx(0.5));
+	REQUIRE(color.g == Approx(0.25));
+	REQUIRE(color.b == Approx(0.125));
+	REQUIRE(color.a == Approx(0.3));
+}
+
 TEST_CASE("Color::operator*(Vector4)", "[color_operator_*_vector4]")
 {
 	const auto color = Color(1.0, 0.5, 0.25, 0.6) * Vector4(0.5, 0.5, 0.5, 0.5);

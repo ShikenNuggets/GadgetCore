@@ -19,9 +19,11 @@ namespace Gadget
 		{}
 
 		[[nodiscard]] inline constexpr Color operator+(const Color& c) const noexcept{ return Color(r + c.r, g + c.g, b + c.b, a + c.a); }
+		[[nodiscard]] inline constexpr Color operator*(float v) const noexcept{ return Color(r * v, g * v, b * v, a * v); }
 		[[nodiscard]] inline constexpr Color operator*(const Vector4& v) const noexcept{ return Color(r * v.x, g * v.y, b * v.z, a * v.w); }
 
 		inline constexpr void operator+=(const Color& c) noexcept{ *this = *this + c; }
+		inline constexpr void operator*=(float v) noexcept{ *this = *this * v; }
 		inline constexpr void operator*=(const Vector4& v) noexcept{ *this = *this * v; }
 
 		static inline constexpr float ToSRGBValue(float linearValue)
