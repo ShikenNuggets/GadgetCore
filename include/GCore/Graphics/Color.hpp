@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include "GCore/Math/CoreMath.hpp"
+#include "GCore/Math/Vector.hpp"
 
 namespace Gadget
 {
@@ -16,6 +17,10 @@ namespace Gadget
 			b(Math::Clamp(0.0f, 1.0f, b_)),
 			a(Math::Clamp(0.0f, 1.0f, a_))
 		{}
+
+		[[nodiscard]] inline constexpr Color operator*(Vector4 v) const noexcept{ return Color(r * v.x, g * v.y, b * v.z, a * v.w); }
+
+		inline constexpr void operator*=(Vector4 v) noexcept{ *this = *this * v; }
 
 		static inline constexpr float ToSRGBValue(float linearValue)
 		{

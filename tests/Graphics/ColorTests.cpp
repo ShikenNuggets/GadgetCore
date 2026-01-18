@@ -14,6 +14,28 @@ TEST_CASE("Color::Color", "[color_constructor]")
 	REQUIRE(color.a == 1.0f);
 }
 
+TEST_CASE("Color::operator*(Vector4)", "[color_operator_*(Vector4)]")
+{
+	const auto color = Color(1.0, 0.5, 0.25, 0.6) * Vector4(0.5, 0.5, 0.5, 0.5);
+	REQUIRE(color.r == Approx(0.5));
+	REQUIRE(color.g == Approx(0.25));
+	REQUIRE(color.b == Approx(0.125));
+	REQUIRE(color.a == Approx(0.3));
+}
+
+TEST_CASE("Color::operator*=(Vector4)", "[color_operator_*=(Vector4)]")
+{
+	const auto baseCase = Color(1.0, 0.5, 0.25, 0.6) * Vector4(0.5, 0.5, 0.5, 0.5);;
+
+	auto color = Color(1.0, 0.5, 0.25, 0.6);
+	color *= Vector4(0.5, 0.5, 0.5, 0.5);
+
+	REQUIRE(color.r == Approx(baseCase.r));
+	REQUIRE(color.g == Approx(baseCase.g));
+	REQUIRE(color.b == Approx(baseCase.b));
+	REQUIRE(color.a == Approx(baseCase.a));
+}
+
 TEST_CASE("Color::ToLinear", "[color_to_linear]")
 {
 	const auto color = Color(0.3f, 0.6f, 0.9f, 1.0f);
