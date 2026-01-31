@@ -26,6 +26,8 @@ namespace Gadget
 		inline constexpr void operator*=(float v) noexcept{ *this = *this * v; }
 		inline constexpr void operator*=(const Vector4& v) noexcept{ *this = *this * v; }
 
+		[[nodiscard]] friend inline constexpr Color operator*(float s, const Color& c){ return c * s; }
+
 		static inline constexpr float ToSRGBValue(float linearValue)
 		{
 			if(linearValue < 0.00313066844250063f)

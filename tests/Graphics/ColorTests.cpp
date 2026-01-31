@@ -30,6 +30,12 @@ TEST_CASE("Color::operator*(float)", "[color_operator_*_float]")
 	REQUIRE(color.g == Approx(0.25));
 	REQUIRE(color.b == Approx(0.125));
 	REQUIRE(color.a == Approx(0.3));
+
+	const auto color2 = 0.5 * Color(1.0, 0.5, 0.25, 0.6);
+	REQUIRE(color2.r == Approx(color.r));
+	REQUIRE(color2.g == Approx(color.g));
+	REQUIRE(color2.b == Approx(color.b));
+	REQUIRE(color2.a == Approx(color.a));
 }
 
 TEST_CASE("Color::operator*(Vector4)", "[color_operator_*_vector4]")
