@@ -18,9 +18,9 @@ namespace Gadget
 			a(Math::Clamp(0.0f, 1.0f, a_))
 		{}
 
-		[[nodiscard]] inline constexpr Color operator+(const Color& c) const noexcept{ return Color(r + c.r, g + c.g, b + c.b, a + c.a); }
-		[[nodiscard]] inline constexpr Color operator*(float v) const noexcept{ return Color(r * v, g * v, b * v, a * v); }
-		[[nodiscard]] inline constexpr Color operator*(const Vector4& v) const noexcept{ return Color(r * v.x, g * v.y, b * v.z, a * v.w); }
+		[[nodiscard]] inline constexpr auto operator+(const Color& c) const noexcept{ return Color(r + c.r, g + c.g, b + c.b, a + c.a); }
+		[[nodiscard]] inline constexpr auto operator*(float v) const noexcept{ return Color(r * v, g * v, b * v, a * v); }
+		[[nodiscard]] inline constexpr auto operator*(const Vector4& v) const noexcept{ return Color(r * static_cast<float>(v.x), g * static_cast<float>(v.y), b * static_cast<float>(v.z), a * static_cast<float>(v.w)); }
 
 		inline constexpr void operator+=(const Color& c) noexcept{ *this = *this + c; }
 		inline constexpr void operator*=(float v) noexcept{ *this = *this * v; }
@@ -28,9 +28,9 @@ namespace Gadget
 
 		[[nodiscard]] friend inline constexpr Color operator*(float s, const Color& c){ return c * s; }
 
-		static inline constexpr float ToSRGBValue(float linearValue)
+		[[nodiscard]] static inline constexpr float ToSRGBValue(float linearValue)
 		{
-			if(linearValue < 0.00313066844250063f)
+			if (linearValue < 0.00313066844250063f)
 			{
 				return linearValue * 12.92f;
 			}
@@ -38,22 +38,22 @@ namespace Gadget
 			return 1.055f * (std::pow(linearValue, 1.0f / 2.4f)) - 0.055f;
 		}
 
-		static inline constexpr float ToLinearValue(float srgbValue)
+		[[nodiscard]] static inline constexpr float ToLinearValue(float srgbValue)
 		{
-			if(srgbValue < 0.0404482362771082f)
+			if (srgbValue < 0.0404482362771082f)
 			{
 				return srgbValue / 12.92f;
 			}
 
-			return std::pow(((srgbValue + 0.055f) / 1.055f), 2.4);
+			return std::pow(((srgbValue + 0.055f) / 1.055f), 2.4f);
 		}
 
-		inline constexpr Color ToSRGB() const
+		[[nodiscard]] inline constexpr auto ToSRGB() const
 		{
 			return Color(ToSRGBValue(r), ToSRGBValue(g), ToSRGBValue(b), a);
 		}
 
-		inline constexpr Color ToLinear() const
+		[[nodiscard]] inline constexpr auto ToLinear() const
 		{
 			return Color(ToLinearValue(r), ToLinearValue(g), ToLinearValue(b), a);
 		}
