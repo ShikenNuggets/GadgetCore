@@ -3,6 +3,7 @@
 #include "GCore/Math/TVec2.hpp"
 
 using namespace Gadget;
+using Catch::Approx;
 
 TEST_CASE("TVec2::TVec2", "[tvec2_constructor]")
 {
@@ -143,6 +144,13 @@ TEST_CASE("TVec2::Lerp", "[tvec2_lerp]")
 
 	REQUIRE(Math::IsNear(lerpTest.x, 2.0));
 	REQUIRE(Math::IsNear(lerpTest.y, 3.0));
+}
+
+TEST_CASE("TVec2::Determinant", "[tvec2_determinant]")
+{
+	const auto a = TVec2<double>(0.0, 1.0);
+	const auto b = TVec2<double>(2.0, 3.0);
+	REQUIRE(TVec2<double>::Determinant(a, b) == Approx(-2.0));
 }
 
 TEST_CASE("TVec2::IsNear", "[tvec2_is_near]")

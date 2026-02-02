@@ -34,6 +34,7 @@ namespace Gadget
 
 		[[nodiscard]] static inline constexpr T Dot(const TVec2& a, const TVec2& b) noexcept{ return Math::Dot2D(a.x, a.y, b.x, b.y); }
 		[[nodiscard]] static inline constexpr TVec2 Lerp(const TVec2& a, const TVec2& b, T t) noexcept{ return a + t * (b - a); }
+		[[nodiscard]] static inline constexpr T Determinant(const TVec2& a, const TVec2& b) noexcept{ return (a.x * b.y) - (a.y * b.x); }
 
 		[[nodiscard]] inline constexpr bool IsNear(const TVec2& value) const noexcept{ return Math::IsNear(x, value.x) && Math::IsNear(y, value.y); }
 		[[nodiscard]] inline constexpr bool IsValid() const{ return Math::IsValidNumber(x) && Math::IsValidNumber(y); }
