@@ -57,5 +57,18 @@ namespace Gadget
 		{
 			return Color(ToLinearValue(r), ToLinearValue(g), ToLinearValue(b), a);
 		}
+
+		[[nodiscard]] static inline constexpr auto Black()		{ return Color(0.0, 0.0, 0.0, 1.0); }
+		[[nodiscard]] static inline constexpr auto White()		{ return Color(1.0, 1.0, 1.0, 1.0); }
+		[[nodiscard]] static inline constexpr auto Red()		{ return Color(1.0f, 0.0f, 0.0f, 1.0f); }
+		[[nodiscard]] static inline constexpr auto Green()		{ return Color(0.0f, 1.0f, 0.0f, 1.0f); }
+		[[nodiscard]] static inline constexpr auto Blue()		{ return Color(0.0f, 0.0f, 1.0f, 1.0f); }
+		[[nodiscard]] static inline constexpr auto Yellow()		{ return Color(1.0f, 1.0f, 0.0f, 1.0f); }
+		[[nodiscard]] static inline constexpr auto Orange()		{ return Color(1.0f, 0.5f, 0.0f, 1.0f); }
+		[[nodiscard]] static inline constexpr auto Purple()		{ return Color(0.4f, 0.0f, 0.8f, 1.0f); }
+		[[nodiscard]] static inline constexpr auto Pink()		{ return Color(1.0f, 0.0f, 1.0f, 1.0f); }
+		[[nodiscard]] static inline constexpr auto Brown()		{ return Color(0.4f, 0.2f, 0.0f, 1.0f); }
+		[[nodiscard]] static inline constexpr auto Gray()		{ return Color(0.5f, 0.5f, 0.5f, 1.0f); }
+		[[nodiscard]] static inline constexpr auto DarkGray()	{ return Color(0.2f, 0.2f, 0.2f, 1.0f); }
 	};
 }
