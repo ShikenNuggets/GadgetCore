@@ -92,6 +92,15 @@ target_link_libraries(GadgetCore
 		SDL3_image::SDL3_image
 )
 
+# --------------------------------------- #
+# ----- Build Type Specific Config ------ #
+# --------------------------------------- #
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+	target_compile_definitions(GadgetCore PUBLIC GADGET_BUILD_DEBUG)
+elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
+	target_compile_definitions(GadgetCore PUBLIC GADGET_BUILD_RELEASE)
+endif()
+
 # --------------------------- #
 # ---------- Tests ---------- #
 # --------------------------- #
