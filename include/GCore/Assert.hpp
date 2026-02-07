@@ -6,7 +6,7 @@
 namespace Gadget
 {
 	void PopupErrorMessage(std::string_view title, std::string_view message);
-	void Assert(bool condition, std::string_view message = "", std::source_location sourceLocation = std::source_location::current());
+	void Assert(bool condition, std::string_view message, std::source_location sourceLocation = std::source_location::current());
 
 	namespace Internal
 	{
