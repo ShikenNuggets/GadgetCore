@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <string_view>
 
 #include <SDL3/SDL.h>
 
@@ -26,7 +27,7 @@ namespace Gadget
 	class Window
 	{
 	public:
-		Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, int32_t x_ = 0, int32_t y_ = 0);
+		Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::string_view name = "GadgetCoreWindow", int32_t x_ = 0, int32_t y_ = 0);
 		~Window();
 
 		Window(const Window& other) = delete;

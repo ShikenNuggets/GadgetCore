@@ -4,7 +4,7 @@
 
 using namespace Gadget;
 
-Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, int32_t x_, int32_t y_) : size(width_, height_), position(x_, y_), renderAPI(renderAPI_)
+Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::string_view name, int32_t x_, int32_t y_) : size(width_, height_), position(x_, y_), renderAPI(renderAPI_)
 {
 	const bool didInit = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD);
 	if (didInit)
@@ -24,7 +24,7 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, int32_t x_
 		position.y = SDL_WINDOWPOS_CENTERED;
 	}
 
-	windowPtr = SDL_CreateWindow("Gadget", size.x, size.y, windowFlags);
+	windowPtr = SDL_CreateWindow(name.data(), size.x, size.y, windowFlags);
 	if (windowPtr == nullptr)
 	{
 		// TODO - throw fatal error
