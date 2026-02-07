@@ -1,6 +1,7 @@
 #include "Assert.hpp"
 
 #include <array>
+#include <csignal>
 #include <filesystem>
 #include <format>
 
@@ -32,19 +33,22 @@ void Gadget::Assert(bool condition, std::string_view message, std::source_locati
 	}
 }
 
-// TODO - Replace this with std::breakpoint in C++26
-#ifndef GADGET_DEBUG_BREAK
-	#if defined (_MSC_VER)
-		#define GADGET_DEBUG_BREAK() __debugbreak()
-	#elif defined (__clang__)
-		#define GADGET_DEBUG_BREAK() __builtin_debugtrap()
-	#elif defined (__GNUC__) || defined (__GNUG__)
-		#define GADGET_DEBUG_BREAK() __builtin_trap()
-	#else
-		#include <csignal>
-		#define GADGET_DEBUG_BREAK() std::raise(SIGTRAP)
-	#endif
-#endif // !GADGET_DEBUG_BREAK
+namespace Gadget
+{
+	// TODO - Replace this with std::breakpoint in C++26
+	static inline void DebugBreak()
+	{
+		#if defined (_MSC_VER)
+			__debugbreak();
+		#elif defined (__clang__)
+			__builtin_debugtrap();
+		#elif defined (__GNUC__) || defined (__GNUG__)
+			__builtin_trap();
+		#else
+			std::raise(SIGTRAP);
+		#endif
+	}
+}
 
 void Gadget::Internal::PopupDebugErrorMessage(std::string_view title, std::string_view message)
 {
@@ -75,7 +79,7 @@ void Gadget::Internal::PopupDebugErrorMessage(std::string_view title, std::strin
 		case 0:
 			return;
 		case 1:
-			GADGET_DEBUG_BREAK();
+			Gadget::DebugBreak();
 			break;
 		case 2:
 			std::quick_exit(-1);
