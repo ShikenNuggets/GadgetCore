@@ -74,6 +74,10 @@ file (GLOB_RECURSE INC_FILES
 )
 
 add_library(GadgetCore STATIC ${SRC_FILES} ${INC_FILES})
+set_target_properties(GadgetCore PROPERTIES
+	CXX_EXTENSIONS NO
+	CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE
+)
 
 target_compile_features(GadgetCore PUBLIC cxx_std_23)
 
