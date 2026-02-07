@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <format>
 #include <functional>
+#include <source_location>
 
 namespace Gadget::Logger
 {
@@ -55,11 +56,31 @@ namespace Gadget::Logger
 
 	static constexpr const char* value = SeverityToString(Logger::Severity::None);
 
-	template<typename... Args>
-	inline void Log(Severity severity_, std::format_string<Args...> fmt_, Args&&... args_)
+	inline void Log(Severity severity, std::string_view message, std::source_location sourceLocation = std::source_location::current())
 	{
-		auto messageStr = std::format(fmt_, std::forward<Args>(args_)...);
-		auto finalMessage = std::format("[GCORE][{}] {}", SeverityToString(severity_), messageStr);
-		OnProcessLogMessage_Internal(severity_, std::move(finalMessage));
+		auto fmtMessage = std::format("[GCORE][{}][{}:{}] {}",
+			SeverityToString(severity),
+			std::filesystem::path(sourceLocation.file_name()).filename().string(),
+			sourceLocation.line(),
+			message
+		);
+		
+		OnProcessLogMessage_Internal(severity, std::move(fmtMessage));
 	}
 }
+
+#ifndef GADGET_LOG
+	#define GADGET_LOG(severity, message, ...) { Gadget::Logger::Log(Gadget::Logger::Severity::severity, std::format(message, ##__VA_ARGS__), std::source_location::current()); }
+#endif // !GADGET_LOG
+
+#ifndef GADGET_LOG_INFO
+	#define GADGET_LOG_INFO(message, ...) GADGET_LOG(Info, message, ##__VA_ARGS__)
+#endif // !GADGET_LOG_INFO
+
+#ifndef GADGET_LOG_WARNING
+	#define GADGET_LOG_WARNING(message, ...) GADGET_LOG(Warning, message, ##__VA_ARGS__)
+#endif // !GADGET_LOG_WARNING
+
+#ifndef GADGET_LOG_ERROR
+	#define GADGET_LOG_ERROR(message, ...) GADGET_LOG(Error, message, ##__VA_ARGS__)
+#endif // !GADGET_LOG_ERROR

@@ -39,14 +39,14 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, int32_t x_
 	const auto displayId = SDL_GetPrimaryDisplay();
 	if (displayId == 0)
 	{
-		Logger::Log(Logger::Warning, "Could not get primary display ID! SDL Error: {}", SDL_GetError());
+		GADGET_LOG_WARNING("Could not get primary display ID! SDL Error: {}", SDL_GetError());
 	}
 	else
 	{
 		const auto* displayMode = SDL_GetCurrentDisplayMode(displayId);
 		if (displayMode == nullptr)
 		{
-			Logger::Log(Logger::Warning, "Could not get primary display mode! SDL Error: {}", SDL_GetError());
+			GADGET_LOG_WARNING("Could not get primary display mode! SDL Error: {}", SDL_GetError());
 		}
 		else if (displayMode->refresh_rate != 0.0f)
 		{

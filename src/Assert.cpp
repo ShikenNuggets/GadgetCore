@@ -70,7 +70,7 @@ void Gadget::Internal::PopupDebugErrorMessage(std::string_view title, std::strin
 	const bool didOpen = SDL_ShowMessageBox(&data, &buttonId);
 	if(!didOpen || buttonId < 0 || buttonId > buttons.size())
 	{
-		Logger::Log(Logger::Error, "Failed to open SDL simple message box. SDL Error: ", SDL_GetError());
+		GADGET_LOG_ERROR("Failed to open SDL simple message box. SDL Error: ", SDL_GetError());
 		return;
 	}
 
@@ -92,6 +92,6 @@ void Gadget::Internal::PopupSimpleErrorMessage(std::string_view title, std::stri
 	const bool didOpen = SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title.data(), message.data(), nullptr);
 	if(!didOpen)
 	{
-		Logger::Log(Logger::Error, "Failed to open SDL simple message box. SDL Error: ", SDL_GetError());
+		GADGET_LOG_ERROR("Failed to open SDL simple message box. SDL Error: ", SDL_GetError());
 	}
 }
