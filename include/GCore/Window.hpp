@@ -5,6 +5,8 @@
 #include <SDL3/SDL.h>
 
 #include "ScreenCoordinate.hpp"
+#include "Graphics/Color.hpp"
+#include "Graphics/WindowSurfaceView.hpp"
 
 namespace Gadget
 {
@@ -33,6 +35,8 @@ namespace Gadget
 		Window& operator=(Window&& other) = delete;
 
 		void HandleEvents();
+
+		WindowSurfaceView GetSurfaceView();
 
 	private:
 		SDL_Window* windowPtr = nullptr;

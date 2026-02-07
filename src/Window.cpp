@@ -88,3 +88,8 @@ void Window::HandleEvents()
 		}
 	}
 }
+
+WindowSurfaceView Window::GetSurfaceView()
+{
+	return WindowSurfaceView(SDL_GetWindowSurface(windowPtr));
+}
