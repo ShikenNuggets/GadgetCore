@@ -1,5 +1,6 @@
 #pragma once
 
+#include <format>
 #include <source_location>
 #include <string_view>
 
@@ -14,6 +15,10 @@ namespace Gadget
 		void PopupSimpleErrorMessage(std::string_view title, std::string_view message);
 	}
 }
+
+#ifndef GADGET_ASSERT
+	#define GADGET_ASSERT(cond, message, ...) { Gadget::Assert((cond), std::format(message, ##__VA_ARGS__), std::source_location::current()); }
+#endif // !GADGET_ASSERT
 
 #ifndef GADGET_BASIC_ASSERT
 	#define GADGET_BASIC_ASSERT(cond) { Gadget::Assert((cond), #cond); }
