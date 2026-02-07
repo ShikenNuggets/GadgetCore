@@ -93,3 +93,8 @@ WindowSurfaceView Window::GetSurfaceView()
 {
 	return WindowSurfaceView(SDL_GetWindowSurface(windowPtr));
 }
+
+void Window::UpdateWindowSurface()
+{
+	SDL_UpdateWindowSurface(windowPtr);
+}

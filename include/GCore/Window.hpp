@@ -38,6 +38,7 @@ namespace Gadget
 		void HandleEvents();
 
 		WindowSurfaceView GetSurfaceView();
+		void UpdateWindowSurface();
 
 	private:
 		SDL_Window* windowPtr = nullptr;
