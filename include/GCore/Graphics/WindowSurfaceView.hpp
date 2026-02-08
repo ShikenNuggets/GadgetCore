@@ -9,7 +9,7 @@ namespace Gadget
 	class WindowSurfaceView
 	{
 	public:
-		WindowSurfaceView(SDL_Surface* surface_);
+		explicit WindowSurfaceView(SDL_Surface* surface_);
 
 		void Lock();
 		void Unlock();
