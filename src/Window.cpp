@@ -73,18 +73,20 @@ void Window::HandleEvents()
 		switch (e.type)
 		{
 			case SDL_EVENT_QUIT:
-				// Handle App Event
+				eventHandler.OnQuitRequested.Broadcast();
+				return; // No need to process any other events
+			case SDL_EVENT_WINDOW_RESIZED:
+				eventHandler.OnWindowResized.Broadcast(e.window.data1, e.window.data2);
 				break;
-			case SDL_EVENT_WINDOW_RESIZED: [[fallthrough]];
-			case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED: [[fallthrough]];
 			case SDL_EVENT_WINDOW_MOVED:
-				// Handle Window Event
+				eventHandler.OnWindowMoved.Broadcast(e.window.data1, e.window.data2);
 				break;
 			case SDL_EVENT_KEY_DOWN:
+				eventHandler.OnKeyDown.Broadcast(); // TODO - Pass keycode
 				break;
 			case SDL_EVENT_KEY_UP:
+				eventHandler.OnKeyUp.Broadcast(); // TODO - Pass keycode
 				break;
-
 		}
 	}
 }

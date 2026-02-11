@@ -6,6 +6,7 @@
 #include <SDL3/SDL.h>
 
 #include "ScreenCoordinate.hpp"
+#include "WindowEventHandler.hpp"
 #include "Graphics/Color.hpp"
 #include "Graphics/WindowSurfaceView.hpp"
 
@@ -40,11 +41,14 @@ namespace Gadget
 		WindowSurfaceView GetSurfaceView();
 		void UpdateWindowSurface();
 
+		WindowEventHandler& EventHandler(){ return eventHandler; }
+
 	private:
 		SDL_Window* windowPtr = nullptr;
 		ScreenCoordinate size;
 		ScreenCoordinate position;
 		RenderAPI renderAPI;
 		std::optional<float> refreshRate;
+		WindowEventHandler eventHandler;
 	};
 }
