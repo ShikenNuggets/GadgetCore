@@ -27,7 +27,7 @@ FetchContent_MakeAvailable(SDL3)
 FetchContent_Declare(
 	SDL3_Image
 	GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
-	GIT_TAG release-3.4.0
+	GIT_TAG release-3.2.4
 	EXCLUDE_FROM_ALL
 )
 set(SDLIMAGE_AVIF OFF) # This is on by default and gives us some nonsense unrecoverable error
