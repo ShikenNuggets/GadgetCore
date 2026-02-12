@@ -15,7 +15,7 @@ namespace Gadget
 	{
 		uint64_t id;
 
-		bool operator ==(const DelegateHandle& h2){ return id == h2.id; }
+		bool operator ==(const DelegateHandle& h2) const{ return id == h2.id; }
 	};
 
 	template <typename T>
