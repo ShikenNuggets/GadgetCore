@@ -31,7 +31,9 @@ namespace Gadget
 	public:
 		DelegateHandle Add(std::function<T> callback)
 		{
-			callbacks.emplace_back({ std::move(callback), { lastId++ } });
+			DelegateHandle handle = { lastId++ };
+			callbacks.push_back(DelegateCallback<T>{ std::move(callback), handle });
+			return handle;
 		}
 
 		void Remove(DelegateHandle handle)
