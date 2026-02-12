@@ -41,7 +41,7 @@ namespace Gadget
 			const auto containsHandle = [handle](const auto& callback){ return callback.handle == handle; };
 			GADGET_ASSERT(std::ranges::any_of(callbacks, containsHandle), "Delegate does not contain handle with ID {}", handle.id);
 			
-			std::erase(callbacks, handle);
+			std::erase_if(callbacks, containsHandle);
 		}
 
 		template <typename... Args>
