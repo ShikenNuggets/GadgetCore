@@ -20,19 +20,6 @@ void Gadget::PopupErrorMessage(std::string_view title, std::string_view message)
 	#endif 
 }
 
-void Gadget::Assert(bool condition, std::string_view message, std::source_location sourceLocation)
-{
-	if (!condition)
-	{
-		const auto fmtMessage = std::format("{}\n\n{}:{}", message, std::filesystem::path(sourceLocation.file_name()).filename().string(), sourceLocation.line());
-		#ifdef GADGET_BUILD_NO_ASSERT
-			Logger::Log(Logger::Fatal, "Assertion Failed: ", fmtMessage);
-		#else
-			PopupErrorMessage("Assertion Failed!", fmtMessage);
-		#endif
-	}
-}
-
 namespace Gadget
 {
 	// TODO - Replace this with std::breakpoint in C++26
