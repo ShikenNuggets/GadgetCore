@@ -92,7 +92,7 @@ void WindowSurfaceView::AssignPixel(int32_t x, int32_t y, const Color& color)
 	}
 
 	const Color sRGB = color.ToSRGB();
-	const auto finalColor = SDL_MapSurfaceRGBA(surface, static_cast<Uint8>(sRGB.r * 255.0f), static_cast<Uint8>(sRGB.b * 255.0f), static_cast<Uint8>(sRGB.b * 255.0f), static_cast<Uint8>(sRGB.a * 255.0f));
+	const auto finalColor = SDL_MapSurfaceRGBA(surface, static_cast<Uint8>(sRGB.r * 255.0f), static_cast<Uint8>(sRGB.g * 255.0f), static_cast<Uint8>(sRGB.b * 255.0f), static_cast<Uint8>(sRGB.a * 255.0f));
 	AssignPixel(x, y, finalColor);
 }
 
