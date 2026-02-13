@@ -7,10 +7,15 @@
 
 namespace Gadget
 {
-	class MeshData
+	struct MeshData
 	{
-	public:
 		std::vector<Vertex> vertices;
 		std::vector<uint32_t> indices;
+	};
+
+	// A model contains one or more meshes
+	struct ModelData
+	{
+		std::vector<MeshData> meshes;
 	};
 }
