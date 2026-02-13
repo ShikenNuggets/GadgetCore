@@ -33,6 +33,14 @@ FetchContent_Declare(
 set(SDLIMAGE_AVIF OFF) # This is on by default and gives us some nonsense unrecoverable error
 FetchContent_MakeAvailable(SDL3_Image)
 
+FetchContent_Declare(
+	Assimp
+	GIT_REPOSITORY https://github.com/assimp/assimp.git
+	GIT_TAG v6.0.4
+	EXCLUDE_FROM_ALL
+)
+FetchContent_MakeAvailable(Assimp)
+
 # --------------------------------------- #
 # ------------ Setup Tooling ------------ #
 # --------------------------------------- #
@@ -83,6 +91,7 @@ target_compile_features(GadgetCore PUBLIC cxx_std_23)
 
 target_include_directories(GadgetCore PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/include/GCore
+	${assimp_SOURCE_DIR}/src
 )
 
 target_include_directories(GadgetCore PUBLIC
@@ -94,6 +103,7 @@ target_link_libraries(GadgetCore
 	PUBLIC
 		SDL3::SDL3
 		SDL3_image::SDL3_image
+		assimp::assimp
 )
 
 # --------------------------------------- #
