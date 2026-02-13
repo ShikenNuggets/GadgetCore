@@ -46,12 +46,15 @@ static inline void ProcessMesh(const aiMesh* mesh, std::vector<MeshData>& outMes
 	for (unsigned int j = 0; j < mesh->mNumVertices; j++)
 	{
 		const auto vertex = mesh->mVertices[j];
-		const auto color = mesh->mColors[0][j];
+		auto color = Color::White();
 
-		verts.emplace_back(
-			Vector4(vertex.x, vertex.y, vertex.z, 1.0),
-			Color(color.r, color.g, color.b, color.a)
-		);
+		if (mesh->mColors != nullptr)
+		{
+			const auto assimpColor = mesh->mColors[0][j];
+			color = Color(assimpColor.r, assimpColor.g, assimpColor.b, assimpColor.a);
+		}
+
+		verts.emplace_back(Vector4(vertex.x, vertex.y, vertex.z, 1.0), color);
 	}
 
 	for (unsigned int j = 0; j < mesh->mNumFaces; j++)
