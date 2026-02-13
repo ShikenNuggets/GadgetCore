@@ -48,7 +48,7 @@ static inline void ProcessMesh(const aiMesh* mesh, std::vector<MeshData>& outMes
 		const auto vertex = mesh->mVertices[j];
 		auto color = Color::White();
 
-		if (mesh->mColors != nullptr)
+		if (mesh->mColors != nullptr && mesh->mColors[0] != nullptr)
 		{
 			const auto assimpColor = mesh->mColors[0][j];
 			color = Color(assimpColor.r, assimpColor.g, assimpColor.b, assimpColor.a);
