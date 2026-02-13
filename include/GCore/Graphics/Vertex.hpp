@@ -7,9 +7,9 @@ namespace Gadget
 {
 	struct Vertex
 	{
-		explicit Vertex(const Gadget::Vector3& pos = Gadget::Vector3::Zero(), const Gadget::Color& color_ = Gadget::Color::Black()) : position(pos), color(color_){}
+		explicit Vertex(const Gadget::Vector4& pos = Gadget::Vector4(0.0, 0.0, 0.0, 1.0), const Gadget::Color& color_ = Gadget::Color::Black()) : position(pos), color(color_){}
 
-		Vector3 position;
+		Vector4 position;
 		Color color;
 	};
 }
