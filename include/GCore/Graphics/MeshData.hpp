@@ -10,7 +10,7 @@ namespace Gadget
 	class MeshData
 	{
 	public:
-		std::vector<Vertex> verts;
+		std::vector<Vertex> vertices;
 		std::vector<uint32_t> indices;
 	};
 }

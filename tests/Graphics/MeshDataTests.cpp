@@ -7,6 +7,6 @@ using namespace Gadget;
 TEST_CASE("MeshData::MeshData", "[mesh_data_constructor]")
 {
 	const auto meshData = MeshData();
-	REQUIRE(meshData.verts.empty());
+	REQUIRE(meshData.vertices.empty());
 	REQUIRE(meshData.indices.empty());
 }
