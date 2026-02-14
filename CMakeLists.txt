@@ -40,6 +40,7 @@ FetchContent_Declare(
 	Assimp
 	GIT_REPOSITORY https://github.com/assimp/assimp.git
 	GIT_TAG v6.0.4
+	SYSTEM
 	EXCLUDE_FROM_ALL
 )
 FetchContent_MakeAvailable(Assimp)
