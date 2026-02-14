@@ -2,7 +2,7 @@ Checks: '
   bug-prone-*,
 
   cppcoreguidelines-*,
-    -cppcoreguidelines-avoid-magic-numbers, # Alias, seems to not respect the IgnoredIntegerValues option,
+    -cppcoreguidelines-avoid-magic-numbers, # Alias, annoying in a lot of math code,
 
   google-*,
     -google-build-using-namespace, # Using non-std namespace in headers is generally OK,
@@ -13,6 +13,7 @@ Checks: '
   misc-*,
     -misc-include-cleaner, # Too many irrelevant warnings,
     -misc-use-anonymous-namespace, # Static was un-deprecated and is typically fine,
+    -misc-no-recursion, # Sometimes we need recursion,
     
   modernize-*,
     -modernize-return-braced-init-list, # This check is kind of annoying and largely unnecessary,
@@ -26,6 +27,7 @@ Checks: '
   readability-*,
     -readability-identifier-length, # Sometimes your variables SHOULD be short,
     -readability-function-cognitive-complexity, # Not a fan of this metric,
+    -readability-magic-numbers, # This is annoying in a lot of math code,
     -readability-math-missing-parentheses, # There are times when this is unclear but this warning is too aggressive for general use,
     -readability-redundant-inline-specifier, # Redundancy is OK,
     -readability-uppercase-literal-suffix, # Not sure why this check exists,
@@ -73,12 +75,6 @@ CheckOptions:
    
  - key: performance-inefficient-string-concatenation.StrictMode
    value: true
-   
- - key: readability-magic-numbers.IgnoredIntegerValues
-   value: 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15; 16; 36; 255, 1024;
-   
- - key: readability-magic-numbers.IgnoredFloatingPointValues
-   value: 0.0001; 0.001; 0.01; 0.1; 0.25; 0.5; 0.75; 0.99; 1.0; 2.0; 10.0; 100.0; 1000.0;
    
  - key: readability-magic-numbers.IgnorePowersOf2IntegerValues
    value: true
