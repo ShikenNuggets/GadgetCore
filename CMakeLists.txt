@@ -89,6 +89,7 @@ add_library(GadgetCore STATIC ${SRC_FILES} ${INC_FILES})
 set_target_properties(GadgetCore PROPERTIES
 	CXX_EXTENSIONS NO
 	CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE
+	CXX_SCAN_FOR_MODULES OFF
 )
 
 target_compile_features(GadgetCore PUBLIC cxx_std_23)

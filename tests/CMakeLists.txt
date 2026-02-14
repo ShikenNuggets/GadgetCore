@@ -11,6 +11,7 @@ add_executable (GadgetCoreTests ${TEST_SRC_FILES})
 set_target_properties(GadgetCoreTests PROPERTIES
 	CXX_EXTENSIONS NO
 	CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE
+	CXX_SCAN_FOR_MODULES OFF
 )
 
 target_include_directories(GadgetCoreTests SYSTEM PRIVATE
