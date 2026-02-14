@@ -63,6 +63,5 @@ namespace Gadget
 		static inline std::atomic<uint64_t> lastId = 0;
 
 		std::vector<DelegateCallback<T>> callbacks;
-		DelegateHandle handle;
 	};
 }
