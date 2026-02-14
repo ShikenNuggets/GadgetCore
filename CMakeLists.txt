@@ -12,6 +12,7 @@ FetchContent_Declare(
 	catch2
 	GIT_REPOSITORY https://github.com/catchorg/Catch2.git
 	GIT_TAG v3.12.0
+	SYSTEM
 	EXCLUDE_FROM_ALL
 )
 FetchContent_MakeAvailable(catch2)
@@ -20,6 +21,7 @@ FetchContent_Declare(
 	SDL3
 	GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
 	GIT_TAG release-3.4.0
+	SYSTEM
 	EXCLUDE_FROM_ALL
 )
 FetchContent_MakeAvailable(SDL3)
@@ -28,6 +30,7 @@ FetchContent_Declare(
 	SDL3_Image
 	GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
 	GIT_TAG release-3.2.4
+	SYSTEM
 	EXCLUDE_FROM_ALL
 )
 set(SDLIMAGE_AVIF OFF) # This is on by default and gives us some nonsense unrecoverable error
