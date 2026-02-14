@@ -44,6 +44,7 @@ FetchContent_Declare(
 	EXCLUDE_FROM_ALL
 )
 set(ASSIMP_WARNINGS_AS_ERRORS OFF)
+set(ASSIMP_BUILD_TESTS OFF)
 FetchContent_MakeAvailable(Assimp)
 
 # --------------------------------------- #
