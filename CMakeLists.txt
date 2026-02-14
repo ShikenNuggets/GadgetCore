@@ -43,6 +43,7 @@ FetchContent_Declare(
 	SYSTEM
 	EXCLUDE_FROM_ALL
 )
+set(ASSIMP_WARNINGS_AS_ERRORS OFF)
 FetchContent_MakeAvailable(Assimp)
 
 # --------------------------------------- #
