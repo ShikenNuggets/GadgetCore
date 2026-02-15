@@ -1,5 +1,7 @@
 #include "Graphics/MeshLoader.hpp"
 
+#include <span>
+
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
@@ -43,25 +45,34 @@ static inline void ProcessMesh(const aiMesh* mesh, std::vector<MeshData>& outMes
 	verts.reserve(mesh->mNumVertices);
 	indices.reserve(static_cast<size_t>(mesh->mNumFaces) * 3);
 
-	for (unsigned int j = 0; j < mesh->mNumVertices; j++)
+	const auto sourceVerts = std::span(mesh->mVertices, mesh->mNumVertices);
+	std::span<aiColor4D> sourceColorChannel;
+	if (mesh->HasVertexColors(0))
 	{
-		const auto vertex = mesh->mVertices[j];
+		sourceColorChannel = std::span(mesh->mColors[0], mesh->mNumVertices);
+	}
+	
+	for (size_t i = 0; i < sourceVerts.size(); i++)
+	{
+		const auto& vertex = sourceVerts[i];
 		auto color = Color::White();
 
-		if (mesh->mColors != nullptr && mesh->mColors[0] != nullptr)
+		if (!sourceColorChannel.empty())
 		{
-			const auto assimpColor = mesh->mColors[0][j];
+			const auto assimpColor = sourceColorChannel[i];
 			color = Color(assimpColor.r, assimpColor.g, assimpColor.b, assimpColor.a);
 		}
 
 		verts.emplace_back(Vector4(vertex.x, vertex.y, vertex.z, 1.0), color);
 	}
 
-	for (unsigned int j = 0; j < mesh->mNumFaces; j++)
+	const auto sourceFaces = std::span(mesh->mFaces, mesh->mNumFaces);
+	for (const auto& face : sourceFaces)
 	{
-		for (unsigned int k = 0; k < mesh->mFaces[j].mNumIndices; k++)
+		const auto sourceIndices = std::span(face.mIndices, face.mNumIndices);
+		for (const auto& idx : sourceIndices)
 		{
-			indices.push_back(mesh->mFaces[j].mIndices[k]);
+			indices.push_back(idx);
 		}
 	}
 
@@ -75,15 +86,19 @@ static inline void ProcessNode(const aiNode* node, const aiScene* scene, std::ve
 
 	outMeshes.reserve(outMeshes.size() + node->mNumMeshes);
 
-	for (unsigned int i = 0; i < node->mNumMeshes; i++)
+	const auto sourceMeshIndices = std::span(node->mMeshes, node->mNumMeshes);
+	const auto sourceMeshes = std::span(scene->mMeshes, scene->mNumMeshes);
+	for (const auto& meshIdx : sourceMeshIndices)
 	{
-		auto meshIdx = node->mMeshes[i];
-		ProcessMesh(scene->mMeshes[meshIdx], outMeshes);
+		GADGET_BASIC_ASSERT(meshIdx < sourceMeshes.size());
+		ProcessMesh(sourceMeshes[meshIdx], outMeshes);
 	}
 
-	for (unsigned int i = 0; i < node->mNumChildren; i++)
+	const auto sourceChildren = std::span(node->mChildren, node->mNumChildren);
+	for (const auto& child : sourceChildren)
 	{
-		ProcessNode(node->mChildren[i], scene, outMeshes);
+		GADGET_BASIC_ASSERT(child != nullptr);
+		ProcessNode(child, scene, outMeshes);
 	}
 }
 
