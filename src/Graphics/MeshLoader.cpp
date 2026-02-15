@@ -109,7 +109,7 @@ ModelData MeshLoader::LoadMeshFromFile(const std::string& filePath)
 
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(filePath, gLoadFlags);
-	if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
+	if (scene == nullptr || static_cast<bool>(scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) || scene->mRootNode == nullptr)
 	{
 		GADGET_LOG_INFO("Assimp could not load model! Assimp Error: {}", importer.GetErrorString());
 		return {};
