@@ -1,13 +1,22 @@
 #include "ThreadPool.hpp"
 
+#include "Assert.hpp"
+
 using namespace Gadget;
 
 void ThreadPool::Start()
 {
 	shouldTerminate = false;
+	size_t numThreadsToSpawn = 1;
 
-	const auto numHardwareThreads = std::thread::hardware_concurrency();
-	for (size_t i = 0; i < numHardwareThreads; i++)
+	auto numHardwareThreads = std::thread::hardware_concurrency();
+	if (numHardwareThreads > 0)
+	{
+		numThreadsToSpawn = numHardwareThreads;
+	}
+	
+	GADGET_BASIC_ASSERT(numThreadsToSpawn > 0);
+	for (size_t i = 0; i < numThreadsToSpawn; i++)
 	{
 		threads.emplace_back(&ThreadPool::ThreadBusyWait, this);
 	}
