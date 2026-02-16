@@ -4,6 +4,8 @@ using namespace Gadget;
 
 void ThreadPool::Start()
 {
+	shouldTerminate = false;
+
 	const auto numHardwareThreads = std::thread::hardware_concurrency();
 	for (size_t i = 0; i < numHardwareThreads; i++)
 	{
