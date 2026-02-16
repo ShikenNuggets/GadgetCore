@@ -30,7 +30,7 @@ ErrorCode FileSystem::CreateFile(const std::filesystem::path& filePath_)
 	}
 
 	std::fstream filestream;
-	filestream.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+	filestream.exceptions(std::fstream::failbit | std::fstream::badbit);
 
 	try
 	{
