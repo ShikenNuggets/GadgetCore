@@ -10,9 +10,9 @@ void ThreadPool::Start()
 	size_t numThreadsToSpawn = 1;
 
 	auto numHardwareThreads = std::thread::hardware_concurrency();
-	if (numHardwareThreads > 0)
+	if (numHardwareThreads > 1)
 	{
-		numThreadsToSpawn = numHardwareThreads;
+		numThreadsToSpawn = numHardwareThreads - 1;
 	}
 	
 	GADGET_BASIC_ASSERT(numThreadsToSpawn > 0);
