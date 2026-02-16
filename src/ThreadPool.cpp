@@ -40,7 +40,7 @@ void ThreadPool::QueueJob(const std::function<void()>& job)
 
 bool ThreadPool::IsBusy() const
 {
-	return jobs.IsEmpty();
+	return !jobs.IsEmpty();
 }
 
 void ThreadPool::ThreadBusyWait()
