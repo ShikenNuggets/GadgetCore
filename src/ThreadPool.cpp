@@ -42,7 +42,7 @@ void ThreadPool::ThreadBusyWait()
 		}
 
 		std::function<void()> job;
-		if (!jobs.Pop(job))
+		if (jobs.Pop(job))
 		{
 			job();
 		}
