@@ -1,6 +1,7 @@
 #include "Graphics/WindowSurfaceView.hpp"
 
 #include <format>
+#include <span>
 
 #include "Assert.hpp"
 #include "Logger.hpp"
@@ -40,15 +41,14 @@ void WindowSurfaceView::Clear(const Gadget::Color& color)
 		return;
 	}
 
-	auto* pixels = static_cast<uint32_t*>(surface->pixels);
-	const auto pitchInPixels = surface->pitch / sizeof(uint32_t);
 	const auto finalColor = SDL_MapSurfaceRGB(surface, static_cast<Uint8>(color.r * 255.0f), static_cast<Uint8>(color.g * 255.0f), static_cast<Uint8>(color.b * 255.0f));
 
 	for (int y = 0; y < surface->h; y++)
 	{
-		for (int x = 0; x < surface->w; x++)
+		auto row = GetPixelRow(y);
+		for (auto& pixel : row)
 		{
-			pixels[y * pitchInPixels + x] = finalColor;
+			pixel = finalColor;
 		}
 	}
 }
@@ -75,9 +75,7 @@ void WindowSurfaceView::AssignPixel(int32_t x, int32_t y, Uint32 color)
 		return;
 	}
 
-	auto* pixels = static_cast<uint32_t*>(surface->pixels);
-	const auto pitchInPixels = surface->pitch / sizeof(uint32_t);
-	pixels[y * pitchInPixels + x] = color;
+	GetPixel(x, y) = color;
 }
 
 void WindowSurfaceView::AssignPixel(int32_t x, int32_t y, const Color& color)
@@ -116,4 +114,27 @@ int32_t WindowSurfaceView::Height() const
 	}
 
 	return surface->h;
+}
+
+uint64_t WindowSurfaceView::GetPixelPitch() const
+{
+	GADGET_BASIC_ASSERT(surface->pitch > 0);
+	return surface->pitch / sizeof(uint32_t);
+}
+
+std::span<uint32_t> WindowSurfaceView::GetPixels() const
+{
+	return std::span(static_cast<uint32_t*>(surface->pixels), GetPixelPitch() * surface->h);
+}
+
+std::span<uint32_t> WindowSurfaceView::GetPixelRow(int32_t y) const
+{
+	return GetPixels().subspan(y * GetPixelPitch(), surface->w);
+}
+
+uint32_t& WindowSurfaceView::GetPixel(int32_t x, int32_t y)
+{
+	GADGET_BASIC_ASSERT(x >= 0 && x < surface->w);
+	GADGET_BASIC_ASSERT(y >= 0 && y < surface->h);
+	return GetPixelRow(y)[x];
 }

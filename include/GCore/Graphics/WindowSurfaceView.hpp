@@ -1,5 +1,7 @@
 #pragma once
 
+#include <span>
+
 #include <SDL3/SDL.h>
 
 #include "Color.hpp"
@@ -20,8 +22,13 @@ namespace Gadget
 
 		[[nodiscard]] int32_t Width() const;
 		[[nodiscard]] int32_t Height() const;
+		[[nodiscard]] std::span<uint32_t> GetPixels() const;
 
 	private:
 		SDL_Surface* surface;
+
+		[[nodiscard]] uint64_t GetPixelPitch() const;
+		[[nodiscard]] std::span<uint32_t> GetPixelRow(int32_t y) const;
+		[[nodiscard]] uint32_t& GetPixel(int32_t x, int32_t y);
 	};
 }
