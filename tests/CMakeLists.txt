@@ -1,7 +1,7 @@
 # --------------------------- #
 # ----- GadgetCoreTests ----- #
 # --------------------------- #
-file (GLOB_RECURSE TEST_SRC_FILES
+file (GLOB_RECURSE TEST_SRC_FILES CONFIGURE_DEPENDS
 	"*.cpp"
 	"*.h"
 	"*.hpp"

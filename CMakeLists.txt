@@ -77,13 +77,13 @@ endif()
 # --------------------------------------- #
 # ------------ Setup Target ------------- #
 # --------------------------------------- #
-file (GLOB_RECURSE SRC_FILES
+file (GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
 	"src/*.cpp"
 	"src/*.h"
 	"src/*.hpp"
 )
 
-file (GLOB_RECURSE INC_FILES
+file (GLOB_RECURSE INC_FILES CONFIGURE_DEPENDS
 	"include/*.h"
 	"include/*.hpp"
 )
