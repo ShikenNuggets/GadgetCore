@@ -110,6 +110,7 @@ target_include_directories(GadgetCore PUBLIC
 target_link_libraries(GadgetCore
 	PUBLIC
 		SDL3::SDL3
+	PRIVATE
 		SDL3_image::SDL3_image
 		assimp::assimp
 )
