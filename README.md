@@ -9,7 +9,7 @@ GadgetCore spawned out of work on [GadgetEngine](https://github.com/ShikenNugget
 ## Platform Support
 GadgetCore officially supports Windows, Mac, and Linux.
 
-Official platform support will be expanded to include mobile and game consoles some time in the future. Android is the next highest priority. That said, I expect most features to work on most platforms regardless.
+Official platform support will be expanded to include mobile, game consoles, and WASM some time in the future. Android is the next highest priority. That said, I expect most features to work on most platforms regardless.
 
 ## Stability
 This library is in early development and is considered **unstable**. Expect frequent and unceremonious API breaks at this stage. I also do not plan to guarantee ABI stability for the foreseeable future. This will be updated as we approach a stable release.
