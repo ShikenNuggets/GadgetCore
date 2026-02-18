@@ -13,6 +13,7 @@ namespace Gadget
 	{
 	public:
 		void Start();
+		void Start(size_t numThreads);
 		void Stop();
 		void QueueJob(const std::function<void()>& job);
 
