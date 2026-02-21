@@ -41,6 +41,8 @@ namespace Gadget
 		WindowSurfaceView GetSurfaceView();
 		void UpdateWindowSurface();
 
+		void SetWindowTitle(std::string_view title);
+
 		WindowEventHandler& EventHandler(){ return eventHandler; }
 
 	private:

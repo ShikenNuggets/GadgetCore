@@ -100,3 +100,8 @@ void Window::UpdateWindowSurface()
 {
 	SDL_UpdateWindowSurface(windowPtr);
 }
+
+void Window::SetWindowTitle(std::string_view title)
+{
+	SDL_SetWindowTitle(windowPtr, title.data());
+}
