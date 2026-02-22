@@ -17,7 +17,7 @@ namespace Gadget
 		explicit constexpr TRect(TVec2<T> min_, TVec2<T> max_) noexcept : min(min_), max(max_){}
 		explicit constexpr TRect(T xMin, T yMin, T xMax, T yMax) noexcept : min(xMin, yMin), max(xMax, yMax){}
 
-		void AddBounds(T x, T y)
+		inline constexpr void AddBounds(T x, T y)
 		{
 			min.x = std::min(min.x, x);
 			min.y = std::min(min.y, y);
@@ -25,10 +25,12 @@ namespace Gadget
 			max.y = std::max(max.y, y);
 		}
 
-		void AddBounds(const TVec2<T>& v)
+		inline constexpr void AddBounds(const TVec2<T>& v)
 		{
 			AddBounds(v.x, v.y);
 		}
+
+		inline bool IsValid() const{ return min.IsValid() && max.IsValid(); }
 	};
 
 	using Rect = TRect<Math::GFloat>;
