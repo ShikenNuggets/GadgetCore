@@ -30,11 +30,21 @@ namespace Gadget
 			AddBounds(v.x, v.y);
 		}
 
-		inline constexpr TVec2<T> GetSize() const noexcept{ return max - min; }
-		inline constexpr T GetWidth() const noexcept{ return max.x - min.x; }
-		inline constexpr T GetHeight() const noexcept{ return max.y - min.y; }
+		[[nodiscard]] inline constexpr TVec2<T> GetSize() const noexcept{ return max - min; }
+		[[nodiscard]] inline constexpr T GetWidth() const noexcept{ return max.x - min.x; }
+		[[nodiscard]] inline constexpr T GetHeight() const noexcept{ return max.y - min.y; }
 
-		inline bool IsValid() const{ return min.IsValid() && max.IsValid(); }
+		[[nodiscard]] inline constexpr bool Intersects(T x, T y) const noexcept
+		{
+			return x >= min.x && x <= max.x && y >= min.y && y <= max.y;
+		}
+
+		[[nodiscard]] inline constexpr bool Intersects(TVec2<T> point) const noexcept
+		{
+			return Intersects(point.x, point.y);
+		}
+
+		[[nodiscard]] inline bool IsValid() const{ return min.IsValid() && max.IsValid(); }
 	};
 
 	using Rect = TRect<Math::GFloat>;

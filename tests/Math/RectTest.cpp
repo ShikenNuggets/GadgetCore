@@ -50,6 +50,14 @@ TEST_CASE("TRect::GetHeight", "[trect_get_height]")
 	REQUIRE(doubleRect.GetSize().y == doubleRect.GetHeight());
 }
 
+TEST_CASE("TRect::Intersects", "[trect_intersects]")
+{
+	const auto doubleRect = TRect<double>(1.0, 2.0, 3.0, 4.0);
+	REQUIRE(!doubleRect.Intersects(0.0, 0.0));
+	REQUIRE(doubleRect.Intersects(1.5, 3.5));
+	REQUIRE(!doubleRect.Intersects(2.1, 4.1));
+}
+
 TEST_CASE("TRect::IsValid", "[trect_is_valid]")
 {
 	const auto validVec = TVec2<double>(1.0, 2.0);
