@@ -3,6 +3,7 @@
 #include "GCore/Math/Rect.hpp"
 
 using namespace Gadget;
+using Catch::Approx;
 
 TEST_CASE("TRect::TRect", "[trect_constructor]")
 {
@@ -24,6 +25,29 @@ TEST_CASE("TRect::AddBounds", "[trect_add_bounds]")
 	REQUIRE(doubleRect.min.y == -4.0);
 	REQUIRE(doubleRect.max.x == 6.0);
 	REQUIRE(doubleRect.max.y == 8.0);
+}
+
+TEST_CASE("TRect::GetSize", "[trect_get_size]")
+{
+	const auto doubleRect = TRect<double>(1.0, 2.0, 3.0, 4.0);
+	REQUIRE(doubleRect.GetSize().x == Approx(2.0));
+	REQUIRE(doubleRect.GetSize().y == Approx(2.0));
+
+	const auto negRect = TRect<double>(5.0, 4.0, 2.0, 0.0);
+	REQUIRE(negRect.GetSize().x == Approx(-3.0));
+	REQUIRE(negRect.GetSize().y == Approx(-4.0));
+}
+
+TEST_CASE("TRect::GetWidth", "[trect_get_width]")
+{
+	const auto doubleRect = TRect<double>(1.0, 2.0, 3.0, 4.0);
+	REQUIRE(doubleRect.GetSize().x == doubleRect.GetWidth());
+}
+
+TEST_CASE("TRect::GetHeight", "[trect_get_height]")
+{
+	const auto doubleRect = TRect<double>(1.0, 2.0, 3.0, 4.0);
+	REQUIRE(doubleRect.GetSize().y == doubleRect.GetHeight());
 }
 
 TEST_CASE("TRect::IsValid", "[trect_is_valid]")

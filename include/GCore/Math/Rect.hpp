@@ -30,6 +30,10 @@ namespace Gadget
 			AddBounds(v.x, v.y);
 		}
 
+		inline constexpr TVec2<T> GetSize() const noexcept{ return max - min; }
+		inline constexpr T GetWidth() const noexcept{ return max.x - min.x; }
+		inline constexpr T GetHeight() const noexcept{ return max.y - min.y; }
+
 		inline bool IsValid() const{ return min.IsValid() && max.IsValid(); }
 	};
 
