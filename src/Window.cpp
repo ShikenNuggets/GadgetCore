@@ -109,6 +109,21 @@ void Window::HandleEvents()
 	}
 }
 
+ScreenCoordinate Window::GetSize() const noexcept
+{
+	return size;
+}
+
+int32_t Window::GetWidth() const noexcept
+{
+	return size.x;
+}
+
+int32_t Window::GetHeight() const noexcept
+{
+	return size.y;
+}
+
 WindowSurfaceView Window::GetSurfaceView()
 {
 	return WindowSurfaceView(SDL_GetWindowSurface(windowPtr));
@@ -117,6 +132,17 @@ WindowSurfaceView Window::GetSurfaceView()
 void Window::UpdateWindowSurface()
 {
 	SDL_UpdateWindowSurface(windowPtr);
+}
+
+void Window::SetSize(int32_t width, int32_t height) noexcept
+{
+	SetSize(ScreenCoordinate(width, height));
+}
+
+void Window::SetSize(ScreenCoordinate size_) noexcept
+{
+	size = size_;
+	SDL_SetWindowSize(windowPtr, size.x, size.y);
 }
 
 void Window::SetWindowTitle(std::string_view title)

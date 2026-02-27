@@ -38,9 +38,14 @@ namespace Gadget
 
 		void HandleEvents();
 
+		[[nodiscard]] ScreenCoordinate GetSize() const noexcept;
+		[[nodiscard]] int32_t GetWidth() const noexcept;
+		[[nodiscard]] int32_t GetHeight() const noexcept;
 		WindowSurfaceView GetSurfaceView();
 		void UpdateWindowSurface();
 
+		void SetSize(int32_t width, int32_t height) noexcept;
+		void SetSize(ScreenCoordinate size_) noexcept;
 		void SetWindowTitle(std::string_view title);
 
 		WindowEventHandler& EventHandler(){ return eventHandler; }
