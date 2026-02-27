@@ -100,3 +100,12 @@ TEST_CASE("Color::ToSRGB", "[color_to_srgb]")
 
 	// TODO - Validate the actual math here
 }
+
+TEST_CASE("Color::IsValid", "[color_is_valid]")
+{
+	auto color = Color(0.3f, 0.6f, 0.9f, 1.0f);
+	REQUIRE(color.IsValid());
+
+	color.r = Math::TInfinity<float>;
+	REQUIRE(!color.IsValid());
+}
