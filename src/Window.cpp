@@ -124,6 +124,11 @@ int32_t Window::GetHeight() const noexcept
 	return size.y;
 }
 
+std::optional<float> Window::GetRefreshRate() const noexcept
+{
+	return refreshRate;
+}
+
 WindowSurfaceView Window::GetSurfaceView()
 {
 	return WindowSurfaceView(SDL_GetWindowSurface(windowPtr));

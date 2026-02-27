@@ -41,6 +41,7 @@ namespace Gadget
 		[[nodiscard]] ScreenCoordinate GetSize() const noexcept;
 		[[nodiscard]] int32_t GetWidth() const noexcept;
 		[[nodiscard]] int32_t GetHeight() const noexcept;
+		[[nodiscard]] std::optional<float> GetRefreshRate() const noexcept;
 		WindowSurfaceView GetSurfaceView();
 		void UpdateWindowSurface();
 
