@@ -47,6 +47,14 @@ TEST_CASE("Color::operator*(Vector4)", "[color_operator_*_vector4]")
 	REQUIRE(color.a == Approx(0.3));
 }
 
+TEST_CASE("Color::operator==", "[color_operator_==]")
+{
+	const auto color = Color(0.001f, 0.002f, 0.003f, 0.004f);
+	REQUIRE(color == color);
+	const auto other = Color(0.001f, 0.002f, 0.003f, 0.005f);
+	REQUIRE(color != other);
+}
+
 TEST_CASE("Color::operator+=(Color)", "[color_operator_+=_color_]")
 {
 	const auto baseCase = Color(0.1, 0.2, 0.3, 1.0) + Color(0.2, 0.3, 0.4, 1.0);

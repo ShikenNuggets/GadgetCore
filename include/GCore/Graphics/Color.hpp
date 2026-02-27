@@ -21,6 +21,7 @@ namespace Gadget
 		[[nodiscard]] inline constexpr auto operator+(const Color& c) const noexcept{ return Color(r + c.r, g + c.g, b + c.b, a + c.a); }
 		[[nodiscard]] inline constexpr auto operator*(float v) const noexcept{ return Color(r * v, g * v, b * v, a * v); }
 		[[nodiscard]] inline constexpr auto operator*(const Vector4& v) const noexcept{ return Color(r * static_cast<float>(v.x), g * static_cast<float>(v.y), b * static_cast<float>(v.z), a * static_cast<float>(v.w)); }
+		[[nodiscard]] inline constexpr bool operator==(const Color& c) const noexcept{ return Math::IsNear(r, c.r) && Math::IsNear(g, c.g) && Math::IsNear(b, c.b) && Math::IsNear(a, c.a); }
 
 		inline constexpr void operator+=(const Color& c) noexcept{ *this = *this + c; }
 		inline constexpr void operator*=(float v) noexcept{ *this = *this * v; }
