@@ -117,3 +117,13 @@ TEST_CASE("Color::IsValid", "[color_is_valid]")
 	color.r = Math::TInfinity<float>;
 	REQUIRE(!color.IsValid());
 }
+
+TEST_CASE("Color::AsArray", "[color_as_array]")
+{
+	const auto color = Color(0.3f, 0.6f, 0.9f, 1.0f);
+	const auto array = color.AsArray();
+	REQUIRE(color.r == array[0]);
+	REQUIRE(color.g == array[1]);
+	REQUIRE(color.b == array[2]);
+	REQUIRE(color.a == array[3]);
+}

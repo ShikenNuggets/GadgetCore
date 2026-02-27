@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <cmath>
 
 #include "GCore/Math/CoreMath.hpp"
@@ -76,5 +77,7 @@ namespace Gadget
 		{
 			return Math::IsValidNumber(r) && Math::IsValidNumber(g) && Math::IsValidNumber(b) && Math::IsValidNumber(a);
 		}
+
+		[[nodiscard]] inline std::array<float, 4> AsArray() const{ return { r, g, b, a }; }
 	};
 }
