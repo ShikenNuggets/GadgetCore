@@ -52,5 +52,6 @@ namespace Gadget
 		RenderAPI renderAPI;
 		std::optional<float> refreshRate;
 		WindowEventHandler eventHandler;
+		SDL_GLContext glContext;
 	};
 }

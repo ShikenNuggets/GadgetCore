@@ -53,10 +53,28 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 			refreshRate = displayMode->refresh_rate;
 		}
 	}
+
+	if (renderAPI == RenderAPI::OpenGL)
+	{
+		glContext = SDL_GL_CreateContext(windowPtr);
+		if (glContext == nullptr)
+		{
+			// TODO - throw fatal error
+		}
+	}
 }
 
 Window::~Window()
 {
+	if (glContext != nullptr)
+	{
+		const bool didDestroy = SDL_GL_DestroyContext(glContext);
+		if (!didDestroy)
+		{
+			GADGET_LOG_ERROR("Failed to destroy OpenGL context! SDL Error: {}", SDL_GetError());
+		}
+	}
+
 	if (windowPtr != nullptr)
 	{
 		SDL_DestroyWindow(windowPtr);
