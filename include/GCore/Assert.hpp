@@ -9,7 +9,7 @@ namespace Gadget
 {
 	void PopupErrorMessage(std::string_view title, std::string_view message);
 
-	inline void Assert(bool condition, std::string_view message, std::source_location sourceLocation = std::source_location::current())
+	inline constexpr void Assert(bool condition, std::string_view message, std::source_location sourceLocation = std::source_location::current())
 	{
 		if (!condition)
 		{
@@ -21,6 +21,9 @@ namespace Gadget
 			#endif
 		}
 	}
+
+	static_assert((Assert(true, "Should pass"), true));
+	//static_assert((Assert(false, "Should fail"), true));
 
 	namespace Internal
 	{
