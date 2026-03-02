@@ -37,13 +37,14 @@ namespace Gadget
 		Window& operator=(Window&& other) = delete;
 
 		void HandleEvents();
+		void UpdateWindowSurface();
 
 		[[nodiscard]] ScreenCoordinate GetSize() const noexcept;
 		[[nodiscard]] int32_t GetWidth() const noexcept;
 		[[nodiscard]] int32_t GetHeight() const noexcept;
 		[[nodiscard]] std::optional<float> GetRefreshRate() const noexcept;
-		WindowSurfaceView GetSurfaceView();
-		void UpdateWindowSurface();
+		[[nodiscard]] WindowSurfaceView GetSurfaceView();
+		[[nodiscard]] SDL_Window* GetSDLWindowPtr() const noexcept{ return windowPtr; }
 
 		void SetSize(int32_t width, int32_t height) noexcept;
 		void SetSize(ScreenCoordinate size_) noexcept;

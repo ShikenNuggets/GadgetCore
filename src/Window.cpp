@@ -109,6 +109,11 @@ void Window::HandleEvents()
 	}
 }
 
+void Window::UpdateWindowSurface()
+{
+	SDL_UpdateWindowSurface(windowPtr);
+}
+
 ScreenCoordinate Window::GetSize() const noexcept
 {
 	return size;
@@ -132,11 +137,6 @@ std::optional<float> Window::GetRefreshRate() const noexcept
 WindowSurfaceView Window::GetSurfaceView()
 {
 	return WindowSurfaceView(SDL_GetWindowSurface(windowPtr));
-}
-
-void Window::UpdateWindowSurface()
-{
-	SDL_UpdateWindowSurface(windowPtr);
 }
 
 void Window::SetSize(int32_t width, int32_t height) noexcept
