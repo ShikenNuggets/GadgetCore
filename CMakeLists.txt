@@ -123,6 +123,18 @@ elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
 	target_compile_definitions(GadgetCore PUBLIC GADGET_BUILD_RELEASE)
 endif()
 
+# --------------------------------------- #
+# ------ Platform Specific Config ------- #
+# --------------------------------------- #
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	target_compile_definitions(GadgetCore PUBLIC GADGET_PLATFORM_WINDOWS)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	target_compile_definitions(GadgetCore PUBLIC GADGET_PLATFORM_MACOS)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+	target_compile_definitions(GadgetCore PUBLIC GADGET_PLATFORM_LINUX)
+endif()
+
 # --------------------------- #
 # ---------- Tests ---------- #
 # --------------------------- #
