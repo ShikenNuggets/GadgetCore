@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 namespace Gadget
 {
 	// DO NOT make any assumptions about the underlying type or numeric values of error codes
@@ -18,6 +20,36 @@ namespace Gadget
 		OutOfMemory,
 
 		// SDK Errors
-		SDL_Error
+		SDL_Error,
+
+		ErrorCode_MAX // TODO - we may not need this in C++26
 	};
+
+	// TODO - Replace this with enum to string reflection in C++26
+	constexpr std::array<const char*, static_cast<size_t>(ErrorCode::ErrorCode_MAX)> ErrorCodeStr = {
+		"OK",
+		"Unknown",
+
+		// Generic Errors
+		"InvalidState",
+		"InvalidArgs",
+		"FileIO",
+		"ConstructorFailed",
+		"OutOfMemory",
+
+		// SDK Errors
+		"SDL_Error",
+
+		//ErrorCode_MAX
+	};
+
+	constexpr inline const char* GetErrorCodeString(ErrorCode err)
+	{
+		if (err < ErrorCode::OK || err >= ErrorCode::ErrorCode_MAX)
+		{
+			return "UnknownErrorCode";
+		}
+
+		return ErrorCodeStr.at(static_cast<size_t>(err));
+	}
 }
