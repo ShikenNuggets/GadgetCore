@@ -27,7 +27,7 @@ namespace Gadget
 	{
 		#ifdef _MSC_VER
 			__debugbreak();
-		#elifdef (__clang__)
+		#elifdef __clang__
 			__builtin_debugtrap();
 		#elif defined (__GNUC__) || defined (__GNUG__)
 			__builtin_trap();
