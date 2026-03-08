@@ -20,6 +20,7 @@ namespace Gadget
 		OutOfMemory,
 
 		// SDK Errors
+		ThirdParty_Error,
 		SDL_Error,
 
 		ErrorCode_MAX // TODO - we may not need this in C++26
