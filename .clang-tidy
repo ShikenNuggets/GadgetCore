@@ -23,6 +23,7 @@ Checks: '
   performance-*,
     
   portability-*,
+    -portability-avoid-pragma-once, # pragma once has been supported by all major compilers for decades,
     
   readability-*,
     -readability-identifier-length, # Sometimes your variables SHOULD be short,
