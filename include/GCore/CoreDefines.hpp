@@ -19,6 +19,11 @@ namespace Gadget
 		ConstructorFailed,
 		OutOfMemory,
 
+		// Platform Errors
+		Platform_Win32_Error,
+		Platform_Win32_FileIoPermissions,
+		Platform_Win32_NoAssociation,
+
 		// SDK Errors
 		ThirdParty_Error,
 		SDL_Error,
@@ -38,7 +43,13 @@ namespace Gadget
 		"ConstructorFailed",
 		"OutOfMemory",
 
+		// Platform Errors
+		"Platform_Win32_Error",
+		"Platform_Win32_FileIoPermissions",
+		"Platform_Win32_NoAssociation",
+
 		// SDK Errors
+		"ThirdParty_Error",
 		"SDL_Error",
 
 		//ErrorCode_MAX
