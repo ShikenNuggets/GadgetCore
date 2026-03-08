@@ -11,26 +11,26 @@ namespace Gadget
 	public:
 		void Push(const T& inValue)
 		{
-			auto lock = std::lock_guard(queueMutex);
+			auto lock = std::scoped_lock(queueMutex);
 			internalQueue.push(inValue);
 		}
 
 		void Push(T&& inValue)
 		{
-			auto lock = std::lock_guard(queueMutex);
+			auto lock = std::scoped_lock(queueMutex);
 			internalQueue.push(std::move(inValue));
 		}
 
 		template <typename... Args>
 		void Emplace(Args&&... args)
 		{
-			auto lock = std::lock_guard(queueMutex);
+			auto lock = std::scoped_lock(queueMutex);
 			internalQueue.emplace(std::forward<Args>(args)...);
 		}
 
 		bool Pop(T& outValue)
 		{
-			auto lock = std::lock_guard(queueMutex);
+			auto lock = std::scoped_lock(queueMutex);
 
 			if (internalQueue.empty())
 			{
@@ -44,7 +44,7 @@ namespace Gadget
 
 		bool IsEmpty() const
 		{
-			auto lock = std::lock_guard(queueMutex);
+			auto lock = std::scoped_lock(queueMutex);
 			return internalQueue.empty();
 		}
 
