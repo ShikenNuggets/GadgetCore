@@ -1,5 +1,6 @@
 #pragma once
 
+#include <expected>
 #include <filesystem>
 #include <string>
 #include <vector>
@@ -28,6 +29,8 @@ namespace Gadget::FileSystem
 	[[nodiscard]] ErrorCode CreateFile(const std::filesystem::path& filePath_);
 	[[nodiscard]] ErrorCode CreateDirectory(const std::filesystem::path& dirPath_);
 
-	[[nodiscard]] ErrorCode ReadFile(const std::filesystem::path& filePath_, std::vector<std::string>& outBuffer_);
+	[[nodiscard]] ErrorCode ReadFileLines(const std::filesystem::path& filePath_, std::vector<std::string>& outBuffer_);
+	[[nodiscard]] std::expected<std::vector<std::string>, ErrorCode> ReadFileLines(const std::filesystem::path& filePath_);
+
 	[[nodiscard]] ErrorCode WriteToFile(const std::filesystem::path& filePath_, const std::string& content_, WriteType writeType_ = WriteType::Append);
 }

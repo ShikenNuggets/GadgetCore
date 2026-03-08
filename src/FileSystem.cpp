@@ -46,7 +46,7 @@ ErrorCode FileSystem::CreateFile(const std::filesystem::path& filePath_)
 	return ErrorCode::OK;
 }
 
-ErrorCode FileSystem::ReadFile(const std::filesystem::path& filePath_, std::vector<std::string>& outBuffer_)
+ErrorCode FileSystem::ReadFileLines(const std::filesystem::path& filePath_, std::vector<std::string>& outBuffer_)
 {
 	std::fstream fileStream;
 	fileStream.open(filePath_, std::ios::in);
@@ -64,6 +64,18 @@ ErrorCode FileSystem::ReadFile(const std::filesystem::path& filePath_, std::vect
 
 	fileStream.close();
 	return ErrorCode::OK;
+}
+
+std::expected<std::vector<std::string>, ErrorCode> FileSystem::ReadFileLines(const std::filesystem::path& filePath_)
+{
+	std::vector<std::string> buffer;
+	const auto result = ReadFileLines(filePath_, buffer);
+	if (result != ErrorCode::OK)
+	{
+		return std::unexpected(result);
+	}
+
+	return buffer;
 }
 
 ErrorCode FileSystem::WriteToFile(const std::filesystem::path& filePath_, const std::string& content_, WriteType writeType_)
