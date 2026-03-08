@@ -7,6 +7,40 @@ on:
     branches: [ "main" ]
 
 jobs:
+  build-all:
+    runs-on: ${{ matrix.config.os }}
+
+    strategy:
+      # Ensure we get feedback for all matrix combinations
+      # Consider changing this to true when things are more stable
+      fail-fast: false
+      
+      matrix:
+        build_type: [Release]
+        config:
+          - { os: windows-latest, c: cl, cpp: cl }
+          - { os: windows-latest, c: clang, cpp: clang++ }
+          - { os: macos-latest, c: clang, cpp: clang++ }
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Configure CMake
+      run: >
+        cmake -B build
+        -DCMAKE_CXX_COMPILER=${{ matrix.config.cpp }}
+        -DCMAKE_C_COMPILER=${{ matrix.config.c }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -DSDL_UNIX_CONSOLE_BUILD=ON
+        -S .
+
+    - name: Build
+      run: cmake --build build --config ${{ matrix.build_type }}
+
+    - name: Test
+      working-directory: ./build/tests
+      run: ctest --build-config ${{ matrix.build_type }} --output-on-failure
+
   build-linux:
     runs-on: ubuntu-latest
     container:
@@ -30,40 +64,6 @@ jobs:
         cmake -B build
         -DCMAKE_CXX_COMPILER=${{ matrix.compiler.cpp }}
         -DCMAKE_C_COMPILER=${{ matrix.compiler.c }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -DSDL_UNIX_CONSOLE_BUILD=ON
-        -S .
-
-    - name: Build
-      run: cmake --build build --config ${{ matrix.build_type }}
-
-    - name: Test
-      working-directory: ./build/tests
-      run: ctest --build-config ${{ matrix.build_type }} --output-on-failure
-      
-  build-windows-mac:
-    runs-on: ${{ matrix.config.os }}
-
-    strategy:
-      # Ensure we get feedback for all matrix combinations
-      # Consider changing this to true when things are more stable
-      fail-fast: false
-      
-      matrix:
-        build_type: [Release]
-        config:
-          - { os: windows-latest, c: cl, cpp: cl }
-          - { os: windows-latest, c: clang, cpp: clang++ }
-          - { os: macos-latest, c: clang, cpp: clang++ }
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Configure CMake
-      run: >
-        cmake -B build
-        -DCMAKE_CXX_COMPILER=${{ matrix.config.cpp }}
-        -DCMAKE_C_COMPILER=${{ matrix.config.c }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -DSDL_UNIX_CONSOLE_BUILD=ON
         -S .
