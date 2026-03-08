@@ -7,7 +7,47 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-linux:
+    runs-on: ubuntu-latest
+    container:
+      image: shikennuggets/arch-build-env:latest
+      
+    strategy:
+      # Ensure we get feedback for all matrix combinations
+      # Consider changing this to true when things are more stable
+      fail-fast: false
+      matrix:
+        build_type: [Release]
+        compiler:
+          - { c: gcc, cpp: g++ }
+          - { c: clang, cpp: clang++ }
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set reusable strings
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+    - name: Configure CMake
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.compiler.cpp }}
+        -DCMAKE_C_COMPILER=${{ matrix.compiler.c }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -DSDL_UNIX_CONSOLE_BUILD=ON
+        -S ${{ github.workspace }}
+
+    - name: Build
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+
+    - name: Test
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}/tests
+      run: ctest --build-config ${{ matrix.build_type }} --output-on-failure
+      
+  build-windows-mac:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -16,9 +56,8 @@ jobs:
       fail-fast: false
       
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [windows-latest, macos-latest]
         build_type: [Release]
-        c_compiler: [gcc-14, clang, cl]
         include:
           - os: windows-latest
             c_compiler: cl
@@ -28,48 +67,20 @@ jobs:
             c_compiler: clang
             cpp_compiler: clang++
 
-          - os: ubuntu-latest
-            c_compiler: gcc-14
-            cpp_compiler: g++-14
-
-          - os: ubuntu-latest
-            c_compiler: clang
-            cpp_compiler: clang++
-
           - os: macos-latest
             c_compiler: clang
             cpp_compiler: clang++
-
-        exclude:
-          - os: windows-latest
-            c_compiler: gcc-14
-          - os: ubuntu-latest
-            c_compiler: cl
-          - os: macos-latest
-            c_compiler: gcc-14
-          - os: macos-latest
-            c_compiler: cl
 
     steps:
     - uses: actions/checkout@v4
 
     - name: Set reusable strings
-      # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
       id: strings
       shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-    - name: Install GCC 14
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-        sudo apt-get update
-        sudo apt-get install -y gcc-14 g++-14
-
     - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
@@ -79,11 +90,8 @@ jobs:
         -S ${{ github.workspace }}
 
     - name: Build
-      # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}/tests
-      # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest --build-config ${{ matrix.build_type }} --output-on-failure
