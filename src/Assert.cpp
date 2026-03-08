@@ -25,9 +25,9 @@ namespace Gadget
 	// TODO - Replace this with std::breakpoint in C++26
 	static inline void DebugBreak()
 	{
-		#if defined (_MSC_VER)
+		#ifdef _MSC_VER
 			__debugbreak();
-		#elif defined (__clang__)
+		#elifdef (__clang__)
 			__builtin_debugtrap();
 		#elif defined (__GNUC__) || defined (__GNUG__)
 			__builtin_trap();
@@ -41,9 +41,9 @@ void Gadget::Internal::PopupDebugErrorMessage(std::string_view title, std::strin
 {
 	std::array<SDL_MessageBoxButtonData, 3> buttons
 	{{
-		{ .flags = NULL, .buttonID = 0, .text = "Ignore" },
-		{ .flags = NULL, .buttonID = 1, .text = "Break" },
-		{ .flags = NULL, .buttonID = 2, .text = "Abort" },
+		{ .flags = 0, .buttonID = 0, .text = "Ignore" },
+		{ .flags = 0, .buttonID = 1, .text = "Break" },
+		{ .flags = 0, .buttonID = 2, .text = "Abort" },
 	}};
 
 	SDL_MessageBoxData data{};
