@@ -37,7 +37,7 @@ void WindowSurfaceView::Clear(const Gadget::Color& color)
 
 	if (surface->pixels == nullptr)
 	{
-		Logger::Log(Logger::Warning, "SDL_Surface->pixels was null, cannot clear the screen");
+		Logger::Log(Logger::Severity::Warning, "SDL_Surface->pixels was null, cannot clear the screen");
 		return;
 	}
 
@@ -63,7 +63,7 @@ void WindowSurfaceView::AssignPixel(int32_t x, int32_t y, Uint32 color)
 
 	if (surface->pixels == nullptr)
 	{
-		Logger::Log(Logger::Warning, "SDL_Surface->pixels was null, cannot assign pixel");
+		Logger::Log(Logger::Severity::Warning, "SDL_Surface->pixels was null, cannot assign pixel");
 		return;
 	}
 

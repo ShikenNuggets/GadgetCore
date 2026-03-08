@@ -7,7 +7,7 @@
 
 namespace Gadget::Logger
 {
-	enum Severity : uint8_t
+	enum class Severity : uint8_t
 	{
 		None,
 		FatalError,
