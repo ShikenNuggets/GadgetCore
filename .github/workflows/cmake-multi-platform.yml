@@ -42,7 +42,7 @@ jobs:
       run: ctest --build-config ${{ matrix.build_type }} --output-on-failure
       
   build-windows-mac:
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.config.os }}
 
     strategy:
       # Ensure we get feedback for all matrix combinations
