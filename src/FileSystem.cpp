@@ -78,6 +78,23 @@ std::expected<std::vector<std::string>, ErrorCode> FileSystem::ReadFileLines(con
 	return buffer;
 }
 
+std::expected<std::string, ErrorCode> FileSystem::ReadFileToString(const std::filesystem::path& filePath)
+{
+	const auto result = ReadFileLines(filePath);
+	if (!result.has_value())
+	{
+		return std::unexpected(result.error());
+	}
+
+	std::string outStr;
+	for (const auto& str : result.value())
+	{
+		outStr += str + "\n";
+	}
+
+	return outStr;
+}
+
 ErrorCode FileSystem::WriteToFile(const std::filesystem::path& filePath_, const std::string& content_, WriteType writeType_)
 {
 	auto err = CreateFile(filePath_);
