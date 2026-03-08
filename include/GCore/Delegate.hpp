@@ -1,67 +1,65 @@
 #pragma once
 
 #include <algorithm>
-#include <atomic>
-#include <cstdint>
 #include <functional>
-#include <ranges>
+#include <memory>
 #include <vector>
 
 #include "Assert.hpp"
 
 namespace Gadget
 {
-	struct DelegateHandle
-	{
-		uint64_t id;
-
-		bool operator ==(const DelegateHandle& h2) const{ return id == h2.id; }
-	};
-
 	template <typename T>
-	struct DelegateCallback
+	class DelegateHandle
 	{
-		std::function<T> func;
-		DelegateHandle handle;
+	public:
+		explicit DelegateHandle(std::function<T>&& callback) : func(std::make_shared<std::function<T>>(std::move(callback))){}
+
+		std::weak_ptr<std::function<T>> GetWeakPtr()
+		{
+			return { func };
+		}
+
+	private:
+		std::shared_ptr<std::function<T>> func;
 	};
 
 	template <typename T>
 	class Delegate
 	{
 	public:
-		DelegateHandle Add(std::function<T> callback)
+		DelegateHandle<T> Add(std::function<T> callback)
 		{
-			DelegateHandle handle = { lastId++ };
-			callbacks.push_back(DelegateCallback<T>{ std::move(callback), handle });
-			return handle;
-		}
+			GADGET_ASSERT(callback, "Tried to bind a std::function with no target");
 
-		void Remove(DelegateHandle handle)
-		{
-			const auto containsHandle = [handle](const auto& callback){ return callback.handle == handle; };
-			GADGET_ASSERT(std::ranges::any_of(callbacks, containsHandle), "Delegate does not contain handle with ID {}", handle.id);
-			
-			std::erase_if(callbacks, containsHandle);
+			auto handle = DelegateHandle<T>(std::move(callback));
+			callbacks.push_back(handle.GetWeakPtr());
+			return handle;
 		}
 
 		template <typename... Args>
 		void Broadcast(const Args&... args)
 		{
-			for (auto& callback : callbacks)
+			bool anyInvalid = false;
+			for (auto& callbackWeakPtr : callbacks)
 			{
-				if (callback.func)
+				auto callbackPtr = callbackWeakPtr.lock();
+				if (callbackPtr == nullptr)
 				{
-					callback.func(args...);
+					anyInvalid = true;
+					continue;
 				}
+
+				(*callbackPtr)(args...);
+			}
+
+			if (anyInvalid)
+			{
+				std::erase_if(callbacks, [](const auto& wp){ return wp.expired(); });
 			}
 		}
 
 	private:
-		// Slightly icky but guarantees callback handles will always have unique values
-		// 32 bit would probably be adequate, but we'll play it safe and use 64
-		// If we made a callback every nanosecond it would take ~584 years for this to overflow
-		static inline std::atomic<uint64_t> lastId = 0;
-
-		std::vector<DelegateCallback<T>> callbacks;
+		std::vector<std::weak_ptr<std::function<T>>> callbacks;
 	};
 }
