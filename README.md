@@ -16,7 +16,7 @@ This library is in early development and is considered **unstable**. Expect freq
 
 ## Installation
 Requires:
-- C++23 (GCC 14, Clang 18, MSVC 14.37)
+- C++23 (GCC 14, Clang 19, MSVC 14.37)
 - CMake 3.28
 
 GadgetCore is designed to be built from source, used with CMake and FetchContent, and linked statically. You can find canonical usage examples in [GadgetEngine's experimental branch](https://github.com/ShikenNuggets/GadgetEngine/blob/Gadget2/CMakeLists.txt) or in [RenderSoft](https://github.com/ShikenNuggets/RenderSoft/blob/main/CMakeLists.txt).
