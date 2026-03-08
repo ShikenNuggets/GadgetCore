@@ -95,6 +95,18 @@ std::expected<std::string, ErrorCode> FileSystem::ReadFileToString(const std::fi
 	return outStr;
 }
 
+[[nodiscard]] std::expected<std::vector<uint8_t>, ErrorCode> FileSystem::ReadFileRaw(const std::filesystem::path& filePath)
+{
+	auto fileStream = std::ifstream(filePath, std::ios::binary);
+	if (!fileStream.is_open())
+	{
+		return std::unexpected(ErrorCode::FileIO);
+	}
+
+	std::vector<uint8_t> rawData = { std::istreambuf_iterator<char>(fileStream), {} }; // TODO - this is not particularly efficient
+	return rawData;
+}
+
 ErrorCode FileSystem::WriteToFile(const std::filesystem::path& filePath_, const std::string& content_, WriteType writeType_)
 {
 	auto err = CreateFile(filePath_);
