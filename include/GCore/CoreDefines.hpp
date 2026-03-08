@@ -18,6 +18,7 @@ namespace Gadget
 		FileIO,
 		ConstructorFailed,
 		OutOfMemory,
+		ParseError,
 
 		// Platform Errors
 		Platform_Win32_Error,

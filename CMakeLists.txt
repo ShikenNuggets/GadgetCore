@@ -47,6 +47,16 @@ set(ASSIMP_WARNINGS_AS_ERRORS OFF)
 set(ASSIMP_BUILD_TESTS OFF)
 FetchContent_MakeAvailable(Assimp)
 
+FetchContent_Declare(
+	json
+	GIT_REPOSITORY https://github.com/nlohmann/json.git
+	GIT_TAG v3.12.0
+	SYSTEM
+	EXCLUDE_FROM_ALL
+)
+set(JSON_BuildTests OFF)
+FetchContent_MakeAvailable(json)
+
 # --------------------------------------- #
 # ------------ Setup Tooling ------------ #
 # --------------------------------------- #
@@ -109,6 +119,7 @@ target_include_directories(GadgetCore
 target_link_libraries(GadgetCore
 	PUBLIC
 		SDL3::SDL3
+		nlohmann_json::nlohmann_json
 	PRIVATE
 		SDL3_image::SDL3_image
 		assimp::assimp
