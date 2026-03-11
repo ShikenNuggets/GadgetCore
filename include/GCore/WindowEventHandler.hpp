@@ -3,28 +3,30 @@
 #include <cstdint>
 
 #include "Delegate.hpp"
+#include "Input/InputDefines.hpp"
 
 namespace Gadget
 {
 	using QuitDelegateT = Delegate<void(void)>;
 
-	using WindowResizedDelegateT = Delegate<void(int32_t, int32_t)>; // Parameters: New window size (w, h)
-	using WindowMovedDelegateT = Delegate<void(int32_t, int32_t)>; // Parameters: New window position (x, y)
+	using WindowSizeDelegateT = Delegate<void(int32_t, int32_t)>; // Parameters: New window size (w, h)
+	using WindowPosDelegateT = Delegate<void(int32_t, int32_t)>; // Parameters: New window position (x, y)
 
-	using KeyDownDelegateT = Delegate<void(void)>;
-	using KeyUpDelegateT = Delegate<void(void)>;
+	using ButtonDelegateT = Delegate<void(ButtonId)>;
+	using AxisChangeDelegateT = Delegate<void(AxisId, double)>;
 
 	struct WindowEventHandler
 	{
 		// App Events
-		Delegate<void(void)> OnQuitRequested;
+		QuitDelegateT OnQuitRequested;
 
 		// Window Events
-		Delegate<void(int32_t, int32_t)> OnWindowResized;
-		Delegate<void(int32_t, int32_t)> OnWindowMoved;
+		WindowSizeDelegateT OnWindowResized;
+		WindowPosDelegateT OnWindowMoved;
 
 		// Key Events
-		Delegate<void(void)> OnKeyDown;
-		Delegate<void(void)> OnKeyUp;
+		ButtonDelegateT OnButtonDown;
+		ButtonDelegateT OnButtonUp;
+		AxisChangeDelegateT OnAxisChange;
 	};
 }

@@ -1,6 +1,7 @@
 #include "Window.hpp"
 
 #include "Logger.hpp"
+#include "ThirdParty/SDL_Utils.hpp"
 
 using namespace Gadget;
 
@@ -99,11 +100,68 @@ void Window::HandleEvents()
 			case SDL_EVENT_WINDOW_MOVED:
 				eventHandler.OnWindowMoved.Broadcast(e.window.data1, e.window.data2);
 				break;
+
+			// ----- Keyboard ----- //
 			case SDL_EVENT_KEY_DOWN:
-				eventHandler.OnKeyDown.Broadcast(); // TODO - Pass keycode
+				eventHandler.OnButtonDown.Broadcast(SDL_Utils::KeycodeToButtonId(e.key.key));
 				break;
 			case SDL_EVENT_KEY_UP:
-				eventHandler.OnKeyUp.Broadcast(); // TODO - Pass keycode
+				eventHandler.OnButtonUp.Broadcast(SDL_Utils::KeycodeToButtonId(e.key.key));
+				break;
+
+			// ----- Mouse ----- //
+			case SDL_EVENT_MOUSE_MOTION:
+				if (e.motion.xrel != 0.0f)
+				{
+					eventHandler.OnAxisChange.Broadcast(AxisId::Mouse_Horizontal, e.motion.xrel);
+				}
+				
+				if (e.motion.yrel != 0.0f)
+				{
+					eventHandler.OnAxisChange.Broadcast(AxisId::Mouse_Vertical, e.motion.yrel);
+				}
+
+				break;
+
+			case SDL_EVENT_MOUSE_BUTTON_DOWN:
+				eventHandler.OnButtonDown.Broadcast(SDL_Utils::MouseToButtonId(e.button.button));
+				break;
+			case SDL_EVENT_MOUSE_BUTTON_UP:
+				eventHandler.OnButtonUp.Broadcast(SDL_Utils::MouseToButtonId(e.button.button));
+				break;
+			case SDL_EVENT_MOUSE_WHEEL:
+				if (e.wheel.x != 0.0f)
+				{
+					eventHandler.OnAxisChange.Broadcast(AxisId::Mouse_Scroll_Horizontal, e.wheel.x);
+
+					if (e.wheel.x < 0.0f)
+					{
+						eventHandler.OnButtonDown.Broadcast(ButtonId::Mouse_Scroll_Left);
+						eventHandler.OnButtonUp.Broadcast(ButtonId::Mouse_Scroll_Left);
+					}
+					else if (e.wheel.x > 0.0f)
+					{
+						eventHandler.OnButtonDown.Broadcast(ButtonId::Mouse_Scroll_Right);
+						eventHandler.OnButtonUp.Broadcast(ButtonId::Mouse_Scroll_Right);
+					}
+				}
+
+				if (e.wheel.y != 0.0f)
+				{
+					eventHandler.OnAxisChange.Broadcast(AxisId::Mouse_Scroll_Vertical, e.wheel.y);
+
+					if (e.wheel.y > 0.0f)
+					{
+						eventHandler.OnButtonDown.Broadcast(ButtonId::Mouse_Scroll_Up);
+						eventHandler.OnButtonUp.Broadcast(ButtonId::Mouse_Scroll_Up);
+					}
+					else if (e.wheel.y < 0.0f)
+					{
+						eventHandler.OnButtonDown.Broadcast(ButtonId::Mouse_Scroll_Down);
+						eventHandler.OnButtonUp.Broadcast(ButtonId::Mouse_Scroll_Down);
+					}
+				}
+
 				break;
 		}
 	}
