@@ -28,7 +28,7 @@ namespace Gadget
 	class Delegate
 	{
 	public:
-		DelegateHandle<T> Add(std::function<T> callback)
+		[[nodiscard]] DelegateHandle<T> Add(std::function<T> callback)
 		{
 			GADGET_ASSERT(static_cast<bool>(callback), "Tried to bind a std::function with no target");
 
