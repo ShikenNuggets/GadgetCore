@@ -101,6 +101,7 @@ file (GLOB_RECURSE INC_FILES CONFIGURE_DEPENDS
 add_library(GadgetCore STATIC ${SRC_FILES} ${INC_FILES})
 
 option(GADGETCORE_BUILD_TESTS "Build tests for the GadgetCore project" ON)
+option(GADGETCORE_BUILD_DEMOS "Build demos for the GadgetCore project" ON) # TODO - turn this off later
 
 set_target_properties(GadgetCore PROPERTIES
 	CXX_EXTENSIONS NO
@@ -154,4 +155,11 @@ endif()
 # --------------------------- #
 if (GADGETCORE_BUILD_TESTS)
 	add_subdirectory(tests)
+endif()
+
+# --------------------------- #
+# ---------- Demos ---------- #
+# --------------------------- #
+if (GADGETCORE_BUILD_DEMOS)
+	add_subdirectory(demos)
 endif()
