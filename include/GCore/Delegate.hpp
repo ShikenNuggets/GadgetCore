@@ -30,7 +30,7 @@ namespace Gadget
 	public:
 		DelegateHandle<T> Add(std::function<T> callback)
 		{
-			GADGET_ASSERT(callback, "Tried to bind a std::function with no target");
+			GADGET_ASSERT(static_cast<bool>(callback), "Tried to bind a std::function with no target");
 
 			auto handle = DelegateHandle<T>(std::move(callback));
 			callbacks.push_back(handle.GetWeakPtr());
