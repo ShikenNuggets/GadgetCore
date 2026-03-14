@@ -16,18 +16,20 @@ namespace Gadget::FileSystem
 		Overwrite
 	};
 
-	inline bool FileExists(const std::filesystem::path& filePath_)
+	inline bool FileExists(const std::filesystem::path& filePath_) noexcept
 	{
-		return std::filesystem::exists(filePath_) && std::filesystem::is_regular_file(filePath_);
+		std::error_code err;
+		return std::filesystem::exists(filePath_, err) && std::filesystem::is_regular_file(filePath_, err);
 	}
 
-	inline bool DirExists(const std::filesystem::path& dirPath_)
+	inline bool DirExists(const std::filesystem::path& dirPath_) noexcept
 	{
-		return std::filesystem::exists(dirPath_) && std::filesystem::is_directory(dirPath_);
+		std::error_code err;
+		return std::filesystem::exists(dirPath_, err) && std::filesystem::is_directory(dirPath_, err);
 	}
 
-	[[nodiscard]] ErrorCode CreateFile(const std::filesystem::path& filePath_);
-	[[nodiscard]] ErrorCode CreateDirectory(const std::filesystem::path& dirPath_);
+	[[nodiscard]] ErrorCode CreateFile(const std::filesystem::path& filePath_) noexcept;
+	[[nodiscard]] ErrorCode CreateDirectory(const std::filesystem::path& dirPath_) noexcept;
 
 	[[nodiscard]] ErrorCode ReadFileLines(const std::filesystem::path& filePath_, std::vector<std::string>& outBuffer_);
 	[[nodiscard]] std::expected<std::vector<std::string>, ErrorCode> ReadFileLines(const std::filesystem::path& filePath_);

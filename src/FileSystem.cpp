@@ -4,7 +4,7 @@
 
 using namespace Gadget;
 
-ErrorCode FileSystem::CreateDirectory(const std::filesystem::path& dirPath_)
+ErrorCode FileSystem::CreateDirectory(const std::filesystem::path& dirPath_) noexcept
 {
 	if (dirPath_.empty() || DirExists(dirPath_))
 	{
@@ -15,7 +15,7 @@ ErrorCode FileSystem::CreateDirectory(const std::filesystem::path& dirPath_)
 	return std::filesystem::create_directory(dirPath_, err) ? ErrorCode::OK : ErrorCode::FileIO;
 }
 
-ErrorCode FileSystem::CreateFile(const std::filesystem::path& filePath_)
+ErrorCode FileSystem::CreateFile(const std::filesystem::path& filePath_) noexcept
 {
 	if (FileExists(filePath_))
 	{
