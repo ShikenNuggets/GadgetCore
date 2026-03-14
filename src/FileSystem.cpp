@@ -11,7 +11,8 @@ ErrorCode FileSystem::CreateDirectory(const std::filesystem::path& dirPath_)
 		return ErrorCode::OK;
 	}
 
-	return std::filesystem::create_directory(dirPath_) ? ErrorCode::OK : ErrorCode::FileIO;
+	std::error_code err;
+	return std::filesystem::create_directory(dirPath_, err) ? ErrorCode::OK : ErrorCode::FileIO;
 }
 
 ErrorCode FileSystem::CreateFile(const std::filesystem::path& filePath_)
