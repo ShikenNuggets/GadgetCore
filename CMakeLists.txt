@@ -15,6 +15,8 @@ FetchContent_Declare(
 	SYSTEM
 	EXCLUDE_FROM_ALL
 )
+set(CATCH_INSTALL_DOCS OFF)
+set(CATCH_INSTALL_EXTRAS OFF)
 FetchContent_MakeAvailable(catch2)
 
 FetchContent_Declare(
