@@ -2,7 +2,7 @@
 
 #include <SDL3/SDL.h>
 
-#include "Input/InputDefines.hpp"
+#include "GCore/Input/InputDefines.hpp"
 
 namespace Gadget::SDL_Utils
 {
