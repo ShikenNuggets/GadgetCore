@@ -26,6 +26,7 @@ FetchContent_Declare(
 	SYSTEM
 	EXCLUDE_FROM_ALL
 )
+set(SDL_TEST_LIBRARY OFF)
 FetchContent_MakeAvailable(SDL3)
 
 FetchContent_Declare(
