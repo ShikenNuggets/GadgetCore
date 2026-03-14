@@ -6,7 +6,7 @@ using namespace Gadget;
 
 ErrorCode FileSystem::CreateDirectory(const std::filesystem::path& dirPath_)
 {
-	if (DirExists(dirPath_))
+	if (dirPath_.empty() || DirExists(dirPath_))
 	{
 		return ErrorCode::OK;
 	}
