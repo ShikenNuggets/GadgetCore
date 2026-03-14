@@ -1,5 +1,3 @@
-#include <print>
-
 #include <GCore/Logger.hpp>
 #include <GCore/Window.hpp>
 
