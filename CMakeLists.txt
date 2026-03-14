@@ -72,7 +72,7 @@ set(ASSIMP_BUILD_BLEND_IMPORTER ON)
 set(ASSIMP_BUILD_FBX_IMPORTER ON)
 set(ASSIMP_BUILD_RAW_IMPORTER ON)
 set(ASSIMP_BUILD_STL_IMPORTER ON)
-set(ASSIMP_BUILD_USD_IMPORTER ON)
+set(ASSIMP_BUILD_USD_IMPORTER OFF) # I would like to support this but build fails on Linux
 
 FetchContent_MakeAvailable(Assimp)
 
