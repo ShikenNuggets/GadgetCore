@@ -33,6 +33,7 @@ namespace Gadget::Logger
 	// Do not call this directly
 	void OnProcessLogMessage_Internal(Severity severity_, std::string message_);
 
+	// TODO - Replace this with enum to string reflection in C++26
 	inline constexpr const char* SeverityToString(Severity severity_)
 	{
 		switch (severity_)
@@ -58,11 +59,11 @@ namespace Gadget::Logger
 
 	inline void Log(Severity severity, std::string_view message, std::source_location sourceLocation = std::source_location::current())
 	{
-		auto fmtMessage = std::format("[GCORE][{}][{}:{}] {}",
+		auto fmtMessage = std::format("[GCORE][{}] {} [{}:{}]",
 			SeverityToString(severity),
+			message,
 			std::filesystem::path(sourceLocation.file_name()).filename().string(),
-			sourceLocation.line(),
-			message
+			sourceLocation.line()
 		);
 		
 		OnProcessLogMessage_Internal(severity, std::move(fmtMessage));
