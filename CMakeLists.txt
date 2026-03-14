@@ -34,6 +34,17 @@ FetchContent_Declare(
 	EXCLUDE_FROM_ALL
 )
 set(SDLIMAGE_AVIF OFF) # This is on by default and gives us some nonsense unrecoverable error
+set(SDLIMAGE_STB OFF)
+set(SDLIMAGE_GIF OFF)
+set(SDLIMAGE_LBM OFF)
+set(SDLIMAGE_PCX OFF)
+set(SDLIMAGE_PNM OFF)
+set(SDLIMAGE_QOI OFF)
+set(SDLIMAGE_TIF OFF)
+set(SDLIMAGE_WEBP OFF)
+set(SDLIMAGE_XCF OFF)
+set(SDLIMAGE_XPM OFF)
+set(SDLIMAGE_XV OFF)
 FetchContent_MakeAvailable(SDL3_Image)
 
 FetchContent_Declare(
