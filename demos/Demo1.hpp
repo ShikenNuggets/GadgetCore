@@ -1,3 +1,5 @@
+#include <print>
+
 #include <GCore/Window.hpp>
 
 namespace GadgetCoreDemos
@@ -10,6 +12,11 @@ namespace GadgetCoreDemos
 		auto quitHandle = window.EventHandler().OnQuitRequested.Add([&]()
 		{
 			shouldContinue = false;
+		});
+
+		auto keyDownHandle = window.EventHandler().OnButtonDown.Add([](Gadget::ButtonId buttonId)
+		{
+			std::println("Button pressed - button ID: {}", static_cast<uint16_t>(buttonId));
 		});
 
 		while (shouldContinue)
