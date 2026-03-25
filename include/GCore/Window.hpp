@@ -15,6 +15,7 @@ namespace Gadget
 	enum class RenderAPI : uint8_t
 	{
 		None,
+		SDLRenderer,
 		SDLGPU,
 		OpenGL,
 		Metal,
@@ -45,6 +46,7 @@ namespace Gadget
 		[[nodiscard]] std::optional<float> GetRefreshRate() const noexcept;
 		[[nodiscard]] WindowSurfaceView GetSurfaceView();
 		[[nodiscard]] SDL_Window* GetSDLWindowPtr() const noexcept{ return windowPtr; }
+		[[nodiscard]] SDL_Renderer* GetSDLRenderer() const noexcept{ return sdlRenderer; }
 
 		void SetSize(int32_t width, int32_t height) noexcept;
 		void SetSize(ScreenCoordinate size_) noexcept;
@@ -59,6 +61,7 @@ namespace Gadget
 		RenderAPI renderAPI;
 		std::optional<float> refreshRate;
 		WindowEventHandler eventHandler;
+		SDL_Renderer* sdlRenderer;
 		SDL_GLContext glContext;
 	};
 }

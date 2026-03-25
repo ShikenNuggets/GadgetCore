@@ -31,6 +31,13 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 		// TODO - throw fatal error
 	}
 
+	if (renderAPI == RenderAPI::SDLRenderer)
+	{
+		sdlRenderer = SDL_CreateRenderer(windowPtr, nullptr);
+		GADGET_ASSERT(sdlRenderer != nullptr, "Failed to create SDL Renderer! SDL Error: {}", SDL_GetError());
+		// TODO - throw fatal error
+	}
+
 	SDL_SetJoystickEventsEnabled(true);
 	if (!SDL_JoystickEventsEnabled())
 	{
@@ -67,6 +74,11 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 
 Window::~Window()
 {
+	if (sdlRenderer != nullptr)
+	{
+		SDL_DestroyRenderer(sdlRenderer);
+	}
+
 	if (glContext != nullptr)
 	{
 		const bool didDestroy = SDL_GL_DestroyContext(glContext);
