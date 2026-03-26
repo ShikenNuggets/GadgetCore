@@ -158,6 +158,12 @@ target_link_libraries(GadgetCore
 		assimp::assimp
 )
 
+# Treat discarding a [[nodiscard]] as an error
+target_compile_options(GadgetCore PRIVATE
+	$<$<CXX_COMPILER_ID:MSVC>:/we4834>
+	$<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-Werror=unused-result>
+)
+
 # --------------------------------------- #
 # ----- Build Type Specific Config ------ #
 # --------------------------------------- #
