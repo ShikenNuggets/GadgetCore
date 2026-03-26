@@ -181,6 +181,11 @@ void Window::HandleEvents()
 
 void Window::UpdateWindowSurface()
 {
+	if (sdlRenderer != nullptr)
+	{
+		SDL_RenderPresent(sdlRenderer);
+	}
+
 	SDL_UpdateWindowSurface(windowPtr);
 }
 
