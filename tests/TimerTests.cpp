@@ -25,5 +25,7 @@ TEST_CASE("Timer::DeltaSeconds", "[timer_delta_seconds]")
 
 	std::this_thread::sleep_for(2ms);
 	REQUIRE(timer.SecondsSinceLastUpdate() >= Approx(0.002));
+
+	timer.Update();
 	REQUIRE(timer.SecondsSinceStart() >= Approx(0.003));
 }
