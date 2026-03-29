@@ -305,3 +305,27 @@ ButtonId SDL_Utils::MouseToButtonId(Uint8 button)
 
 	return ButtonId::None;
 }
+
+AxisId SDL_Utils::GamepadToAxisId(Uint8 axis)
+{
+	switch (axis)
+	{
+		case SDL_GAMEPAD_AXIS_LEFTX:
+			return AxisId::Gamepad_LeftStick_Horizontal;
+		case SDL_GAMEPAD_AXIS_LEFTY:
+			return AxisId::Gamepad_LeftStick_Vertical;
+		case SDL_GAMEPAD_AXIS_RIGHTX:
+			return AxisId::Gamepad_RightStick_Horizontal;
+		case SDL_GAMEPAD_AXIS_RIGHTY:
+			return AxisId::Gamepad_RightStick_Vertical;
+		case SDL_GAMEPAD_AXIS_LEFT_TRIGGER:
+			return AxisId::Gamepad_LeftTrigger;
+		case SDL_GAMEPAD_AXIS_RIGHT_TRIGGER:
+			return AxisId::Gamepad_RightTrigger;
+		default:
+			GADGET_LOG_ERROR("Unsupported SDL gamepad axis: {}", axis);
+			break;
+	}
+
+	return AxisId::None;
+}

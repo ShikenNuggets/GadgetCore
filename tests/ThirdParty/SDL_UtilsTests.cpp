@@ -24,3 +24,13 @@ TEST_CASE("SDL_Utils::MouseToButtonId", "[sdl_utils_mouse_to_button_id]")
 	REQUIRE(SDL_Utils::MouseToButtonId(SDL_BUTTON_X1) == ButtonId::Mouse_Button_4);
 	REQUIRE(SDL_Utils::MouseToButtonId(SDL_BUTTON_X2) == ButtonId::Mouse_Button_5);
 }
+
+TEST_CASE("SDL_Utils::GamepadToAxisId", "[sdl_utils_gamepad_to_axis_id]")
+{
+	REQUIRE(SDL_Utils::GamepadToAxisId(SDL_GAMEPAD_AXIS_LEFTX) == AxisId::Gamepad_LeftStick_Horizontal);
+	REQUIRE(SDL_Utils::GamepadToAxisId(SDL_GAMEPAD_AXIS_LEFTY) == AxisId::Gamepad_LeftStick_Vertical);
+	REQUIRE(SDL_Utils::GamepadToAxisId(SDL_GAMEPAD_AXIS_RIGHTX) == AxisId::Gamepad_RightStick_Horizontal);
+	REQUIRE(SDL_Utils::GamepadToAxisId(SDL_GAMEPAD_AXIS_RIGHTY) == AxisId::Gamepad_RightStick_Vertical);
+	REQUIRE(SDL_Utils::GamepadToAxisId(SDL_GAMEPAD_AXIS_LEFT_TRIGGER) == AxisId::Gamepad_LeftTrigger);
+	REQUIRE(SDL_Utils::GamepadToAxisId(SDL_GAMEPAD_AXIS_RIGHT_TRIGGER) == AxisId::Gamepad_RightTrigger);
+}

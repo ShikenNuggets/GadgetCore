@@ -8,4 +8,5 @@ namespace Gadget::SDL_Utils
 {
 	ButtonId KeycodeToButtonId(SDL_Keycode key);
 	ButtonId MouseToButtonId(Uint8 button);
+	AxisId GamepadToAxisId(Uint8 axis);
 }
