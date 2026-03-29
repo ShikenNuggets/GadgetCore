@@ -329,3 +329,62 @@ AxisId SDL_Utils::GamepadToAxisId(Uint8 axis)
 
 	return AxisId::None;
 }
+
+ButtonId SDL_Utils::GamepadtoButtonId(Uint8 button)
+{
+	switch (button)
+	{
+		case SDL_GAMEPAD_BUTTON_SOUTH:
+			return ButtonId::Gamepad_Face_Down;
+		case SDL_GAMEPAD_BUTTON_EAST:
+			return ButtonId::Gamepad_Face_Right;
+		case SDL_GAMEPAD_BUTTON_WEST:
+			return ButtonId::Gamepad_Face_Left;
+		case SDL_GAMEPAD_BUTTON_NORTH:
+			return ButtonId::Gamepad_Face_Up;
+		case SDL_GAMEPAD_BUTTON_BACK:
+			return ButtonId::Gamepad_Select;
+		case SDL_GAMEPAD_BUTTON_GUIDE:
+			return ButtonId::Gamepad_Home;
+		case SDL_GAMEPAD_BUTTON_START:
+			return ButtonId::Gamepad_Start;
+		case SDL_GAMEPAD_BUTTON_LEFT_STICK:
+			return ButtonId::Gamepad_AnalogClick_Left;
+		case SDL_GAMEPAD_BUTTON_RIGHT_STICK:
+			return ButtonId::Gamepad_AnalogClick_Right;
+		case SDL_GAMEPAD_BUTTON_LEFT_SHOULDER:
+			return ButtonId::Gamepad_Shoulder_L1;
+		case SDL_GAMEPAD_BUTTON_RIGHT_SHOULDER:
+			return ButtonId::Gamepad_Shoulder_R1;
+		case SDL_GAMEPAD_BUTTON_DPAD_UP:
+			return ButtonId::Gamepad_Dpad_Up;
+		case SDL_GAMEPAD_BUTTON_DPAD_DOWN:
+			return ButtonId::Gamepad_Dpad_Down;
+		case SDL_GAMEPAD_BUTTON_DPAD_LEFT:
+			return ButtonId::Gamepad_Dpad_Left;
+		case SDL_GAMEPAD_BUTTON_DPAD_RIGHT:
+			return ButtonId::Gamepad_Dpad_Right;
+		case SDL_GAMEPAD_BUTTON_MISC1:
+			return ButtonId::Gamepad_Misc1;
+		case SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1:
+			return ButtonId::Gamepad_Paddle_Right1;
+		case SDL_GAMEPAD_BUTTON_LEFT_PADDLE1:
+			return ButtonId::Gamepad_Paddle_Left1;
+		case SDL_GAMEPAD_BUTTON_RIGHT_PADDLE2:
+			return ButtonId::Gamepad_Paddle_Right2;
+		case SDL_GAMEPAD_BUTTON_LEFT_PADDLE2:
+			return ButtonId::Gamepad_Paddle_Left2;
+		case SDL_GAMEPAD_BUTTON_TOUCHPAD:
+			return ButtonId::Gamepad_Touchpad;
+		case SDL_GAMEPAD_BUTTON_MISC2:
+			return ButtonId::Gamepad_Misc2;
+		case SDL_GAMEPAD_BUTTON_MISC3:
+			return ButtonId::Gamepad_Misc3;
+		case SDL_GAMEPAD_BUTTON_MISC4:
+			return ButtonId::Gamepad_Misc4;
+		case SDL_GAMEPAD_BUTTON_MISC5:
+			return ButtonId::Gamepad_Misc5;
+		case SDL_GAMEPAD_BUTTON_MISC6:
+			return ButtonId::Gamepad_Misc6;
+	}
+}
