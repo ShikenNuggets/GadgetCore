@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include <optional>
 #include <string_view>
 
@@ -63,5 +64,9 @@ namespace Gadget
 		WindowEventHandler eventHandler;
 		SDL_Renderer* sdlRenderer;
 		SDL_GLContext glContext;
+		std::map<SDL_JoystickID, SDL_Gamepad*> gamepads;
+
+		void OpenGamepad(SDL_JoystickID gamepadId);
+		void CloseGamepad(SDL_JoystickID gamepadId);
 	};
 }

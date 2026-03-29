@@ -175,6 +175,12 @@ void Window::HandleEvents()
 				}
 
 				break;
+			case SDL_EVENT_GAMEPAD_ADDED:
+				OpenGamepad(e.gdevice.which);
+				break;
+			case SDL_EVENT_GAMEPAD_REMOVED:
+				CloseGamepad(e.gdevice.which);
+				break;
 		}
 	}
 }
@@ -228,4 +234,30 @@ void Window::SetSize(ScreenCoordinate size_) noexcept
 void Window::SetWindowTitle(std::string_view title)
 {
 	SDL_SetWindowTitle(windowPtr, title.data());
+}
+
+void Window::OpenGamepad(SDL_JoystickID gamepadId)
+{
+	auto* gamepad = SDL_OpenGamepad(gamepadId);
+	if (gamepad == nullptr)
+	{
+		GADGET_LOG_ERROR("Failed to open gamepad! SDL Error: {}", SDL_GetError());
+		return;
+	}
+	
+	gamepads.emplace(gamepadId, gamepad);
+}
+
+void Window::CloseGamepad(SDL_JoystickID gamepadId)
+{
+	auto gamepad = gamepads.find(gamepadId);
+	if (gamepad == gamepads.end())
+	{
+		GADGET_LOG_ERROR("Tried to close gamepad with ID {} that was not already open!", gamepadId);
+		return;
+	}
+
+	SDL_CloseGamepad(gamepad->second);
+
+	gamepads.erase(gamepadId);
 }
