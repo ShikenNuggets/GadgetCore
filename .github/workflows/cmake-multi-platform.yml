@@ -23,7 +23,7 @@ jobs:
           - { os: macos-latest, c: clang, cpp: clang++ }
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Configure CMake
       run: >
@@ -57,7 +57,7 @@ jobs:
           - { c: clang, cpp: clang++ }
     
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Configure CMake
       run: >
