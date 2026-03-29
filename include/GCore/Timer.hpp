@@ -23,7 +23,7 @@ namespace Gadget
 
 		[[nodiscard]] static inline std::chrono::microseconds GetCurrentTick()
 		{
-			return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch());
+			return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now().time_since_epoch());
 		}
 
 		[[nodiscard]] static inline double TicksToSeconds(std::chrono::microseconds ticks)
