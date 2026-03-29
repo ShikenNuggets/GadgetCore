@@ -181,6 +181,15 @@ void Window::HandleEvents()
 			case SDL_EVENT_GAMEPAD_REMOVED:
 				CloseGamepad(e.gdevice.which);
 				break;
+			case SDL_EVENT_GAMEPAD_AXIS_MOTION:
+				eventHandler.OnAxisChange.Broadcast(SDL_Utils::GamepadToAxisId(e.gaxis.axis), static_cast<double>(e.gaxis.value) / std::numeric_limits<Sint16>::max());
+				break;
+			case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
+				eventHandler.OnButtonDown.Broadcast(SDL_Utils::GamepadtoButtonId(e.gbutton.button));
+				break;
+			case SDL_EVENT_GAMEPAD_BUTTON_UP:
+				eventHandler.OnButtonUp.Broadcast(SDL_Utils::GamepadtoButtonId(e.gbutton.button));
+				break;
 		}
 	}
 }
