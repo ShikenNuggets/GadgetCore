@@ -25,6 +25,18 @@ namespace Gadget
 		Gamepad_AnalogClick_Left,
 		Gamepad_AnalogClick_Right,
 
+		Gamepad_Paddle_Left1,
+		Gamepad_Paddle_Left2,
+		Gamepad_Paddle_Right1,
+		Gamepad_Paddle_Right2,
+		Gamepad_Touchpad,
+		Gamepad_Misc1,
+		Gamepad_Misc2,
+		Gamepad_Misc3,
+		Gamepad_Misc4,
+		Gamepad_Misc5,
+		Gamepad_Misc6,
+
 		// ----- Mouse ----- //
 		Mouse_Left,
 		Mouse_Right,
