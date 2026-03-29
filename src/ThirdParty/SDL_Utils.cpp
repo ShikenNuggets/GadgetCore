@@ -387,4 +387,6 @@ ButtonId SDL_Utils::GamepadtoButtonId(Uint8 button)
 		case SDL_GAMEPAD_BUTTON_MISC6:
 			return ButtonId::Gamepad_Misc6;
 	}
+
+	return ButtonId::None;
 }

@@ -33,6 +33,8 @@ TEST_CASE("SDL_Utils::GamepadToAxisId", "[sdl_utils_gamepad_to_axis_id]")
 	REQUIRE(SDL_Utils::GamepadToAxisId(SDL_GAMEPAD_AXIS_RIGHTY) == AxisId::Gamepad_RightStick_Vertical);
 	REQUIRE(SDL_Utils::GamepadToAxisId(SDL_GAMEPAD_AXIS_LEFT_TRIGGER) == AxisId::Gamepad_LeftTrigger);
 	REQUIRE(SDL_Utils::GamepadToAxisId(SDL_GAMEPAD_AXIS_RIGHT_TRIGGER) == AxisId::Gamepad_RightTrigger);
+
+	REQUIRE(SDL_Utils::GamepadToAxisId(SDL_GAMEPAD_AXIS_INVALID) == AxisId::None);
 }
 
 TEST_CASE("SDL_Utils::GamepadToButtonId", "[sdl_utils_gamepad_to_button_id]")
@@ -63,4 +65,6 @@ TEST_CASE("SDL_Utils::GamepadToButtonId", "[sdl_utils_gamepad_to_button_id]")
 	REQUIRE(SDL_Utils::GamepadtoButtonId(SDL_GAMEPAD_BUTTON_MISC4) == ButtonId::Gamepad_Misc4);
 	REQUIRE(SDL_Utils::GamepadtoButtonId(SDL_GAMEPAD_BUTTON_MISC5) == ButtonId::Gamepad_Misc5);
 	REQUIRE(SDL_Utils::GamepadtoButtonId(SDL_GAMEPAD_BUTTON_MISC6) == ButtonId::Gamepad_Misc6);
+
+	REQUIRE(SDL_Utils::GamepadtoButtonId(SDL_GAMEPAD_BUTTON_INVALID) == ButtonId::None);
 }
