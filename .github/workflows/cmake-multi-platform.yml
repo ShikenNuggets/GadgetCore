@@ -74,3 +74,27 @@ jobs:
     - name: Test
       working-directory: ./build/tests
       run: ctest --build-config ${{ matrix.build_type }} --output-on-failure
+
+  build-android:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false # TODO - Consider changing this to true when things are more stable
+      matrix:
+        build_type: [Release]
+        abi: [arm64-v8a, x86_64] # Ensure it builds for real phones (arm64) and the emulator (x86_64)
+
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Configure CMake
+      run: >
+        cmake -B build
+        -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_LATEST_HOME/build/cmake/android.toolchain.cmake
+        -DANDROID_ABI=${{ matrix.abi }}
+        -DANDROID_PLATFORM=android-21
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -DSDL_UNIX_CONSOLE_BUILD=ON
+        -S .
+
+    - name: Build
+      run: cmake --build build --config ${{ matrix.build_type }}
