@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required (VERSION 3.28)
 
-project ("GadgetCore" LANGUAGES CXX)
+project ("GadgetCore" LANGUAGES C CXX)
 
 # --------------------------------------- #
 # ----- Fetch External Dependencies ----- #
