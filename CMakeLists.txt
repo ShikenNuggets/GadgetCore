@@ -74,6 +74,10 @@ set(ASSIMP_BUILD_RAW_IMPORTER ON)
 set(ASSIMP_BUILD_STL_IMPORTER ON)
 set(ASSIMP_BUILD_USD_IMPORTER OFF) # I would like to support this but build fails on Linux
 
+if (ANDROID)
+	add_compile_definitions(USE_FILE32API) # Forces minizip to use standard fopen instead of missing fopen64
+endif()
+
 FetchContent_MakeAvailable(Assimp)
 
 FetchContent_Declare(
