@@ -185,11 +185,29 @@ endif()
 # --------------------------------------- #
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	target_compile_definitions(GadgetCore PUBLIC GADGET_PLATFORM_WINDOWS)
+	target_compile_definitions(GadgetCore
+		PUBLIC
+			GADGET_PLATFORM_TYPE_PC
+			GADGET_PLATFORM_WINDOWS
+	)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-	target_compile_definitions(GadgetCore PUBLIC GADGET_PLATFORM_MACOS)
+	target_compile_definitions(GadgetCore
+		PUBLIC
+			GADGET_PLATFORM_TYPE_PC
+			GADGET_PLATFORM_MACOS
+	)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-	target_compile_definitions(GadgetCore PUBLIC GADGET_PLATFORM_LINUX)
+	target_compile_definitions(GadgetCore
+		PUBLIC
+			GADGET_PLATFORM_TYPE_PC
+			GADGET_PLATFORM_LINUX
+	)
+elseif(ANDROID)
+	target_compile_definitions(GadgetCore
+		PUBLIC
+			GADGET_PLATFORM_TYPE_MOBILE
+			GADGET_PLATFORM_ANDROID
+	)
 endif()
 
 # --------------------------- #
