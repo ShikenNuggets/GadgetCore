@@ -1,6 +1,8 @@
 #include <iostream>
 #include <print>
 
+#include <SDL3/SDL_main.h>
+
 #include "Demo1.hpp"
 
 int main(int argc, char* argv[])
