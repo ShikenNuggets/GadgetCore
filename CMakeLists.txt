@@ -104,17 +104,20 @@ else()
     set(EXCEPTION_FLAG "")
 endif()
 
-find_program(CLANG_TIDY_EXE NAMES clang-tidy)
+# TODO - See if we get clang-tidy to work reliably with Android Studio
+if (NOT ANDROID)
+	find_program(CLANG_TIDY_EXE NAMES clang-tidy)
 
-if (CLANG_TIDY_EXE)
-	message(STATUS "clang-tidy checks enabled")
-	set(CMAKE_CXX_CLANG_TIDY
-		clang-tidy
-		"-extra-arg=${EXCEPTION_FLAG}"
-		"--header-filter=.*[/\\]include[/\\]GCore[/\\]"
-	)
-else()
-	message(STATUS "clang-tidy not found, will not run checks")
+	if (CLANG_TIDY_EXE)
+		message(STATUS "clang-tidy checks enabled")
+		set(CMAKE_CXX_CLANG_TIDY
+			clang-tidy
+			"-extra-arg=${EXCEPTION_FLAG}"
+			"--header-filter=.*[/\\]include[/\\]GCore[/\\]"
+		)
+	else()
+		message(STATUS "clang-tidy not found, will not run checks")
+	endif()
 endif()
 
 # --------------------------------------- #
