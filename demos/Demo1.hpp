@@ -7,7 +7,7 @@ namespace GadgetCoreDemos
 	{
 		Gadget::Logger::SimpleInit(Gadget::Logger::Mode::StdOut, Gadget::Logger::Severity::Verbose, {});
 
-		auto window = Gadget::Window(800, 600, Gadget::RenderAPI::None, "Demo1");
+		auto window = Gadget::Window(800, 600, Gadget::RenderAPI::SDLRenderer, "Demo1");
 
 		bool shouldContinue = true;
 		auto quitHandle = window.EventHandler().OnQuitRequested.Add([&]()
@@ -30,6 +30,14 @@ namespace GadgetCoreDemos
 		while (shouldContinue)
 		{
 			window.HandleEvents();
+
+			SDL_SetRenderDrawColor(window.GetSDLRenderer(), 25, 25, 25, 0);
+			SDL_RenderClear(window.GetSDLRenderer());
+
+			SDL_SetRenderDrawColorFloat(window.GetSDLRenderer(), 1.0f, 1.0f, 1.0f, 1.0f);
+			SDL_SetRenderScale(window.GetSDLRenderer(), 2.0f, 2.0f);
+			SDL_RenderDebugText(window.GetSDLRenderer(), 10, 10, "Hello, World!");
+
 			window.UpdateWindowSurface();
 		}
 

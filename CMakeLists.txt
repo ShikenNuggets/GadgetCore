@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required (VERSION 3.28)
 
-project ("GadgetCore" LANGUAGES CXX)
+project ("GadgetCore" LANGUAGES C CXX)
 
 # --------------------------------------- #
 # ----- Fetch External Dependencies ----- #
@@ -74,6 +74,10 @@ set(ASSIMP_BUILD_RAW_IMPORTER ON)
 set(ASSIMP_BUILD_STL_IMPORTER ON)
 set(ASSIMP_BUILD_USD_IMPORTER OFF) # I would like to support this but build fails on Linux
 
+if (ANDROID)
+	add_compile_definitions(USE_FILE32API) # Forces minizip to use standard fopen instead of missing fopen64
+endif()
+
 FetchContent_MakeAvailable(Assimp)
 
 FetchContent_Declare(
@@ -100,17 +104,20 @@ else()
     set(EXCEPTION_FLAG "")
 endif()
 
-find_program(CLANG_TIDY_EXE NAMES clang-tidy)
+# TODO - See if we get clang-tidy to work reliably with Android Studio
+if (NOT ANDROID)
+	find_program(CLANG_TIDY_EXE NAMES clang-tidy)
 
-if (CLANG_TIDY_EXE)
-	message(STATUS "clang-tidy checks enabled")
-	set(CMAKE_CXX_CLANG_TIDY
-		clang-tidy
-		"-extra-arg=${EXCEPTION_FLAG}"
-		"--header-filter=.*[/\\]include[/\\]GCore[/\\]"
-	)
-else()
-	message(STATUS "clang-tidy not found, will not run checks")
+	if (CLANG_TIDY_EXE)
+		message(STATUS "clang-tidy checks enabled")
+		set(CMAKE_CXX_CLANG_TIDY
+			clang-tidy
+			"-extra-arg=${EXCEPTION_FLAG}"
+			"--header-filter=.*[/\\]include[/\\]GCore[/\\]"
+		)
+	else()
+		message(STATUS "clang-tidy not found, will not run checks")
+	endif()
 endif()
 
 # --------------------------------------- #
@@ -178,11 +185,29 @@ endif()
 # --------------------------------------- #
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	target_compile_definitions(GadgetCore PUBLIC GADGET_PLATFORM_WINDOWS)
+	target_compile_definitions(GadgetCore
+		PUBLIC
+			GADGET_PLATFORM_TYPE_PC
+			GADGET_PLATFORM_WINDOWS
+	)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-	target_compile_definitions(GadgetCore PUBLIC GADGET_PLATFORM_MACOS)
+	target_compile_definitions(GadgetCore
+		PUBLIC
+			GADGET_PLATFORM_TYPE_PC
+			GADGET_PLATFORM_MACOS
+	)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-	target_compile_definitions(GadgetCore PUBLIC GADGET_PLATFORM_LINUX)
+	target_compile_definitions(GadgetCore
+		PUBLIC
+			GADGET_PLATFORM_TYPE_PC
+			GADGET_PLATFORM_LINUX
+	)
+elseif(ANDROID)
+	target_compile_definitions(GadgetCore
+		PUBLIC
+			GADGET_PLATFORM_TYPE_MOBILE
+			GADGET_PLATFORM_ANDROID
+	)
 endif()
 
 # --------------------------- #

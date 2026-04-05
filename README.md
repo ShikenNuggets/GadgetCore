@@ -7,9 +7,9 @@ GadgetCore spawned out of work on [GadgetEngine](https://github.com/ShikenNugget
 - **Platform Abstraction**: You should never need to directly call a platform-specific function or an underlying system API.
 
 ## Platform Support
-GadgetCore officially supports Windows, Mac, and Linux.
+GadgetCore officially supports Windows, Mac, Linux, and Android.
 
-Official platform support will be expanded to include mobile, game consoles, and WASM some time in the future. Android is the next highest priority. That said, I expect most features to work on most platforms regardless.
+This will be expanded to include WebAssembly, game consoles, and iOS some time in the future. Most features should work on most platforms regardless of official support status. Bug reports for unsupported platforms are welcome.
 
 ## Stability
 This library is in early development and is considered **unstable**. Expect frequent and unceremonious API breaks at this stage. I also do not plan to guarantee ABI stability for the foreseeable future. This will be updated as we approach a stable release.

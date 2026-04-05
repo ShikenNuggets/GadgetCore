@@ -1056,3 +1056,8 @@ dkms.conf
 *.uf2
 # Raspberry Pi Pico disassembler file
 *.dis
+
+# Android / CLion / IntelliJ
+.idea
+android/local.properties
+android/.gradle/
