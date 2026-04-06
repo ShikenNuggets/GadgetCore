@@ -4,6 +4,7 @@
 #include <SDL3/SDL_main.h>
 
 #include "Demo1.hpp"
+#include "Demo2.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -18,12 +19,18 @@ int main(int argc, char* argv[])
 	{
 		std::println("Pick a Demo: ");
 		std::println("[1] Basic Window");
+		std::println("[2] Breakout Game");
 		std::cin >> input;
 	}
 
 	if (input.contains('1'))
 	{
 		return GadgetCoreDemos::Demo1();
+	}
+	
+	if (input.contains('2'))
+	{
+		return GadgetCoreDemos::Demo2();
 	}
 	
 	std::println("No valid demo selected, exiting.");
