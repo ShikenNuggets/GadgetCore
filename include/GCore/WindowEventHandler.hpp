@@ -15,6 +15,7 @@ namespace Gadget
 	using ButtonDelegateT = Delegate<void(ButtonId)>;
 	using AxisChangeDelegateT = Delegate<void(AxisId, double)>;
 	using ButtonClickDelegateT = Delegate<void(ButtonId, double, double)>; // Button, location X, location Y
+	using PointerDelegateT = Delegate<void(double, double)>; // Pointer X, Y
 
 	struct WindowEventHandler
 	{
@@ -25,11 +26,12 @@ namespace Gadget
 		WindowSizeDelegateT OnWindowResized;
 		WindowPosDelegateT OnWindowMoved;
 
-		// Key Events
+		// Input Events
 		ButtonDelegateT OnButtonDown;
 		ButtonDelegateT OnButtonUp;
 		AxisChangeDelegateT OnAxisChange;
 		ButtonClickDelegateT OnClickDown;
 		ButtonClickDelegateT OnClickUp;
+		PointerDelegateT OnPointerMoved;
 	};
 }

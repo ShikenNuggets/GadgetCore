@@ -133,6 +133,8 @@ void Window::HandleEvents()
 					eventHandler.OnAxisChange.Broadcast(AxisId::Mouse_Vertical, e.motion.yrel);
 				}
 
+				eventHandler.OnPointerMoved.Broadcast(e.motion.x, e.motion.y);
+
 				break;
 
 			case SDL_EVENT_MOUSE_BUTTON_DOWN:
