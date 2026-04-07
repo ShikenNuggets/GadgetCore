@@ -23,6 +23,12 @@ namespace GadgetCoreDemos
 		bool rightInput = false;
 		float moveAxis = 0.0f;
 
+		float xPos = 325.0f;
+		static constexpr auto moveSpeed = 250.0f;
+
+		bool isClicking = false;
+		float lastClickX = xPos;
+
 		auto keyDownHandle = window.EventHandler().OnButtonDown.Add([&](Gadget::ButtonId buttonId)
 		{
 			switch (buttonId)
@@ -74,19 +80,42 @@ namespace GadgetCoreDemos
 				case Gadget::AxisId::Gamepad_LeftStick_Horizontal:
 					moveAxis = static_cast<float>(value);
 					break;
+				case Gadget::AxisId::Mouse_Horizontal:
+					lastClickX = value;
+					break;
 				default:
 					break;
 			}
 		});
 
-		float xPos = 325.0f;
-		static constexpr auto moveSpeed = 250.0f;
+		auto clickDownDelegate = window.EventHandler().OnClickDown.Add([&](Gadget::ButtonId buttonId, double x, double y)
+		{
+			isClicking = true;
+			lastClickX = x;
+		});
+
+		auto clickUpDelegate = window.EventHandler().OnClickUp.Add([&](Gadget::ButtonId buttonId, double x, double y)
+		{
+			isClicking = false;
+		});
+
+		auto pointerMovedDelegate = window.EventHandler().OnPointerMoved.Add([&](double x, double y)
+		{
+			if (isClicking)
+			{
+				lastClickX = x;
+			}
+		});
 
 		Gadget::Timer timer;
 
 		int64_t numFrames = 0;
 		double accumulatedTime = 0.0;
 		std::optional<int64_t> cachedFramerate;
+
+		static constexpr auto playerY = 500.0f;
+		static constexpr auto playerW = 150.0f;
+		static constexpr auto playerH = 25.0f;
 
 		while (shouldContinue)
 		{
@@ -108,6 +137,18 @@ namespace GadgetCoreDemos
 			window.HandleEvents();
 
 			auto moveVal = moveAxis;
+			if (isClicking)
+			{
+				if (lastClickX > xPos + (playerW / 2.0f))
+				{
+					moveVal += 1.0f;
+				}
+				else if (lastClickX < xPos + (playerW / 2.0f))
+				{
+					moveVal -= 1.0f;
+				}
+			}
+
 			if (leftInput)
 			{
 				moveVal -= 1.0f;
@@ -122,7 +163,7 @@ namespace GadgetCoreDemos
 			xPos = Gadget::Math::Clamp(0.0f, 650.0f, xPos + (moveVal * moveSpeed * static_cast<float>(deltaTime)));
 
 			SDL_SetRenderDrawColorFloat(window.GetSDLRenderer(), 1.0f, 1.0f, 1.0f, 1.0f);
-			const SDL_FRect rect{ .x = xPos, .y = 500.0f, .w = 150.0f, .h = 25.0f };
+			const SDL_FRect rect{ .x = xPos, .y = playerY, .w = playerW, .h = playerH };
 			SDL_RenderFillRect(window.GetSDLRenderer(), &rect);
 
 			if (cachedFramerate.has_value())
