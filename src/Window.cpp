@@ -137,9 +137,11 @@ void Window::HandleEvents()
 
 			case SDL_EVENT_MOUSE_BUTTON_DOWN:
 				eventHandler.OnButtonDown.Broadcast(SDL_Utils::MouseToButtonId(e.button.button));
+				eventHandler.OnClickDown.Broadcast(SDL_Utils::MouseToButtonId(e.button.button), e.button.x, e.button.y);
 				break;
 			case SDL_EVENT_MOUSE_BUTTON_UP:
 				eventHandler.OnButtonUp.Broadcast(SDL_Utils::MouseToButtonId(e.button.button));
+				eventHandler.OnClickUp.Broadcast(SDL_Utils::MouseToButtonId(e.button.button), e.button.x, e.button.y);
 				break;
 			case SDL_EVENT_MOUSE_WHEEL:
 				if (e.wheel.x != 0.0f)
