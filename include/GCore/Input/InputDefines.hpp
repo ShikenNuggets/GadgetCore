@@ -308,6 +308,9 @@ namespace Gadget
 		Keyboard_LeftHyper,
 		Keyboard_RightHyper,
 
+		// ----- Touch ----- //
+		Touch_Press,
+
 		ButtonId_MAX
 	};
 
@@ -330,6 +333,10 @@ namespace Gadget
 		Mouse_Vertical,
 		Mouse_Scroll_Horizontal,
 		Mouse_Scroll_Vertical,
+
+		// ----- Touch ----- //
+		Touch_Horizontal,
+		Touch_Vertical,
 
 		AxisId_MAX
 	};

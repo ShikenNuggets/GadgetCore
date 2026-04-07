@@ -194,6 +194,28 @@ void Window::HandleEvents()
 			case SDL_EVENT_GAMEPAD_BUTTON_UP:
 				eventHandler.OnButtonUp.Broadcast(SDL_Utils::GamepadtoButtonId(e.gbutton.button));
 				break;
+			case SDL_EVENT_FINGER_DOWN:
+				eventHandler.OnButtonDown.Broadcast(ButtonId::Touch_Press);
+				eventHandler.OnClickDown.Broadcast(ButtonId::Touch_Press, e.button.x, e.button.y);
+				break;
+			case SDL_EVENT_FINGER_UP:
+				eventHandler.OnButtonUp.Broadcast(ButtonId::Touch_Press);
+				eventHandler.OnClickUp.Broadcast(ButtonId::Touch_Press, e.button.x, e.button.y);
+				break;
+			case SDL_EVENT_FINGER_MOTION:
+				if (e.tfinger.dx != 0.0f)
+				{
+					eventHandler.OnAxisChange.Broadcast(AxisId::Touch_Horizontal, e.tfinger.dx);
+				}
+
+				if (e.tfinger.dy != 0.0f)
+				{
+					eventHandler.OnAxisChange.Broadcast(AxisId::Touch_Vertical, e.tfinger.dx);
+				}
+
+				eventHandler.OnPointerMoved.Broadcast(e.motion.x, e.motion.y);
+
+				break;
 		}
 	}
 }
