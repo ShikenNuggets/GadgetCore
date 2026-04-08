@@ -107,9 +107,11 @@ void Window::HandleEvents()
 				eventHandler.OnQuitRequested.Broadcast();
 				return; // No need to process any other events
 			case SDL_EVENT_WINDOW_RESIZED:
+				size = ScreenCoordinate(e.window.data1, e.window.data2);
 				eventHandler.OnWindowResized.Broadcast(e.window.data1, e.window.data2);
 				break;
 			case SDL_EVENT_WINDOW_MOVED:
+				position = ScreenCoordinate(e.window.data1, e.window.data2);
 				eventHandler.OnWindowMoved.Broadcast(e.window.data1, e.window.data2);
 				break;
 
