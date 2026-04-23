@@ -3,6 +3,12 @@
 project ("GadgetCore" LANGUAGES C CXX)
 
 # --------------------------------------- #
+# ------------ CMake Scripts ------------ #
+# --------------------------------------- #
+
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/GadgetCoreUtils.cmake")
+
+# --------------------------------------- #
 # ----- Fetch External Dependencies ----- #
 # --------------------------------------- #
 include(FetchContent)
@@ -94,31 +100,8 @@ FetchContent_MakeAvailable(json)
 # ------------ Setup Tooling ------------ #
 # --------------------------------------- #
 
-# Detect compiler
-if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    set(EXCEPTION_FLAG "/EHsc")
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(EXCEPTION_FLAG "-fexceptions")
-	set(PROJECT_WARNINGS "-Wall" "-Wextra" "-Wpedantic")
-else()
-    set(EXCEPTION_FLAG "")
-endif()
-
-# TODO - See if we get clang-tidy to work reliably with Android Studio
-if (NOT ANDROID)
-	find_program(CLANG_TIDY_EXE NAMES clang-tidy)
-
-	if (CLANG_TIDY_EXE)
-		message(STATUS "clang-tidy checks enabled")
-		set(CMAKE_CXX_CLANG_TIDY
-			clang-tidy
-			"-extra-arg=${EXCEPTION_FLAG}"
-			"--header-filter=.*[/\\]include[/\\]GCore[/\\]"
-		)
-	else()
-		message(STATUS "clang-tidy not found, will not run checks")
-	endif()
-endif()
+GadgetCore_SetExceptionFlag(EXCEPTION_FLAG)
+GadgetCore_EnableClangTidy(GadgetCore, EXCEPTION_FLAG, ".*[/\\]include[/\\]GCore[/\\]")
 
 # --------------------------------------- #
 # ------------ Setup Target ------------- #
@@ -166,10 +149,7 @@ target_link_libraries(GadgetCore
 )
 
 # Treat discarding a [[nodiscard]] as an error
-target_compile_options(GadgetCore PRIVATE
-	$<$<CXX_COMPILER_ID:MSVC>:/we4834>
-	$<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:-Werror=unused-result>
-)
+GadgetCore_NoDiscardAsError(GadgetCore)
 
 # --------------------------------------- #
 # ----- Build Type Specific Config ------ #
