@@ -95,3 +95,21 @@ jobs:
       working-directory: android
       env:
         ANDROID_NDK_HOME: ${{ env.ANDROID_NDK_HOME }}
+
+  build-ps2:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/ps2dev/ps2dev:latest
+
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Configure CMake
+      run: >
+        cmake -B build
+        -DCMAKE_BUILD_TYPE=Release
+        -DCMAKE_TOOLCHAIN_FILE=$PS2DEV/ps2sdk/ps2dev.cmake
+        -S .
+
+    - name: Build
+      run: cmake --build build --config Release
