@@ -4,7 +4,7 @@
 
 using namespace Gadget;
 
-Random::SeedT Random::TrueRandomValue()
+Random::SeedT Random::TrueRandomValue() noexcept
 {
 #ifdef GADGET_PLATFORM_SUPPORTS_RANDOM_DEVICE
 	try
