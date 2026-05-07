@@ -190,6 +190,11 @@ elseif(ANDROID)
 	)
 endif()
 
+target_compile_definitions(GadgetCore
+	PUBLIC
+		GADGET_PLATFORM_SUPPORTS_RANDOM_DEVICE
+)
+
 # --------------------------- #
 # ---------- Tests ---------- #
 # --------------------------- #

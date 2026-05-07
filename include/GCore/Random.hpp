@@ -1,5 +1,6 @@
 #pragma once
 
+#include <concepts>
 #include <cstdint>
 #include <random>
 
@@ -13,4 +14,29 @@ namespace Gadget::Random
 	// Intended to be used as a seed for a pseudorandom engine
 	// Falls back to a time-based seed if hardware entropy fails or is not supported
 	SeedT TrueRandomValue();
+
+	class Engine
+	{
+	public:
+		Engine(SeedT seed = TrueRandomValue()) : internalEngine(seed){}
+
+		// min and max are both inclusive
+		template <std::integral T>
+		inline T Range(T min, T max)
+		{
+			auto distribution = std::uniform_int_distribution<T>(min, max);
+			return distribution(internalEngine);
+		}
+
+		// min and max are both inclusive
+		template <std::floating_point T>
+		inline T Range(T min, T max)
+		{
+			auto distribution = std::uniform_real_distribution<T>(min, max);
+			return distribution(internalEngine);
+		}
+
+	private:
+		std::mt19937 internalEngine;
+	};
 }
