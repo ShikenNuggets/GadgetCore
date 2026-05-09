@@ -7,7 +7,7 @@ using namespace Gadget;
 
 Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::string_view name, int32_t x_, int32_t y_) : size(width_, height_), position(x_, y_), renderAPI(renderAPI_)
 {
-	const bool didInit = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD);
+	const bool didInit = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK);
 	if (didInit)
 	{
 		// TODO - throw fatal error
@@ -40,6 +40,12 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 
 	SDL_SetJoystickEventsEnabled(true);
 	if (!SDL_JoystickEventsEnabled())
+	{
+		// TODO - throw fatal error
+	}
+
+	SDL_SetGamepadEventsEnabled(true);
+	if (!SDL_GamepadEventsEnabled())
 	{
 		// TODO - throw fatal error
 	}
@@ -181,12 +187,7 @@ void Window::HandleEvents()
 				}
 
 				break;
-			case SDL_EVENT_GAMEPAD_ADDED:
-				OpenGamepad(e.gdevice.which);
-				break;
-			case SDL_EVENT_GAMEPAD_REMOVED:
-				CloseGamepad(e.gdevice.which);
-				break;
+			// SDL_EVENT_GAMEPAD_ADDED and SDL_EVENT_GAMEPAD_REMOVED are intentionally unhandled here
 			case SDL_EVENT_GAMEPAD_AXIS_MOTION:
 				eventHandler.OnAxisChange.Broadcast(SDL_Utils::GamepadToAxisId(e.gaxis.axis), static_cast<double>(e.gaxis.value) / std::numeric_limits<Sint16>::max());
 				break;
@@ -195,6 +196,33 @@ void Window::HandleEvents()
 				break;
 			case SDL_EVENT_GAMEPAD_BUTTON_UP:
 				eventHandler.OnButtonUp.Broadcast(SDL_Utils::GamepadtoButtonId(e.gbutton.button));
+				break;
+			case SDL_EVENT_JOYSTICK_ADDED:
+				controllers.emplace(e.jdevice.which, e.jdevice.which);
+				break;
+			case SDL_EVENT_JOYSTICK_REMOVED:
+				controllers.erase(e.jdevice.which);
+				break;
+			case SDL_EVENT_JOYSTICK_AXIS_MOTION:
+				eventHandler.OnAxisChange.Broadcast(SDL_Utils::JoystickToAxisId(e.jaxis.axis), static_cast<double>(e.gaxis.value) / std::numeric_limits<Sint16>::max());
+				break;
+			case SDL_EVENT_JOYSTICK_HAT_MOTION:
+				if (e.jhat.value & (SDL_HAT_LEFT | SDL_HAT_RIGHT))
+				{
+					eventHandler.OnAxisChange.Broadcast(SDL_Utils::JoystickHorizontalHatToAxisId(e.jhat.hat), static_cast<bool>(e.jhat.value & SDL_HAT_RIGHT) ? 1.0 : -1.0);
+				}
+
+				if (e.jhat.value & (SDL_HAT_UP | SDL_HAT_DOWN))
+				{
+					eventHandler.OnAxisChange.Broadcast(SDL_Utils::JoystickVerticalHatToAxisId(e.jhat.hat), static_cast<bool>(e.jhat.value & SDL_HAT_UP) ? 1.0 : -1.0);
+				}
+
+				break;
+			case SDL_EVENT_JOYSTICK_BUTTON_DOWN:
+				eventHandler.OnButtonDown.Broadcast(SDL_Utils::JoystickToButtonId(e.jbutton.button));
+				break;
+			case SDL_EVENT_JOYSTICK_BUTTON_UP:
+				eventHandler.OnButtonUp.Broadcast(SDL_Utils::JoystickToButtonId(e.jbutton.button));
 				break;
 			case SDL_EVENT_FINGER_DOWN:
 				eventHandler.OnButtonDown.Broadcast(ButtonId::Touch_Press);
@@ -271,30 +299,4 @@ void Window::SetSize(ScreenCoordinate size_) noexcept
 void Window::SetWindowTitle(std::string_view title)
 {
 	SDL_SetWindowTitle(windowPtr, title.data());
-}
-
-void Window::OpenGamepad(SDL_JoystickID gamepadId)
-{
-	auto* gamepad = SDL_OpenGamepad(gamepadId);
-	if (gamepad == nullptr)
-	{
-		GADGET_LOG_ERROR("Failed to open gamepad! SDL Error: {}", SDL_GetError());
-		return;
-	}
-	
-	gamepads.emplace(gamepadId, gamepad);
-}
-
-void Window::CloseGamepad(SDL_JoystickID gamepadId)
-{
-	auto gamepad = gamepads.find(gamepadId);
-	if (gamepad == gamepads.end())
-	{
-		GADGET_LOG_ERROR("Tried to close gamepad with ID {} that was not already open!", gamepadId);
-		return;
-	}
-
-	SDL_CloseGamepad(gamepad->second);
-
-	gamepads.erase(gamepadId);
 }

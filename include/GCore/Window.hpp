@@ -10,6 +10,7 @@
 #include "WindowEventHandler.hpp"
 #include "Graphics/Color.hpp"
 #include "Graphics/WindowSurfaceView.hpp"
+#include "Input/InputDeviceHandle.hpp"
 
 namespace Gadget
 {
@@ -64,9 +65,6 @@ namespace Gadget
 		WindowEventHandler eventHandler;
 		SDL_Renderer* sdlRenderer;
 		SDL_GLContext glContext;
-		std::map<SDL_JoystickID, SDL_Gamepad*> gamepads;
-
-		void OpenGamepad(SDL_JoystickID gamepadId);
-		void CloseGamepad(SDL_JoystickID gamepadId);
+		std::map<SDL_JoystickID, InputDeviceHandle> controllers;
 	};
 }
