@@ -1,5 +1,7 @@
 #include "Input/InputDeviceHandle.hpp"
 
+#include <utility>
+
 #include "Assert.hpp"
 #include "Logger.hpp"
 
