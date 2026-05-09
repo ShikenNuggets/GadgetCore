@@ -2,6 +2,13 @@
 
 namespace Gadget
 {
+	namespace Input::Bounds
+	{
+		static constexpr auto maxJoystickButtons = 32;
+		static constexpr auto maxJoystickAxes = 8;
+		static constexpr auto maxJoystickHats = 4;
+	}
+
 	enum class ButtonId : uint16_t
 	{
 		None = 0,
@@ -36,6 +43,42 @@ namespace Gadget
 		Gamepad_Misc4,
 		Gamepad_Misc5,
 		Gamepad_Misc6,
+
+		// ----- Raw Joystick ----- //
+		Joystick_Raw_Button00,
+		Joystick_Raw_Button01,
+		Joystick_Raw_Button02,
+		Joystick_Raw_Button03,
+		Joystick_Raw_Button04,
+		Joystick_Raw_Button05,
+		Joystick_Raw_Button06,
+		Joystick_Raw_Button07,
+		Joystick_Raw_Button08,
+		Joystick_Raw_Button09,
+		Joystick_Raw_Button10,
+		Joystick_Raw_Button11,
+		Joystick_Raw_Button12,
+		Joystick_Raw_Button13,
+		Joystick_Raw_Button14,
+		Joystick_Raw_Button15,
+		Joystick_Raw_Button16,
+		Joystick_Raw_Button17,
+		Joystick_Raw_Button18,
+		Joystick_Raw_Button19,
+		Joystick_Raw_Button20,
+		Joystick_Raw_Button21,
+		Joystick_Raw_Button22,
+		Joystick_Raw_Button23,
+		Joystick_Raw_Button24,
+		Joystick_Raw_Button25,
+		Joystick_Raw_Button26,
+		Joystick_Raw_Button27,
+		Joystick_Raw_Button28,
+		Joystick_Raw_Button29,
+		Joystick_Raw_Button30,
+		Joystick_Raw_Button31,
+		// DInput supports up to 128 buttons, but in practice many apps only recognize 32
+		// Feel free to add more as necessary
 
 		// ----- Mouse ----- //
 		Mouse_Left,
@@ -327,6 +370,24 @@ namespace Gadget
 		Gamepad_RightTrigger,
 		Gamepad_Dpad_Horizontal,
 		Gamepad_Dpad_Vertical,
+
+		// ----- Raw Joystick ----- //
+		Joystick_Raw_Axis0,
+		Joystick_Raw_Axis1,
+		Joystick_Raw_Axis2,
+		Joystick_Raw_Axis3,
+		Joystick_Raw_Axis4,
+		Joystick_Raw_Axis5,
+		Joystick_Raw_Axis6,
+		Joystick_Raw_Axis7,
+		Joystick_Raw_Hat0_Horizontal,
+		Joystick_Raw_Hat0_Vertical,
+		Joystick_Raw_Hat1_Horizontal,
+		Joystick_Raw_Hat1_Vertical,
+		Joystick_Raw_Hat2_Horizontal,
+		Joystick_Raw_Hat2_Vertical,
+		Joystick_Raw_Hat3_Horizontal,
+		Joystick_Raw_Hat3_Vertical,
 
 		// ----- Mouse ----- //
 		Mouse_Horizontal,

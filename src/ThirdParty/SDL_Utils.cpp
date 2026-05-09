@@ -390,3 +390,67 @@ ButtonId SDL_Utils::GamepadtoButtonId(Uint8 button)
 
 	return ButtonId::None;
 }
+
+AxisId SDL_Utils::JoystickToAxisId(Uint8 axis)
+{
+	if (axis >= Input::Bounds::maxJoystickAxes)
+	{
+		GADGET_LOG_ERROR("Unsupported SDL joystick axis: {}", axis);
+		return AxisId::None;
+	}
+
+	const auto axisInt = static_cast<uint16_t>(AxisId::Joystick_Raw_Axis0) + axis;
+	return static_cast<AxisId>(axisInt);
+}
+
+AxisId SDL_Utils::JoystickHorizontalHatToAxisId(Uint8 hat)
+{
+	switch (hat)
+	{
+		case 0:
+			return AxisId::Joystick_Raw_Hat0_Horizontal;
+		case 1:
+			return AxisId::Joystick_Raw_Hat1_Horizontal;
+		case 2:
+			return AxisId::Joystick_Raw_Hat2_Horizontal;
+		case 3:
+			return AxisId::Joystick_Raw_Hat3_Horizontal;
+		default:
+			GADGET_LOG_ERROR("Unsupported SDL joystick hat: {}", hat);
+			break;
+	}
+
+	return AxisId::None;
+}
+
+AxisId SDL_Utils::JoystickVerticalHatToAxisId(Uint8 hat)
+{
+	switch (hat)
+	{
+		case 0:
+			return AxisId::Joystick_Raw_Hat0_Vertical;
+		case 1:
+			return AxisId::Joystick_Raw_Hat1_Vertical;
+		case 2:
+			return AxisId::Joystick_Raw_Hat2_Vertical;
+		case 3:
+			return AxisId::Joystick_Raw_Hat3_Vertical;
+		default:
+			GADGET_LOG_ERROR("Unsupported SDL joystick hat: {}", hat);
+			break;
+	}
+
+	return AxisId::None;
+}
+
+ButtonId SDL_Utils::JoystickToButtonId(Uint8 button)
+{
+	if (button >= Input::Bounds::maxJoystickButtons)
+	{
+		GADGET_LOG_ERROR("Unsupported SDL joystick button: {}", button);
+		return ButtonId::None;
+	}
+
+	const auto buttonInt = static_cast<uint16_t>(ButtonId::Joystick_Raw_Button00) + button;
+	return static_cast<ButtonId>(buttonInt);
+}
