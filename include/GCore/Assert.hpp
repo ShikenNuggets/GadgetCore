@@ -11,7 +11,7 @@ namespace Gadget
 
 	inline constexpr void Assert(bool condition, std::string_view message, std::source_location sourceLocation = std::source_location::current())
 	{
-		if (!condition)
+		if (!condition) [[unlikely]]
 		{
 			const auto fmtMessage = std::format("{}\n\n{}:{}", message, std::filesystem::path(sourceLocation.file_name()).filename().string(), sourceLocation.line());
 			#ifdef GADGET_BUILD_NO_ASSERT
