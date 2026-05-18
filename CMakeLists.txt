@@ -38,7 +38,7 @@ FetchContent_MakeAvailable(SDL3)
 FetchContent_Declare(
 	SDL3_Image
 	GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
-	GIT_TAG release-3.2.4
+	GIT_TAG release-3.4.4
 	SYSTEM
 	EXCLUDE_FROM_ALL
 )
@@ -54,6 +54,7 @@ set(SDLIMAGE_WEBP OFF)
 set(SDLIMAGE_XCF OFF)
 set(SDLIMAGE_XPM OFF)
 set(SDLIMAGE_XV OFF)
+set(SDLIMAGE_PNG OFF) # Disable PNG to avoid zlib conflicts with Assimp
 FetchContent_MakeAvailable(SDL3_Image)
 
 FetchContent_Declare(
