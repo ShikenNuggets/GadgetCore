@@ -5,7 +5,7 @@
 using namespace Gadget;
 
 // Note: These are just sanity checks to confirm that the code is actually working
-// We're not testing the quality of the algorithm
+// We're not testing the quality of the algorithms
 
 TEST_CASE("Hash::FastHash64", "[hash_fast_hash_64]")
 {
@@ -28,4 +28,34 @@ TEST_CASE("Hash::FastHash64", "[hash_fast_hash_64]")
 	// Compile time and runtime have the same output
 	auto testD_Runtime = Hash::FastHash64("one");
 	REQUIRE(testD == testD_Runtime);
+}
+
+TEST_CASE("Hash::SafeHash64", "[hash_safe_hash_64]")
+{
+	static constexpr Hash::SipKey key = { .k0 = 0x1234567890ABCDEFULL, .k1 = 0xFEDCBA0987654321ULL };
+
+	// Two inputs have the same output
+	const auto testA = Hash::SafeHash64("hello", key);
+	const auto testB = Hash::SafeHash64("hello", key);
+	REQUIRE(testA == testB);
+
+	// Different input has a different output
+	const auto testC = Hash::SafeHash64("bonjour", key);
+	REQUIRE(testA != testC);
+
+	// Can be used at compile time
+	static constexpr auto testD = Hash::SafeHash64("one", key);
+	static constexpr auto testE = Hash::SafeHash64("one", key);
+	static constexpr auto testF = Hash::SafeHash64("onee", key);
+	static_assert(testD == testE);
+	static_assert(testD != testF);
+
+	// Compile time and runtime have the same output
+	auto testD_Runtime = Hash::SafeHash64("one", key);
+	REQUIRE(testD == testD_Runtime);
+
+	// Same input with a different key has different output
+	static constexpr Hash::SipKey key2 = { .k0 = 0xFEDCBA0987654321ULL, .k1 = 0x1234567890ABCDEFULL };
+	const auto testA_key2 = Hash::SafeHash64("hello", key2);
+	REQUIRE(testA != testA_key2);
 }
