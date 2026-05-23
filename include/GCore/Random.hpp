@@ -9,11 +9,17 @@
 namespace Gadget::Random
 {
 	using SeedT = std::random_device::result_type;
+	using Seed64T = uint64_t;
 
 	// Can be very slow
 	// Intended to be used as a seed for a pseudorandom engine
 	// Falls back to a time-based seed if hardware entropy fails or is not supported
 	SeedT TrueRandomValue() noexcept;
+
+	// Even slower than TrueRandomValue
+	// Intended to be used as a seed for a pseudorandom engine
+	// Falls back to a time-based seed if hardware entropy fails or is not supported
+	Seed64T TrueRandomValue64() noexcept;
 
 	class Engine
 	{
