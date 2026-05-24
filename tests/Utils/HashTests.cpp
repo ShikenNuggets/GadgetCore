@@ -7,6 +7,32 @@ using namespace Gadget;
 // Note: These are just sanity checks to confirm that the code is actually working
 // We're not testing the quality of the algorithms
 
+TEST_CASE("Hash::FastHash32", "[hash_fast_hash_32]")
+{
+	// Two inputs have the same output
+	const auto testA = Hash::FastHash32("hello");
+	const auto testB = Hash::FastHash32("hello");
+	REQUIRE(testA == testB);
+
+	// Different input has a different output
+	const auto testC = Hash::FastHash32("bonjour");
+	REQUIRE(testA != testC);
+
+	// Can be used at compile time
+	static constexpr auto testD = Hash::FastHash32("one");
+	static constexpr auto testE = Hash::FastHash32("one");
+	static constexpr auto testF = Hash::FastHash32("onee");
+	static_assert(testD == testE);
+	static_assert(testD != testF);
+
+	// Compile time and runtime have the same output
+	const auto testD_Runtime = Hash::FastHash32("one");
+	REQUIRE(testD == testD_Runtime);
+
+	const auto testEmpty = Hash::FastHash32("");
+	REQUIRE(testEmpty == Hash::Internal::fnv1a_32_basis);
+}
+
 TEST_CASE("Hash::FastHash64", "[hash_fast_hash_64]")
 {
 	// Two inputs have the same output
@@ -26,8 +52,11 @@ TEST_CASE("Hash::FastHash64", "[hash_fast_hash_64]")
 	static_assert(testD != testF);
 
 	// Compile time and runtime have the same output
-	auto testD_Runtime = Hash::FastHash64("one");
+	const auto testD_Runtime = Hash::FastHash64("one");
 	REQUIRE(testD == testD_Runtime);
+
+	const auto testEmpty = Hash::FastHash64("");
+	REQUIRE(testEmpty == Hash::Internal::fnv1a_64_basis);
 }
 
 TEST_CASE("Hash::SafeHash64", "[hash_safe_hash_64]")
