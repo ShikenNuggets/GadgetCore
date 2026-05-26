@@ -163,6 +163,17 @@
 										"sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"
 								}
 						}
+				},
+				{
+						"name": "ps2",
+						"displayName": "PS2 Release",
+						"generator": "Ninja",
+						"binaryDir": "${sourceDir}/out/build/${presetName}",
+						"installDir": "${sourceDir}/out/install/${presetName}",
+						"cacheVariables": {
+								"CMAKE_BUILD_TYPE": "Release",
+								"CMAKE_TOOLCHAIN_FILE": "$env{PS2DEV}/share/ps2dev.cmake"
+						}
 				}
 		]
 }
