@@ -20,6 +20,7 @@ FetchContent_Declare(
 	GIT_TAG v3.15.0
 	SYSTEM
 	EXCLUDE_FROM_ALL
+	GIT_SHALLOW TRUE
 )
 set(CATCH_INSTALL_DOCS OFF)
 set(CATCH_INSTALL_EXTRAS OFF)
@@ -31,6 +32,7 @@ FetchContent_Declare(
 	GIT_TAG release-3.4.10
 	SYSTEM
 	EXCLUDE_FROM_ALL
+	GIT_SHALLOW TRUE
 )
 set(SDL_TEST_LIBRARY OFF)
 FetchContent_MakeAvailable(SDL3)
@@ -41,6 +43,7 @@ FetchContent_Declare(
 	GIT_TAG release-3.4.4
 	SYSTEM
 	EXCLUDE_FROM_ALL
+	GIT_SHALLOW TRUE
 )
 set(SDLIMAGE_AVIF OFF) # This is on by default and gives us some nonsense unrecoverable error
 set(SDLIMAGE_STB OFF)
@@ -63,6 +66,7 @@ FetchContent_Declare(
 	GIT_TAG v6.0.5
 	SYSTEM
 	EXCLUDE_FROM_ALL
+	GIT_SHALLOW TRUE
 )
 set(ASSIMP_WARNINGS_AS_ERRORS OFF)
 set(ASSIMP_BUILD_TESTS OFF)
@@ -93,6 +97,7 @@ FetchContent_Declare(
 	GIT_TAG v3.12.0
 	SYSTEM
 	EXCLUDE_FROM_ALL
+	GIT_SHALLOW TRUE
 )
 set(JSON_BuildTests OFF)
 FetchContent_MakeAvailable(json)
