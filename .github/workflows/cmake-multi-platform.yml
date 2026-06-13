@@ -112,6 +112,7 @@ jobs:
         cmake -B build
         -DCMAKE_BUILD_TYPE=Release
         -DCMAKE_TOOLCHAIN_FILE=$PS2DEV/ps2sdk/ps2dev.cmake
+        -DGADGETCORE_ENABLE_LOGGING=OFF
         -S .
 
     - name: Build

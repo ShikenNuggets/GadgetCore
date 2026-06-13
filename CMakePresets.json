@@ -172,7 +172,8 @@
 						"installDir": "${sourceDir}/out/install/${presetName}",
 						"cacheVariables": {
 								"CMAKE_BUILD_TYPE": "Release",
-								"CMAKE_TOOLCHAIN_FILE": "$env{PS2DEV}/share/ps2dev.cmake"
+								"CMAKE_TOOLCHAIN_FILE": "$env{PS2DEV}/share/ps2dev.cmake",
+								"GADGETCORE_ENABLE_LOGGING": "OFF"
 						}
 				}
 		]
