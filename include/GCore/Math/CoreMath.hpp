@@ -25,7 +25,12 @@ namespace Gadget::Math
 	static_assert(!Numeric<char>, "Sanity Check - char should not be used as a numeric type");
 	static_assert(!Numeric<wchar_t>, "Sanity Check - wchar_t should not be used as a numeric type");
 
+#ifdef GADGET_BUILD_DOUBLE_MATH
 	using GFloat = double;
+#else
+	using GFloat = float;
+#endif // GADGET_BUILD_DOUBLE_MATH
+
 	static_assert(Numeric<GFloat>, "GFloat must be numeric type");
 	static_assert(FloatLike<GFloat>, "GFloat must be a floating point type and implicitly-convertible to double");
 
@@ -50,10 +55,10 @@ namespace Gadget::Math
 	}
 
 	template <Numeric T>
-	[[nodiscard]] static inline constexpr T DegreesToRadians(T angle){ return angle * (Pi / 180.0); }
+	[[nodiscard]] static inline constexpr T DegreesToRadians(T angle){ return angle * (TPi<T> / 180.0); }
 
 	template <Numeric T>
-	[[nodiscard]] static inline constexpr T RadiansToDegrees(T angle){ return angle * (180.0 / Pi); }
+	[[nodiscard]] static inline constexpr T RadiansToDegrees(T angle){ return angle * (180.0 / TPi<T>); }
 
 	template <Numeric T>
 	[[nodiscard]] static inline T Sqrt(T value)

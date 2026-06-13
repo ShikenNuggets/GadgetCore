@@ -41,9 +41,9 @@ namespace Gadget::Math
 		}
 		else
 		{
-			heading = Math::Atan2R(2.0 * quat.y * quat.w - 2.0 * quat.x * quat.z, sqx - sqy - sqz + sqw);
+			heading = Math::Atan2R<Gadget::Math::GFloat>(2.0 * quat.y * quat.w - 2.0 * quat.x * quat.z, sqx - sqy - sqz + sqw);
 			attitude = Math::AsinR(2.0 * test / unit);
-			bank = Math::Atan2R(2.0 * quat.x * quat.w - 2.0 * quat.y * quat.z, -sqx + sqy - sqz + sqw);
+			bank = Math::Atan2R<Gadget::Math::GFloat>(2.0 * quat.x * quat.w - 2.0 * quat.y * quat.z, -sqx + sqy - sqz + sqw);
 		}
 		
 		return TEuler<T>(Math::RadiansToDegrees(bank), Math::RadiansToDegrees(heading), Math::RadiansToDegrees(attitude));

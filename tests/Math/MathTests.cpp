@@ -119,7 +119,7 @@ TEST_CASE("Math::ToMatrix4(TQuat)", "[math_to_matrix4_quat]")
 	}
 
 	const auto q90X = Quaternion(Math::CosR(Math::Pi / 4.0), Math::SinR(Math::Pi / 4.0), 0.0, 0.0);
-	const auto m90X = Math::Rotate(90.0, Vector3(1.0, 0.0, 0.0));
+	const auto m90X = Math::Rotate<Gadget::Math::GFloat>(90.0, Vector3(1.0, 0.0, 0.0));
 	m = Math::ToMatrix4(q90X);
 	for (size_t i = 0; i < Matrix4::Size(); ++i)
 	{
@@ -127,7 +127,7 @@ TEST_CASE("Math::ToMatrix4(TQuat)", "[math_to_matrix4_quat]")
 	}
 
 	const auto q90Y = Quaternion(Math::CosR(Math::Pi / 4.0), 0.0, Math::SinR(Math::Pi / 4.0), 0.0);
-	const auto m90Y = Math::Rotate(90.0, Vector3(0.0, 1.0, 0.0));
+	const auto m90Y = Math::Rotate<Gadget::Math::GFloat>(90.0, Vector3(0.0, 1.0, 0.0));
 	m = Math::ToMatrix4(q90Y);
 	for (size_t i = 0; i < Matrix4::Size(); ++i)
 	{
@@ -135,7 +135,7 @@ TEST_CASE("Math::ToMatrix4(TQuat)", "[math_to_matrix4_quat]")
 	}
 
 	const auto q90Z = Quaternion(Math::CosR(Math::Pi / 4.0), 0.0, 0.0, Math::SinR(Math::Pi / 4.0));
-	const auto m90Z = Math::Rotate(90.0, Vector3(0.0, 0.0, 1.0));
+	const auto m90Z = Math::Rotate<Gadget::Math::GFloat>(90.0, Vector3(0.0, 0.0, 1.0));
 	m = Math::ToMatrix4(q90Z);
 	for (size_t i = 0; i < Matrix4::Size(); ++i)
 	{
@@ -161,7 +161,7 @@ TEST_CASE("Math::ToVector4(TVec3)", "[math_to_vector4_tvec3]")
 	REQUIRE(result.z == vec.z);
 	REQUIRE(result.w == 1.0);
 
-	result = Gadget::Math::ToVector4(vec, 4.0);
+	result = Gadget::Math::ToVector4<Gadget::Math::GFloat>(vec, 4.0);
 	REQUIRE(result.x == vec.x);
 	REQUIRE(result.y == vec.y);
 	REQUIRE(result.z == vec.z);
@@ -193,13 +193,13 @@ TEST_CASE("Math::Translate", "[math_translate]")
 TEST_CASE("Math::Rotate", "[math_rotate]")
 {
 	const auto identity = Matrix4::Identity();
-	const auto noRotate = Math::Rotate(0.0, Vector3(1.0, 0.0, 0.0));
+	const auto noRotate = Math::Rotate<Gadget::Math::GFloat>(0.0, Vector3(1.0, 0.0, 0.0));
 	for (size_t i = 0; i < Matrix4::Size(); ++i)
 	{
 		REQUIRE(noRotate[i] == identity[i]);
 	}
 
-	const auto rotate90X = Math::Rotate(90.0, Vector3(1.0, 0.0, 0.0));
+	const auto rotate90X = Math::Rotate<Gadget::Math::GFloat>(90.0, Vector3(1.0, 0.0, 0.0));
 	REQUIRE(rotate90X[0] == Approx(identity[0]));
 	REQUIRE(rotate90X[1] == identity[1]);
 	REQUIRE(rotate90X[2] == identity[2]);
@@ -217,7 +217,7 @@ TEST_CASE("Math::Rotate", "[math_rotate]")
 	REQUIRE(rotate90X[14] == identity[14]);
 	REQUIRE(rotate90X[15] == identity[15]);
 
-	const auto rotate90Y = Math::Rotate(90.0, Vector3(0.0, 1.0, 0.0));
+	const auto rotate90Y = Math::Rotate<Gadget::Math::GFloat>(90.0, Vector3(0.0, 1.0, 0.0));
 	REQUIRE(rotate90Y[0] == Approx(0.0).margin(1e-6));
 	REQUIRE(rotate90Y[1] == identity[1]);
 	REQUIRE(rotate90Y[2] == Approx(-1.0));
@@ -235,7 +235,7 @@ TEST_CASE("Math::Rotate", "[math_rotate]")
 	REQUIRE(rotate90Y[14] == identity[14]);
 	REQUIRE(rotate90Y[15] == identity[15]);
 
-	const auto rotate90Z = Math::Rotate(90.0, Vector3(0.0, 0.0, 1.0));
+	const auto rotate90Z = Math::Rotate<Gadget::Math::GFloat>(90.0, Vector3(0.0, 0.0, 1.0));
 	REQUIRE(rotate90Z[0] == Approx(0.0).margin(1e-6));
 	REQUIRE(rotate90Z[1] == Approx(1.0));
 	REQUIRE(rotate90Z[2] == identity[2]);
@@ -253,8 +253,8 @@ TEST_CASE("Math::Rotate", "[math_rotate]")
 	REQUIRE(rotate90Z[14] == identity[14]);
 	REQUIRE(rotate90Z[15] == identity[15]);
 
-	const auto m1 = Math::Rotate(45.0, Vector3(2, 0, 0));
-	const auto m2 = Math::Rotate(45.0, Vector3(1, 0, 0));
+	const auto m1 = Math::Rotate<Gadget::Math::GFloat>(45.0, Vector3(2, 0, 0));
+	const auto m2 = Math::Rotate<Gadget::Math::GFloat>(45.0, Vector3(1, 0, 0));
 	for (size_t i = 0; i < Matrix4::Size(); ++i)
 	{
 		REQUIRE(m1[i] == Approx(m2[i]));
@@ -286,9 +286,9 @@ TEST_CASE("Math::Scale", "[math_scale]")
 TEST_CASE("Math::CalculateBounds", "[math_calculate_bounds]")
 {
 	std::vector<Vector2> vecs;
-	vecs.emplace_back(1.0, 2.0);
-	vecs.emplace_back(3.0, 4.0);
-	vecs.emplace_back(5.0, 6.0);
+	vecs.emplace_back(static_cast<Gadget::Math::GFloat>(1.0), static_cast<Gadget::Math::GFloat>(2.0));
+	vecs.emplace_back(static_cast<Gadget::Math::GFloat>(3.0), static_cast<Gadget::Math::GFloat>(4.0));
+	vecs.emplace_back(static_cast<Gadget::Math::GFloat>(5.0), static_cast<Gadget::Math::GFloat>(6.0));
 
 	const auto bounds = Math::CalculateBounds<Math::GFloat>(vecs);
 	REQUIRE(bounds.min.x == 1.0);

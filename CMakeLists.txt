@@ -128,6 +128,7 @@ add_library(GadgetCore STATIC ${SRC_FILES} ${INC_FILES})
 option(GADGETCORE_BUILD_TESTS "Build tests for the GadgetCore project" ON)
 option(GADGETCORE_BUILD_DEMOS "Build demos for the GadgetCore project" ON) # TODO - turn this off later
 option(GADGETCORE_ENABLE_LOGGING "Enable/disable internal logging in GadgetCore (this also disables the Gadget::Logger framework entirely)" OFF)
+option(GADGETCORE_USE_DOUBLE_MATH "Use doubles instead of floats for internal math structures" ON)
 
 set_target_properties(GadgetCore PROPERTIES
 	CXX_EXTENSIONS NO
@@ -169,6 +170,10 @@ endif()
 
 if (NOT GADGETCORE_ENABLE_LOGGING)
 	target_compile_definitions(GadgetCore PUBLIC GADGET_BUILD_NO_LOGGING)
+endif()
+
+if (GADGETCORE_USE_DOUBLE_MATH)
+	target_compile_definitions(GadgetCore PUBLIC GADGET_BUILD_USE_DOUBLE_MATH)
 endif()
 
 # --------------------------------------- #
