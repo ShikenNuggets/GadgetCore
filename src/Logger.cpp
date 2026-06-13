@@ -28,7 +28,7 @@ void Logger::SimpleInit(Mode mode_, Severity minSeverity_, const std::filesystem
 			{
 				if (severity_ <= minSeverity_)
 				{
-					std::println("{}", std::move(message_));
+					std::puts(message_.c_str());
 				}
 			};
 
@@ -50,7 +50,7 @@ void Logger::SimpleInit(Mode mode_, Severity minSeverity_, const std::filesystem
 				if (severity_ <= minSeverity_)
 				{
 					auto _ = FileSystem::WriteToFile(path_, message_);
-					std::println("{}", std::move(message_));
+					std::puts(message_.c_str());
 				}
 			};
 
