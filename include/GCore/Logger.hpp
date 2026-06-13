@@ -59,6 +59,7 @@ namespace Gadget::Logger
 
 	inline void Log(Severity severity, std::string_view message, std::source_location sourceLocation = std::source_location::current())
 	{
+	#ifndef GADGET_BUILD_NO_LOGGING
 		auto fmtMessage = std::format("[GCORE][{}] {} [{}:{}]",
 			SeverityToString(severity),
 			message,
@@ -67,6 +68,7 @@ namespace Gadget::Logger
 		);
 		
 		OnProcessLogMessage_Internal(severity, std::move(fmtMessage));
+	#endif // !GADGET_BUILD_NO_LOGGING
 	}
 }
 

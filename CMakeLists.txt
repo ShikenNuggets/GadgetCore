@@ -127,6 +127,7 @@ add_library(GadgetCore STATIC ${SRC_FILES} ${INC_FILES})
 
 option(GADGETCORE_BUILD_TESTS "Build tests for the GadgetCore project" ON)
 option(GADGETCORE_BUILD_DEMOS "Build demos for the GadgetCore project" ON) # TODO - turn this off later
+option(GADGETCORE_ENABLE_LOGGING "Enable/disable internal logging in GadgetCore (this also disables the Gadget::Logger framework entirely)" OFF)
 
 set_target_properties(GadgetCore PROPERTIES
 	CXX_EXTENSIONS NO
@@ -164,6 +165,10 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 	target_compile_definitions(GadgetCore PUBLIC GADGET_BUILD_DEBUG)
 elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
 	target_compile_definitions(GadgetCore PUBLIC GADGET_BUILD_RELEASE)
+endif()
+
+if (NOT GADGETCORE_ENABLE_LOGGING)
+	target_compile_definitions(GadgetCore PUBLIC GADGET_BUILD_NO_LOGGING)
 endif()
 
 # --------------------------------------- #

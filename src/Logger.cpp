@@ -14,7 +14,9 @@ static inline Logger::CallbackFunc& GetLoggerFunc() noexcept
 
 void Logger::Init(CallbackFunc callback_) noexcept
 {
+#ifndef GADGET_BUILD_NO_LOGGING
 	GetLoggerFunc() = std::move(callback_);
+#endif // !GADGET_BUILD_NO_LOGGING
 }
 
 void Logger::SimpleInit(Mode mode_, Severity minSeverity_, const std::filesystem::path& path_) noexcept
@@ -61,9 +63,11 @@ void Logger::SimpleInit(Mode mode_, Severity minSeverity_, const std::filesystem
 
 void Logger::OnProcessLogMessage_Internal(Severity severity_, std::string message_)
 {
+#ifndef GADGET_BUILD_NO_LOGGING
 	auto& logFunc = GetLoggerFunc();
 	if (logFunc)
 	{
 		logFunc(severity_, std::move(message_));
 	}
+#endif // !GADGET_BUILD_NO_LOGGING
 }
