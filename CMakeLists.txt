@@ -201,6 +201,13 @@ target_compile_definitions(GadgetCore
 		GADGET_PLATFORM_SUPPORTS_RANDOM_DEVICE
 )
 
+message(STATUS "--- System Info ---")
+message(STATUS "Target OS:   ${CMAKE_SYSTEM_NAME}")
+message(STATUS "Target Arch: ${CMAKE_SYSTEM_PROCESSOR}")
+message(STATUS "Host OS:     ${CMAKE_HOST_SYSTEM_NAME}")
+message(STATUS "C Compiler:  ${CMAKE_C_COMPILER}")
+message(STATUS "CXX Compiler: ${CMAKE_CXX_COMPILER}")
+
 # --------------------------- #
 # ---------- Tests ---------- #
 # --------------------------- #
