@@ -37,6 +37,16 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 		GADGET_ASSERT(sdlRenderer != nullptr, "Failed to create SDL Renderer! SDL Error: {}", SDL_GetError());
 		// TODO - throw fatal error
 	}
+	else if (renderAPI == RenderAPI::SDLGPU)
+	{
+		gpuDevice = std::make_unique<GpuDevice>();
+		bool bSuccess = SDL_ClaimWindowForGPUDevice(gpuDevice->GetDevice(), windowPtr);
+		if (!bSuccess)
+		{
+			GADGET_LOG_ERROR("Failed to claim window for GPU device, SDL Error: {}", SDL_GetError());
+			// TODO - throw fatal error
+		}
+	}
 
 	SDL_SetJoystickEventsEnabled(true);
 	if (!SDL_JoystickEventsEnabled())
@@ -80,6 +90,8 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 
 Window::~Window()
 {
+	gpuDevice.reset();
+
 	if (sdlRenderer != nullptr)
 	{
 		SDL_DestroyRenderer(sdlRenderer);

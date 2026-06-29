@@ -10,6 +10,7 @@
 #include "WindowEventHandler.hpp"
 #include "Graphics/Color.hpp"
 #include "Graphics/WindowSurfaceView.hpp"
+#include "Graphics/GPU/GpuDevice.hpp"
 #include "Input/InputDeviceHandle.hpp"
 
 namespace Gadget
@@ -65,6 +66,7 @@ namespace Gadget
 		WindowEventHandler eventHandler;
 		SDL_Renderer* sdlRenderer;
 		SDL_GLContext glContext;
+		std::unique_ptr<GpuDevice> gpuDevice;
 		std::map<SDL_JoystickID, InputDeviceHandle> controllers;
 	};
 }

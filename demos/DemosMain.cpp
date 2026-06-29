@@ -5,6 +5,7 @@
 
 #include "Demo1.hpp"
 #include "Demo2.hpp"
+#include "Demo3.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -20,6 +21,7 @@ int main(int argc, char* argv[])
 		std::println("Pick a Demo: ");
 		std::println("[1] Basic Window");
 		std::println("[2] Breakout Game");
+		std::println("[3] 3D Graphics");
 		std::cin >> input;
 	}
 
@@ -31,6 +33,11 @@ int main(int argc, char* argv[])
 	if (input.contains('2'))
 	{
 		return GadgetCoreDemos::Demo2();
+	}
+
+	if (input.contains('3'))
+	{
+		return GadgetCoreDemos::Demo3();
 	}
 	
 	std::println("No valid demo selected, exiting.");
