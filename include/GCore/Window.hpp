@@ -50,6 +50,7 @@ namespace Gadget
 		[[nodiscard]] WindowSurfaceView GetSurfaceView();
 		[[nodiscard]] SDL_Window* GetSDLWindowPtr() const noexcept{ return windowPtr; }
 		[[nodiscard]] SDL_Renderer* GetSDLRenderer() const noexcept{ return sdlRenderer; }
+		[[nodiscard]] GpuDevice* GetGpuDevice() const noexcept{ return gpuDevice.get(); }
 
 		void SetSize(int32_t width, int32_t height) noexcept;
 		void SetSize(ScreenCoordinate size_) noexcept;
