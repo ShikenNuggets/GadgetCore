@@ -1,12 +1,17 @@
 ﻿{
 		"version": 3,
 		"configurePresets": [
-				{
-						"name": "windows-base",
+			{
+						"name": "base",
 						"hidden": true,
 						"generator": "Ninja",
 						"binaryDir": "${sourceDir}/out/build/${presetName}",
-						"installDir": "${sourceDir}/out/install/${presetName}",
+						"installDir": "${sourceDir}/out/install/${presetName}"
+				},
+				{
+						"name": "windows-base",
+						"inherits": "base",
+						"hidden": true,
 						"vendor": {
 							"microsoft.com/VisualStudioSettings/CMake/1.0": {
 								"enableMicrosoftCodeAnalysis": false,
@@ -63,10 +68,8 @@
 				},
 				{
 						"name": "linux-base",
+						"inherits": "base",
 						"hidden": true,
-						"generator": "Ninja",
-						"binaryDir": "${sourceDir}/out/build/${presetName}",
-						"installDir": "${sourceDir}/out/install/${presetName}",
 						"cacheVariables": {
 								"SDL_UNIX_CONSOLE_BUILD": "ON",
 								"CMAKE_C_COMPILER": "gcc",
@@ -119,37 +122,22 @@
 				},
 				{
 						"name": "linux-gcc-cov",
+						"inherits": "linux-base",
 						"displayName": "Linux GCC Test Coverage",
-						"generator": "Ninja",
-						"binaryDir": "${sourceDir}/out/build/${presetName}",
-						"installDir": "${sourceDir}/out/install/${presetName}",
 						"cacheVariables": {
 								"CMAKE_BUILD_TYPE": "Debug",
-								"SDL_UNIX_CONSOLE_BUILD": "ON",
 								"CMAKE_C_COMPILER": "gcc-14",
 								"CMAKE_CXX_COMPILER": "g++-14",
 								"CMAKE_C_FLAGS": "-Og -g -fprofile-arcs -ftest-coverage",
 								"CMAKE_CXX_FLAGS": "-Og -g -fprofile-arcs -ftest-coverage",
 								"CMAKE_CXX_SCAN_FOR_MODULES": "OFF",
-									"CMAKE_DEPENDENCY_SCAN_FORMAT": ""
-						},
-						"condition": {
-								"type": "equals",
-								"lhs": "${hostSystemName}",
-								"rhs": "Linux"
-						},
-						"vendor": {
-								"microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-										"sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"
-								}
+								"CMAKE_DEPENDENCY_SCAN_FORMAT": ""
 						}
 				},
 				{
 						"name": "macos-debug",
+						"inherits": "base",
 						"displayName": "macOS Debug",
-						"generator": "Ninja",
-						"binaryDir": "${sourceDir}/out/build/${presetName}",
-						"installDir": "${sourceDir}/out/install/${presetName}",
 						"cacheVariables": {
 								"CMAKE_BUILD_TYPE": "Debug"
 						},
