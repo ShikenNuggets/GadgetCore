@@ -2,6 +2,8 @@
 #include <GCore/Window.hpp>
 
 #include <GCore/Graphics/Vertex.hpp>
+#include <GCore/Graphics/GPU/GpuDevice.hpp>
+#include <GCore/Graphics/GPU/GpuShader.hpp>
 
 namespace GadgetCoreDemos
 {
@@ -80,25 +82,8 @@ namespace GadgetCoreDemos
 		size_t vertexCodeSize{};
 		void* vertexCode = SDL_LoadFile("Shaders/bin/TriangleVertex.spv", &vertexCodeSize);
 
-		SDL_GPUShaderCreateInfo vertexInfo
-		{
-			.code_size = vertexCodeSize,
-			.code = (Uint8*)vertexCode,
-			.entrypoint = "main",
-			.format = SDL_GPU_SHADERFORMAT_SPIRV,
-			.stage = SDL_GPU_SHADERSTAGE_VERTEX,
-			.num_samplers = 0,
-			.num_storage_textures = 0,
-			.num_storage_buffers = 0,
-			.num_uniform_buffers = 0,
-		};
-
-		SDL_GPUShader* vertexShader = SDL_CreateGPUShader(gpuDevice, &vertexInfo);
-		if (!vertexShader)
-		{
-			GADGET_LOG_ERROR("Failed to create vertex shader: {}", SDL_GetError());
-			return -1;
-		}
+		auto rawVertexShader = Gadget::RawShader(std::span<uint8_t>(reinterpret_cast<uint8_t*>(vertexCode), vertexCodeSize), Gadget::ShaderType::Vertex, Gadget::ShaderFormat::SPIRV);
+		auto vertexShader = Gadget::GpuShader(*window.GetGpuDevice(), rawVertexShader);
 
 		SDL_free(vertexCode);
 
@@ -106,25 +91,8 @@ namespace GadgetCoreDemos
 		size_t fragmentCodeSize{};
 		void* fragmentCode = SDL_LoadFile("Shaders/bin/TriangleFragment.spv", &fragmentCodeSize);
 
-		SDL_GPUShaderCreateInfo fragmentInfo
-		{
-			.code_size = fragmentCodeSize,
-			.code = (Uint8*)fragmentCode,
-			.entrypoint = "main",
-			.format = SDL_GPU_SHADERFORMAT_SPIRV,
-			.stage = SDL_GPU_SHADERSTAGE_FRAGMENT,
-			.num_samplers = 0,
-			.num_storage_textures = 0,
-			.num_storage_buffers = 0,
-			.num_uniform_buffers = 0,
-		};
-
-		SDL_GPUShader* fragmentShader = SDL_CreateGPUShader(gpuDevice, &fragmentInfo);
-		if (!fragmentShader)
-		{
-			GADGET_LOG_ERROR("Failed to create fragment shader: {}", SDL_GetError());
-			return -1;
-		}
+		auto rawFragmentShader = Gadget::RawShader(std::span<uint8_t>(reinterpret_cast<uint8_t*>(fragmentCode), fragmentCodeSize), Gadget::ShaderType::Fragment, Gadget::ShaderFormat::SPIRV);
+		auto fragmentShader = Gadget::GpuShader(*window.GetGpuDevice(), rawFragmentShader);
 
 		SDL_free(fragmentCode);
 
@@ -154,8 +122,8 @@ namespace GadgetCoreDemos
 
 		SDL_GPUGraphicsPipelineCreateInfo pipelineInfo
 		{
-			.vertex_shader = vertexShader,
-			.fragment_shader = fragmentShader,
+			.vertex_shader = vertexShader.GetShader(),
+			.fragment_shader = fragmentShader.GetShader(),
 			.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST,
 		};
 
@@ -167,8 +135,8 @@ namespace GadgetCoreDemos
 		pipelineInfo.target_info.color_target_descriptions = colorTargetDescriptions;
 
 		SDL_GPUGraphicsPipeline* graphicsPipeline = SDL_CreateGPUGraphicsPipeline(gpuDevice, &pipelineInfo);
-		SDL_ReleaseGPUShader(gpuDevice, fragmentShader);
-		SDL_ReleaseGPUShader(gpuDevice, vertexShader);
+		SDL_ReleaseGPUShader(gpuDevice, fragmentShader.GetShader());
+		SDL_ReleaseGPUShader(gpuDevice, vertexShader.GetShader());
 
 		while (shouldContinue)
 		{
