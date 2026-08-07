@@ -35,3 +35,12 @@ if (ANDROID)
 	add_library(app-glue STATIC ${ANDROID_NDK}/sources/android/native_app_glue/android_native_app_glue.c)
 	target_link_libraries(${APP_TARGET} PRIVATE app-glue)
 endif()
+
+# --------------------------------------- #
+# --------- Asset Deployment ------------ #
+# --------------------------------------- #
+add_custom_command(TARGET ${APP_TARGET} POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+		"${CMAKE_CURRENT_SOURCE_DIR}/Shaders/bin"
+		"$<TARGET_FILE_DIR:${APP_TARGET}>/Shaders/bin"
+)
