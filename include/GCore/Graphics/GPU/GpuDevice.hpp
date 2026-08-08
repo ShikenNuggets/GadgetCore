@@ -1,5 +1,7 @@
 #pragma once
 
+#include <span>
+
 #include <SDL3/SDL.h>
 
 namespace Gadget
@@ -11,6 +13,8 @@ namespace Gadget
 		~GpuDevice();
 
 		SDL_GPUDevice* GetDevice(){ return device; }
+
+		SDL_GPUBuffer* CreateVertexBuffer(std::span<const uint8_t> data);
 
 	private:
 		SDL_GPUDevice* device;

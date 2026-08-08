@@ -19,7 +19,7 @@ namespace GadgetCoreDemos
 	{
 		Gadget::Logger::SimpleInit(Gadget::Logger::Mode::StdOut, Gadget::Logger::Severity::Verbose, {});
 
-		auto window = Gadget::Window(800, 600, Gadget::RenderAPI::SDLGPU, "Demo1");
+		auto window = Gadget::Window(800, 600, Gadget::RenderAPI::SDLGPU, "Demo3");
 
 		bool shouldContinue = true;
 		auto quitHandle = window.EventHandler().OnQuitRequested.Add([&]()
@@ -30,7 +30,7 @@ namespace GadgetCoreDemos
 
 		auto keyDownHandle = window.EventHandler().OnButtonDown.Add([&](Gadget::ButtonId buttonId)
 		{
-			if(buttonId == Gadget::ButtonId::Keyboard_Escape)
+			if (buttonId == Gadget::ButtonId::Keyboard_Escape)
 			{
 				GADGET_LOG_INFO("Escape pressed, exiting");
 				shouldContinue = false;
@@ -39,44 +39,8 @@ namespace GadgetCoreDemos
 
 		auto* gpuDevice = window.GetGpuDevice()->GetDevice();
 
-		SDL_GPUBufferCreateInfo bufferInfo
-		{
-			.usage = SDL_GPU_BUFFERUSAGE_VERTEX,
-			.size = SizeOfTriangles
-		};
-		SDL_GPUBuffer* triangleVertexBuffer = SDL_CreateGPUBuffer(gpuDevice, &bufferInfo);
-
-		SDL_GPUTransferBufferCreateInfo transferInfo
-		{
-			.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD,
-			.size = SizeOfTriangles
-		};
-		SDL_GPUTransferBuffer* transferBuffer = SDL_CreateGPUTransferBuffer(gpuDevice, &transferInfo);
-
-		auto* data = reinterpret_cast<Gadget::Vertex*>(SDL_MapGPUTransferBuffer(gpuDevice, transferBuffer, false));
-		SDL_memcpy(data, triangleVertices.data(), SizeOfTriangles);
-		SDL_UnmapGPUTransferBuffer(gpuDevice, transferBuffer);
-
-		SDL_GPUCommandBuffer* commandBuffer = SDL_AcquireGPUCommandBuffer(gpuDevice);
-		SDL_GPUCopyPass* copyPass = SDL_BeginGPUCopyPass(commandBuffer);
-
-		SDL_GPUTransferBufferLocation location
-		{
-			.transfer_buffer = transferBuffer,
-			.offset = 0,
-		};
-
-		SDL_GPUBufferRegion region
-		{
-			.buffer = triangleVertexBuffer,
-			.offset = 0,
-			.size = SizeOfTriangles
-		};
-
-		SDL_UploadToGPUBuffer(copyPass, &location, &region, true);
-
-		SDL_EndGPUCopyPass(copyPass);
-		SDL_SubmitGPUCommandBuffer(commandBuffer);
+		const auto byteSpan = std::span<const uint8_t>(reinterpret_cast<const uint8_t*>(triangleVertices.data()), SizeOfTriangles);
+		SDL_GPUBuffer* triangleVertexBuffer = window.GetGpuDevice()->CreateVertexBuffer(byteSpan);
 
 		// Vertex Shader
 		size_t vertexCodeSize{};
@@ -180,8 +144,6 @@ namespace GadgetCoreDemos
 		}
 
 		SDL_ReleaseGPUGraphicsPipeline(gpuDevice, graphicsPipeline);
-
-		SDL_ReleaseGPUTransferBuffer(gpuDevice, transferBuffer);
 		SDL_ReleaseGPUBuffer(gpuDevice, triangleVertexBuffer);
 
 		return 0;
