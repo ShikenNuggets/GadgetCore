@@ -39,7 +39,7 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 	}
 	else if (renderAPI == RenderAPI::SDLGPU)
 	{
-		gpuDevice = std::make_unique<GpuDevice>();
+		gpuDevice = std::make_unique<GpuDevice>(windowPtr);
 		bool bSuccess = SDL_ClaimWindowForGPUDevice(gpuDevice->GetDevice(), windowPtr);
 		if (!bSuccess)
 		{
