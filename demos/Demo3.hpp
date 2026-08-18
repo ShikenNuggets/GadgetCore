@@ -4,6 +4,7 @@
 
 #include <GCore/Graphics/Vertex.hpp>
 #include <GCore/Graphics/GPU/GpuDevice.hpp>
+#include <GCore/Graphics/GPU/GpuPipeline.hpp>
 #include <GCore/Graphics/GPU/GpuShader.hpp>
 
 namespace GadgetCoreDemos
@@ -43,31 +44,7 @@ namespace GadgetCoreDemos
 		const auto byteSpan = std::span<const uint8_t>(reinterpret_cast<const uint8_t*>(triangleVertices.data()), SizeOfTriangles);
 		SDL_GPUBuffer* triangleVertexBuffer = window.GetGpuDevice()->CreateVertexBuffer(byteSpan);
 
-		// Vertex Shader
-		auto vertexCodeResult = Gadget::FileSystem::ReadFileRaw("Shaders/bin/TriangleVertex.spv");
-		if (!vertexCodeResult.has_value())
-		{
-			GADGET_LOG_ERROR("Failed to load vertex shader file!");
-			return -1;
-		}
-
-		const auto& vertexCode = vertexCodeResult.value();
-		auto rawVertexShader = Gadget::RawShader(vertexCode, Gadget::ShaderType::Vertex, Gadget::ShaderFormat::SPIRV);
-		auto vertexShader = Gadget::GpuShader(*window.GetGpuDevice(), rawVertexShader);
-
-		// Fragment Shader
-		auto fragmentCodeResult = Gadget::FileSystem::ReadFileRaw("Shaders/bin/TriangleFragment.spv");
-		if(!fragmentCodeResult.has_value())
-		{
-			GADGET_LOG_ERROR("Failed to load fragment shader file!");
-			return -1;
-		}
-
-		const auto& fragmentCode = fragmentCodeResult.value();
-		auto rawFragmentShader = Gadget::RawShader(fragmentCode, Gadget::ShaderType::Fragment, Gadget::ShaderFormat::SPIRV);
-		auto fragmentShader = Gadget::GpuShader(*window.GetGpuDevice(), rawFragmentShader);
-
-		auto* graphicsPipeline = window.GetGpuDevice()->CreateGraphicsPipeline(rawVertexShader, rawFragmentShader);
+		auto graphicsPipeline = Gadget::GpuPipeline(*window.GetGpuDevice(), "Shaders/bin/TriangleVertex.spv", "Shaders/bin/TriangleFragment.spv");
 
 		while (shouldContinue)
 		{
@@ -89,7 +66,7 @@ namespace GadgetCoreDemos
 
 			SDL_GPURenderPass* renderPass = SDL_BeginGPURenderPass(commandBuffer, &colorTargetInfo, 1, nullptr);
 
-			SDL_BindGPUGraphicsPipeline(renderPass, graphicsPipeline);
+			SDL_BindGPUGraphicsPipeline(renderPass, graphicsPipeline.GetPipeline());
 
 			SDL_GPUBufferBinding bufferBindings[1]
 			{{
@@ -110,7 +87,6 @@ namespace GadgetCoreDemos
 			window.UpdateWindowSurface();
 		}
 
-		SDL_ReleaseGPUGraphicsPipeline(gpuDevice, graphicsPipeline);
 		SDL_ReleaseGPUBuffer(gpuDevice, triangleVertexBuffer);
 
 		return 0;
