@@ -1,3 +1,4 @@
+#include <GCore/FileSystem.hpp>
 #include <GCore/Logger.hpp>
 #include <GCore/Window.hpp>
 
@@ -43,22 +44,28 @@ namespace GadgetCoreDemos
 		SDL_GPUBuffer* triangleVertexBuffer = window.GetGpuDevice()->CreateVertexBuffer(byteSpan);
 
 		// Vertex Shader
-		size_t vertexCodeSize{};
-		void* vertexCode = SDL_LoadFile("Shaders/bin/TriangleVertex.spv", &vertexCodeSize);
+		auto vertexCodeResult = Gadget::FileSystem::ReadFileRaw("Shaders/bin/TriangleVertex.spv");
+		if (!vertexCodeResult.has_value())
+		{
+			GADGET_LOG_ERROR("Failed to load vertex shader file!");
+			return -1;
+		}
 
-		auto rawVertexShader = Gadget::RawShader(std::span<uint8_t>(reinterpret_cast<uint8_t*>(vertexCode), vertexCodeSize), Gadget::ShaderType::Vertex, Gadget::ShaderFormat::SPIRV);
+		const auto& vertexCode = vertexCodeResult.value();
+		auto rawVertexShader = Gadget::RawShader(vertexCode, Gadget::ShaderType::Vertex, Gadget::ShaderFormat::SPIRV);
 		auto vertexShader = Gadget::GpuShader(*window.GetGpuDevice(), rawVertexShader);
 
-		SDL_free(vertexCode);
-
 		// Fragment Shader
-		size_t fragmentCodeSize{};
-		void* fragmentCode = SDL_LoadFile("Shaders/bin/TriangleFragment.spv", &fragmentCodeSize);
+		auto fragmentCodeResult = Gadget::FileSystem::ReadFileRaw("Shaders/bin/TriangleFragment.spv");
+		if(!fragmentCodeResult.has_value())
+		{
+			GADGET_LOG_ERROR("Failed to load fragment shader file!");
+			return -1;
+		}
 
-		auto rawFragmentShader = Gadget::RawShader(std::span<uint8_t>(reinterpret_cast<uint8_t*>(fragmentCode), fragmentCodeSize), Gadget::ShaderType::Fragment, Gadget::ShaderFormat::SPIRV);
+		const auto& fragmentCode = fragmentCodeResult.value();
+		auto rawFragmentShader = Gadget::RawShader(fragmentCode, Gadget::ShaderType::Fragment, Gadget::ShaderFormat::SPIRV);
 		auto fragmentShader = Gadget::GpuShader(*window.GetGpuDevice(), rawFragmentShader);
-
-		SDL_free(fragmentCode);
 
 		auto* graphicsPipeline = window.GetGpuDevice()->CreateGraphicsPipeline(rawVertexShader, rawFragmentShader);
 
