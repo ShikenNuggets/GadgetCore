@@ -4,6 +4,7 @@
 
 #include <GCore/Graphics/Vertex.hpp>
 #include <GCore/Graphics/GPU/GpuBuffer.hpp>
+#include <GCore/Graphics/GPU/GpuCommandBuffer.hpp>
 #include <GCore/Graphics/GPU/GpuDevice.hpp>
 #include <GCore/Graphics/GPU/GpuPipeline.hpp>
 #include <GCore/Graphics/GPU/GpuShader.hpp>
@@ -49,40 +50,11 @@ namespace GadgetCoreDemos
 		while (shouldContinue)
 		{
 			window.HandleEvents();
-			
-			SDL_GPUCommandBuffer* commandBuffer = SDL_AcquireGPUCommandBuffer(gpuDevice);
 
-			SDL_GPUTexture* swapchainTexture = nullptr;
-			Uint32 width{};
-			Uint32 height{};
-			SDL_WaitAndAcquireGPUSwapchainTexture(commandBuffer, window.GetSDLWindowPtr(), &swapchainTexture, &width, &height); // TODO - Error handling
-
-			SDL_GPUColorTargetInfo colorTargetInfo{
-				.texture = swapchainTexture,
-				.clear_color = { 15 / 255.0f, 15 / 255.0f, 15 / 255.0f, 255 / 255.0f },
-				.load_op = SDL_GPU_LOADOP_CLEAR,
-				.store_op = SDL_GPU_STOREOP_STORE
-			};
-
-			SDL_GPURenderPass* renderPass = SDL_BeginGPURenderPass(commandBuffer, &colorTargetInfo, 1, nullptr);
-
-			SDL_BindGPUGraphicsPipeline(renderPass, graphicsPipeline.GetPipeline());
-
-			SDL_GPUBufferBinding bufferBindings[1]
-			{{
-				.buffer = triangleVertexBuffer.GetBuffer(),
-				.offset = 0
-			}};
-
-			SDL_BindGPUVertexBuffers(renderPass, 0, bufferBindings, 1);
-
-			SDL_DrawGPUPrimitives(renderPass, 3, 1, 0, 0);
-
-			// TODO, draw something
-
-			SDL_EndGPURenderPass(renderPass);
-
-			SDL_SubmitGPUCommandBuffer(commandBuffer);
+			{
+				auto commandBuffer = Gadget::GpuCommandBuffer(*window.GetGpuDevice(), Gadget::Color::DarkGray());
+				commandBuffer.Draw(graphicsPipeline, triangleVertexBuffer);
+			}
 
 			window.UpdateWindowSurface();
 		}

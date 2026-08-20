@@ -15,6 +15,7 @@ namespace Gadget
 		~GpuDevice();
 
 		SDL_GPUDevice* GetDevice(){ return device; }
+		SDL_Window* GetOwnerWindow(){ return ownerWindow; }
 
 		SDL_GPUShader* CreateShader(const RawShader& rawShader);
 		SDL_GPUBuffer* CreateVertexBuffer(std::span<const uint8_t> data);

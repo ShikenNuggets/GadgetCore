@@ -12,14 +12,16 @@ namespace Gadget
 	class GpuVertexBuffer
 	{
 	public:
-		GpuVertexBuffer(GpuDevice& gpuDevice, std::span<const uint8_t> vertexData);
+		GpuVertexBuffer(GpuDevice& gpuDevice, std::span<const uint8_t> vertexData, size_t numVertices);
 		GpuVertexBuffer(GpuDevice& gpuDevice, std::span<const Vertex> vertices);
 		~GpuVertexBuffer();
 
 		SDL_GPUBuffer* GetBuffer(){ return bufferPtr; }
+		size_t GetVertexCount() const{ return vertexCount; }
 
 	private:
 		GpuDevice& ownerDevice;
 		SDL_GPUBuffer* bufferPtr;
+		size_t vertexCount;
 	};
 }
