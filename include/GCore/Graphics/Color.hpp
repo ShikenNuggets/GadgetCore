@@ -71,7 +71,7 @@ namespace Gadget
 		[[nodiscard]] static inline constexpr auto Pink()		{ return Color(1.0f, 0.0f, 1.0f, 1.0f); }
 		[[nodiscard]] static inline constexpr auto Brown()		{ return Color(0.4f, 0.2f, 0.0f, 1.0f); }
 		[[nodiscard]] static inline constexpr auto Gray()		{ return Color(0.5f, 0.5f, 0.5f, 1.0f); }
-		[[nodiscard]] static inline constexpr auto DarkGray()	{ return Color(0.2f, 0.2f, 0.2f, 1.0f); }
+		[[nodiscard]] static inline constexpr auto DarkGray()	{ return Color(0.1f, 0.1f, 0.1f, 1.0f); }
 
 		[[nodiscard]] inline bool IsValid() const
 		{
