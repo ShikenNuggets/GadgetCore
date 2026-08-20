@@ -3,6 +3,7 @@
 #include <GCore/Window.hpp>
 
 #include <GCore/Graphics/Vertex.hpp>
+#include <GCore/Graphics/GPU/GpuBuffer.hpp>
 #include <GCore/Graphics/GPU/GpuDevice.hpp>
 #include <GCore/Graphics/GPU/GpuPipeline.hpp>
 #include <GCore/Graphics/GPU/GpuShader.hpp>
@@ -41,8 +42,7 @@ namespace GadgetCoreDemos
 
 		auto* gpuDevice = window.GetGpuDevice()->GetDevice();
 
-		const auto byteSpan = std::span<const uint8_t>(reinterpret_cast<const uint8_t*>(triangleVertices.data()), SizeOfTriangles);
-		SDL_GPUBuffer* triangleVertexBuffer = window.GetGpuDevice()->CreateVertexBuffer(byteSpan);
+		auto triangleVertexBuffer = Gadget::GpuVertexBuffer(*window.GetGpuDevice(), triangleVertices);
 
 		auto graphicsPipeline = Gadget::GpuPipeline(*window.GetGpuDevice(), "Shaders/bin/TriangleVertex.spv", "Shaders/bin/TriangleFragment.spv");
 
@@ -70,7 +70,7 @@ namespace GadgetCoreDemos
 
 			SDL_GPUBufferBinding bufferBindings[1]
 			{{
-				.buffer = triangleVertexBuffer,
+				.buffer = triangleVertexBuffer.GetBuffer(),
 				.offset = 0
 			}};
 
@@ -86,8 +86,6 @@ namespace GadgetCoreDemos
 
 			window.UpdateWindowSurface();
 		}
-
-		SDL_ReleaseGPUBuffer(gpuDevice, triangleVertexBuffer);
 
 		return 0;
 	}
