@@ -24,4 +24,17 @@ namespace Gadget
 		SDL_GPUBuffer* bufferPtr;
 		size_t vertexCount;
 	};
+
+	class GpuIndexBuffer
+	{
+	public:
+		GpuIndexBuffer(GpuDevice& gpuDevice, std::span<const uint32_t> indices);
+		~GpuIndexBuffer();
+
+		SDL_GPUBuffer* GetBuffer(){ return bufferPtr; }
+
+	private:
+		GpuDevice& ownerDevice;
+		SDL_GPUBuffer* bufferPtr;
+	};
 }
