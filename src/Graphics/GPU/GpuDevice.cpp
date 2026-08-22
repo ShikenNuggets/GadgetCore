@@ -76,28 +76,49 @@ SDL_GPUShader* GpuDevice::CreateShader(const RawShader& rawShader)
 	return shader;
 }
 
-SDL_GPUBuffer* GpuDevice::CreateVertexBuffer(std::span<const uint8_t> data)
+SDL_GPUBuffer* GpuDevice::CreateBuffer(SDL_GPUBufferUsageFlags usage, Uint32 sizeBytes)
 {
-	GADGET_ASSERT(!data.empty(), "Tried to create vertex buffer with empty data");
-	GADGET_ASSERT(device != nullptr, "Tried to create vertex buffer with invalid device");
-	GADGET_ASSERT(data.size() <= std::numeric_limits<Uint32>::max(), "Tried to create vertex buffer with data size larger than Uint32 max");
+	GADGET_ASSERT(device != nullptr, "Tried to create an index buffer with an invalid device");
+	GADGET_ASSERT(sizeBytes > 0, "Tried to create an index buffer with no indices");
+	GADGET_ASSERT(sizeBytes <= std::numeric_limits<Uint32>::max(), "Tried to create vertex buffer with data size larger than Uint32 max");
 
 	SDL_GPUBufferCreateInfo bufferInfo
 	{
-		.usage = SDL_GPU_BUFFERUSAGE_VERTEX,
-		.size = static_cast<Uint32>(data.size())
+		.usage = SDL_GPU_BUFFERUSAGE_INDEX,
+		.size = sizeBytes
 	};
-	SDL_GPUBuffer* vertexBuffer = SDL_CreateGPUBuffer(device, &bufferInfo);
+
+	SDL_GPUBuffer* buffer = SDL_CreateGPUBuffer(device, &bufferInfo);
+	if(buffer == nullptr)
+	{
+		GADGET_LOG_ERROR("Failed to create GPU buffer. SDL Error: ", SDL_GetError());
+	}
+
+	return buffer;
+}
+
+void GpuDevice::CopyDataToBuffer(SDL_GPUBuffer* buffer, std::span<const uint8_t> data)
+{
+	GADGET_ASSERT(device != nullptr, "Tried to copy data to GPU buffer with an invalid device");
+	GADGET_ASSERT(buffer != nullptr, "Tried to copy data to an invalid GPU buffer");
+	GADGET_ASSERT(data.size_bytes() <= std::numeric_limits<Uint32>::max(), "Tried to create vertex buffer with data size larger than Uint32 max"); // TODO: Can we check the buffer size here?
+
+	if(data.empty())
+	{
+		GADGET_LOG_WARNING("Tried to copy empty data to GPU buffer");
+		return;
+	}
 
 	SDL_GPUTransferBufferCreateInfo transferInfo
 	{
 		.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD,
-		.size = static_cast<Uint32>(data.size())
+		.size = static_cast<Uint32>(data.size_bytes())
 	};
+
 	SDL_GPUTransferBuffer* transferBuffer = SDL_CreateGPUTransferBuffer(device, &transferInfo);
 
 	auto* dataPtr = SDL_MapGPUTransferBuffer(device, transferBuffer, false);
-	SDL_memcpy(dataPtr, data.data(), data.size());
+	SDL_memcpy(dataPtr, data.data(), data.size_bytes());
 	SDL_UnmapGPUTransferBuffer(device, transferBuffer);
 
 	SDL_GPUCommandBuffer* commandBuffer = SDL_AcquireGPUCommandBuffer(device);
@@ -111,9 +132,9 @@ SDL_GPUBuffer* GpuDevice::CreateVertexBuffer(std::span<const uint8_t> data)
 
 	SDL_GPUBufferRegion region
 	{
-		.buffer = vertexBuffer,
+		.buffer = buffer,
 		.offset = 0,
-		.size = static_cast<Uint32>(data.size())
+		.size = static_cast<Uint32>(data.size_bytes())
 	};
 
 	SDL_UploadToGPUBuffer(copyPass, &location, &region, true);
@@ -122,8 +143,30 @@ SDL_GPUBuffer* GpuDevice::CreateVertexBuffer(std::span<const uint8_t> data)
 	SDL_SubmitGPUCommandBuffer(commandBuffer);
 
 	SDL_ReleaseGPUTransferBuffer(device, transferBuffer);
+}
 
+SDL_GPUBuffer* GpuDevice::CreateVertexBuffer(std::span<const uint8_t> data)
+{
+	SDL_GPUBuffer* vertexBuffer = CreateBuffer(SDL_GPU_BUFFERUSAGE_VERTEX, data.size_bytes());
+	if (vertexBuffer == nullptr)
+	{
+		return nullptr;
+	}
+
+	CopyDataToBuffer(vertexBuffer, data);
 	return vertexBuffer;
+}
+
+SDL_GPUBuffer* GpuDevice::CreateIndexBuffer(std::span<const uint32_t> indices)
+{
+	SDL_GPUBuffer* indexBuffer = CreateBuffer(SDL_GPU_BUFFERUSAGE_INDEX, indices.size_bytes());
+	if (indexBuffer == nullptr)
+	{
+		return nullptr;
+	}
+
+	CopyDataToBuffer(indexBuffer, std::span<const uint8_t>(reinterpret_cast<const uint8_t*>(indices.data()), indices.size_bytes()));
+	return indexBuffer;
 }
 
 SDL_GPUGraphicsPipeline* GpuDevice::CreateGraphicsPipeline(const RawShader& rawVertexShader, const RawShader& rawFragmentShader)
