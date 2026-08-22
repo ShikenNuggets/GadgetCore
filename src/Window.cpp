@@ -46,6 +46,12 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 			GADGET_LOG_ERROR("Failed to claim window for GPU device, SDL Error: {}", SDL_GetError());
 			// TODO - throw fatal error
 		}
+
+		bSuccess = SDL_SetGPUSwapchainParameters(gpuDevice->GetDevice(), windowPtr, SDL_GPU_SWAPCHAINCOMPOSITION_SDR_LINEAR, SDL_GPU_PRESENTMODE_VSYNC);
+		if (!bSuccess)
+		{
+			GADGET_LOG_ERROR("Failed to set GPU swapchain parameters, SDL Error: {}", SDL_GetError());
+		}
 	}
 
 	SDL_SetJoystickEventsEnabled(true);
