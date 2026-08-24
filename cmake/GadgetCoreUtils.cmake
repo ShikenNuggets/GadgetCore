@@ -45,7 +45,7 @@ function(GadgetCore_CompileShaders TARGET_NAME)
 		message(FATAL_ERROR "GadgetCore_CompileShaders requires both SRC_DIR and OUT_DIR to be specified.")
 	endif()
 
-	find_package(Vulkan REQUIRED QUIET)
+	find_package(Vulkan QUIET)
 	if(NOT Vulkan_GLSLC_EXECUTABLE)
 		message(WARNING "glslc compiler not found! Check your Vulkan SDK installation if you require SPIR-V compilation.") # Not a fatal error since we support many platforms/use-cases that won't need this
 		return()
