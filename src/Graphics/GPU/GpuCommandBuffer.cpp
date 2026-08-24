@@ -37,6 +37,28 @@ void GpuCommandBuffer::Draw(GpuPipeline& pipeline, GpuVertexBuffer& buffer)
 	SDL_DrawGPUPrimitives(renderPassPtr, buffer.GetVertexCount(), 1, 0, 0);
 }
 
+void GpuCommandBuffer::Draw(GpuPipeline& pipeline, GpuVertexBuffer& vertexBuffer, GpuIndexBuffer& indexBuffer)
+{
+	SDL_BindGPUGraphicsPipeline(renderPassPtr, pipeline.GetPipeline());
+
+	SDL_GPUBufferBinding vertexBufferBinding =
+	{
+		.buffer = vertexBuffer.GetBuffer(),
+		.offset = 0
+	};
+
+	SDL_GPUBufferBinding indexBufferBinding =
+	{
+		.buffer = indexBuffer.GetBuffer(),
+		.offset = 0
+	};
+
+	SDL_BindGPUVertexBuffers(renderPassPtr, 0, &vertexBufferBinding, 1);
+	SDL_BindGPUIndexBuffer(renderPassPtr, &indexBufferBinding, SDL_GPU_INDEXELEMENTSIZE_32BIT);
+
+	SDL_DrawGPUIndexedPrimitives(renderPassPtr, indexBuffer.GetIndexCount(), 1, 0, 0, 0);
+}
+
 GpuCommandBuffer::~GpuCommandBuffer()
 {
 	SDL_EndGPURenderPass(renderPassPtr);

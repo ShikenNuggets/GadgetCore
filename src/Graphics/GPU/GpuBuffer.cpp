@@ -18,7 +18,7 @@ GpuVertexBuffer::~GpuVertexBuffer()
 	SDL_ReleaseGPUBuffer(ownerDevice.GetDevice(), bufferPtr);
 }
 
-GpuIndexBuffer::GpuIndexBuffer(GpuDevice& gpuDevice, std::span<const uint32_t> indices) : ownerDevice(gpuDevice), bufferPtr(nullptr)
+GpuIndexBuffer::GpuIndexBuffer(GpuDevice& gpuDevice, std::span<const uint32_t> indices) : ownerDevice(gpuDevice), bufferPtr(nullptr), indexCount(indices.size())
 {
 	bufferPtr = gpuDevice.CreateIndexBuffer(indices);
 }

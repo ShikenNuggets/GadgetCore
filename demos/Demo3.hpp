@@ -44,6 +44,7 @@ namespace GadgetCoreDemos
 		auto* gpuDevice = window.GetGpuDevice()->GetDevice();
 
 		auto triangleVertexBuffer = Gadget::GpuVertexBuffer(*window.GetGpuDevice(), triangleVertices);
+		auto triangleIndexBuffer = Gadget::GpuIndexBuffer(*window.GetGpuDevice(), std::array<const uint32_t, 3>{ 0, 1, 2 });
 
 		auto graphicsPipeline = Gadget::GpuPipeline(*window.GetGpuDevice(), "Shaders/bin/TriangleVertex.spv", "Shaders/bin/TriangleFragment.spv");
 
@@ -52,8 +53,8 @@ namespace GadgetCoreDemos
 			window.HandleEvents();
 
 			{
-				auto commandBuffer = Gadget::GpuCommandBuffer(*window.GetGpuDevice(), Gadget::Color::DarkGray());
-				commandBuffer.Draw(graphicsPipeline, triangleVertexBuffer);
+				auto commandBuffer = Gadget::GpuCommandBuffer(*window.GetGpuDevice(), Gadget::Color(0.02f, 0.02f, 0.02f));
+				commandBuffer.Draw(graphicsPipeline, triangleVertexBuffer, triangleIndexBuffer);
 			}
 
 			window.UpdateWindowSurface();

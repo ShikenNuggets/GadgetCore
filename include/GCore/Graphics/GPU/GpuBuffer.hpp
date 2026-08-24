@@ -32,9 +32,11 @@ namespace Gadget
 		~GpuIndexBuffer();
 
 		SDL_GPUBuffer* GetBuffer(){ return bufferPtr; }
+		size_t GetIndexCount() const{ return indexCount; }
 
 	private:
 		GpuDevice& ownerDevice;
 		SDL_GPUBuffer* bufferPtr;
+		size_t indexCount;
 	};
 }
