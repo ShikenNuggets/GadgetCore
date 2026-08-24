@@ -15,6 +15,12 @@ else()
 	add_executable(${APP_TARGET} ${DEMO_SRC_FILES})
 endif()
 
+GadgetCore_CompileShaders(${APP_TARGET}
+	SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Shaders/src"
+	OUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Shaders/bin"
+	FLAGS -g -O0
+)
+
 set_target_properties(${APP_TARGET} PROPERTIES
 	CXX_EXTENSIONS NO
 	CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE
