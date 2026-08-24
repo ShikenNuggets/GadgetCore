@@ -152,6 +152,41 @@ TEST_CASE("Math::ToMatrix4(TQuat)", "[math_to_matrix4_quat]")
 	}
 }
 
+TEST_CASE("Math::ToMatrix4(TEuler)", "[math_to_matrix4_euler]")
+{
+	const auto eulerIdentity = Euler();
+	const auto mIdentity = Matrix4::Identity();
+	auto m = Math::ToMatrix4(eulerIdentity);
+	for(size_t i = 0; i < Matrix4::Size(); ++i)
+	{
+		REQUIRE(m[i] == mIdentity[i]);
+	}
+
+	const auto e90X = Euler(90.0, 0.0, 0.0);
+	const auto m90X = Math::Rotate<Gadget::Math::GFloat>(90.0, Vector3(1.0, 0.0, 0.0));
+	m = Math::ToMatrix4(e90X);
+	for(size_t i = 0; i < Matrix4::Size(); ++i)
+	{
+		REQUIRE(m[i] == Approx(m90X[i]).margin(1e-6));
+	}
+
+	const auto e90Y = Euler(0.0, 90.0, 0.0);
+	const auto m90Y = Math::Rotate<Gadget::Math::GFloat>(90.0, Vector3(0.0, 1.0, 0.0));
+	m = Math::ToMatrix4(e90Y);
+	for(size_t i = 0; i < Matrix4::Size(); ++i)
+	{
+		REQUIRE(m[i] == Approx(m90Y[i]).margin(1e-6));
+	}
+
+	const auto e90Z = Euler(0.0, 0.0, 90.0);
+	const auto m90Z = Math::Rotate<Gadget::Math::GFloat>(90.0, Vector3(0.0, 0.0, 1.0));
+	m = Math::ToMatrix4(e90Z);
+	for(size_t i = 0; i < Matrix4::Size(); ++i)
+	{
+		REQUIRE(m[i] == Approx(m90Z[i]).margin(1e-6));
+	}
+}
+
 TEST_CASE("Math::ToVector4(TVec3)", "[math_to_vector4_tvec3]")
 {
 	const auto vec = Vector3(1.0, 2.0, 3.0);

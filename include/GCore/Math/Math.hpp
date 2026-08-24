@@ -116,6 +116,12 @@ namespace Gadget::Math
 	}
 
 	template <FloatLike T>
+	[[nodiscard]] inline constexpr TMat4<T> ToMatrix4(const TEuler<T>& euler)
+	{
+		return ToMatrix4(ToQuaternion(euler));
+	}
+
+	template <FloatLike T>
 	[[nodiscard]] inline constexpr TVec4<T> ToVector4(const TVec3<T>& vec, T w = 1.0)
 	{
 		return TVec4<T>(vec.x, vec.y, vec.z, w);
