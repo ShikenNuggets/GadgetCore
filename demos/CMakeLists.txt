@@ -45,7 +45,7 @@ endif()
 # --------------------------------------- #
 # --------- Asset Deployment ------------ #
 # --------------------------------------- #
-add_custom_command(TARGET ${APP_TARGET} POST_BUILD
+add_custom_command(TARGET ${APP_TARGET}_Shaders POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_directory
 		"${CMAKE_CURRENT_SOURCE_DIR}/Shaders/bin"
 		"$<TARGET_FILE_DIR:${APP_TARGET}>/Shaders/bin"
