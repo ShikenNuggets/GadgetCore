@@ -84,7 +84,7 @@ SDL_GPUBuffer* GpuDevice::CreateBuffer(SDL_GPUBufferUsageFlags usage, Uint32 siz
 
 	SDL_GPUBufferCreateInfo bufferInfo
 	{
-		.usage = SDL_GPU_BUFFERUSAGE_INDEX,
+		.usage = usage,
 		.size = sizeBytes
 	};
 
