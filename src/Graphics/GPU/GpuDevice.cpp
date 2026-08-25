@@ -12,9 +12,9 @@ GpuDevice::GpuDevice(SDL_Window* window) : ownerWindow(window), device(nullptr)
 	GADGET_ASSERT(window != nullptr, "Tried to create GpuDevice with null window");
 
 	bool isDebug = false;
-	#ifdef GADGET_DEBUG
+	#ifdef GADGET_BUILD_DEBUG
 	isDebug = true;
-	#endif // GADGET_DEBUG
+	#endif // GADGET_BUILD_DEBUG
 
 	device = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV, isDebug, nullptr);
 	if (device == nullptr)
