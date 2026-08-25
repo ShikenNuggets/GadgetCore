@@ -17,6 +17,10 @@ namespace Gadget
 		[[nodiscard]] inline constexpr TEuler operator-(const TEuler& e) const noexcept{ return TEuler(x - e.x, y - e.y, z - e.z); }
 		[[nodiscard]] inline constexpr TEuler operator*(T value) const noexcept{ return TEuler(x * value, y * value, z * value); }
 
+		inline constexpr void operator+=(const TEuler& v) noexcept{ *this = *this + v; }
+		inline constexpr void operator-=(const TEuler& v) noexcept{ *this = *this - v; }
+		inline constexpr void operator*=(T value) noexcept{ *this = *this * value; }
+
 		[[nodiscard]] inline friend constexpr TEuler operator*(float value, const TEuler& e) noexcept{ return e * value; }
 
 		[[nodiscard]] static inline constexpr TEuler Lerp(const TEuler& a, const TEuler& b, T t){ return a + t * (b - a); }

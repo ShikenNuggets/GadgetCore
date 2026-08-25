@@ -56,6 +56,37 @@ TEST_CASE("TEuler::*", "[teuler_operator_*]")
 	REQUIRE(multTest.z == multTest2.z);
 }
 
+TEST_CASE("TEuler::+=", "[teuler_operator_+=]")
+{
+	auto plusTest = TEuler<double>(1.0, 2.0, 3.0);
+	plusTest += TEuler<double>(4.0, 5.0, 6.0);
+	REQUIRE(plusTest.x == 5.0);
+	REQUIRE(plusTest.y == 7.0);
+	REQUIRE(plusTest.z == 9.0);
+}
+
+TEST_CASE("TEuler::-=", "[teuler_operator_-=]")
+{
+	auto subTest = TEuler<double>(6.0, 5.0, 4.0);
+	subTest -= TEuler<double>(3.0, 2.0, 1.0);
+	REQUIRE(subTest.x == 3.0);
+	REQUIRE(subTest.y == 3.0);
+	REQUIRE(subTest.z == 3.0);
+}
+
+TEST_CASE("TEuler::*=", "[teuler_operator_*=]")
+{
+	constexpr auto x = 1.0;
+	constexpr auto y = 2.0;
+	constexpr auto z = 3.0;
+
+	auto multTest = TEuler<double>(x, y, z);
+	multTest *= 4.0;
+	REQUIRE(multTest.x == 4.0);
+	REQUIRE(multTest.y == 8.0);
+	REQUIRE(multTest.z == 12.0);
+}
+
 TEST_CASE("TEuler::Lerp", "[teuler_lerp]")
 {
 	const auto a = TEuler<double>(0.0, 1.0, 2.0);
