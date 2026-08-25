@@ -10,7 +10,7 @@ namespace Gadget
 	{
 	public:
 		GpuPipeline(GpuDevice& owner, const RawShader& vertex, const RawShader& fragment);
-		GpuPipeline(GpuDevice& owner, std::string_view vertexFilePath, std::string_view fragmentFilePath);
+		GpuPipeline(GpuDevice& owner, std::string_view vertexFilePath, std::string_view fragmentFilePath, uint32_t numVertexUniforms, uint32_t numFragmentUniforms);
 		~GpuPipeline();
 
 		SDL_GPUGraphicsPipeline* GetPipeline(){ return pipelinePtr; }

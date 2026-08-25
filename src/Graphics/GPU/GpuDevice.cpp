@@ -63,7 +63,7 @@ SDL_GPUShader* GpuDevice::CreateShader(const RawShader& rawShader)
 		.num_samplers = 0,
 		.num_storage_textures = 0,
 		.num_storage_buffers = 0,
-		.num_uniform_buffers = 0,
+		.num_uniform_buffers = rawShader.GetNumUniforms(),
 	};
 
 	SDL_GPUShader* shader = SDL_CreateGPUShader(device, &vertexInfo);

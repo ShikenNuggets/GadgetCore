@@ -9,7 +9,7 @@ GpuPipeline::GpuPipeline(GpuDevice& owner, const RawShader& vertex, const RawSha
 	pipelinePtr = ownerDevice.CreateGraphicsPipeline(vertex, fragment);
 }
 
-GpuPipeline::GpuPipeline(GpuDevice& owner, std::string_view vertexFilePath, std::string_view fragmentFilePath) : ownerDevice(owner), pipelinePtr(nullptr)
+GpuPipeline::GpuPipeline(GpuDevice& owner, std::string_view vertexFilePath, std::string_view fragmentFilePath, uint32_t numVertexUniforms, uint32_t numFragmentUniforms) : ownerDevice(owner), pipelinePtr(nullptr)
 {
 	// Vertex Shader
 	auto vertexCodeResult = Gadget::FileSystem::ReadFileRaw(vertexFilePath);
@@ -20,7 +20,7 @@ GpuPipeline::GpuPipeline(GpuDevice& owner, std::string_view vertexFilePath, std:
 	}
 
 	const auto& vertexCode = vertexCodeResult.value();
-	auto rawVertexShader = Gadget::RawShader(vertexCode, Gadget::ShaderType::Vertex, Gadget::ShaderFormat::SPIRV);
+	auto rawVertexShader = Gadget::RawShader(vertexCode, Gadget::ShaderType::Vertex, Gadget::ShaderFormat::SPIRV, numVertexUniforms);
 
 	// Fragment Shader
 	auto fragmentCodeResult = Gadget::FileSystem::ReadFileRaw(fragmentFilePath);
@@ -31,7 +31,7 @@ GpuPipeline::GpuPipeline(GpuDevice& owner, std::string_view vertexFilePath, std:
 	}
 
 	const auto& fragmentCode = fragmentCodeResult.value();
-	auto rawFragmentShader = Gadget::RawShader(fragmentCode, Gadget::ShaderType::Fragment, Gadget::ShaderFormat::SPIRV);
+	auto rawFragmentShader = Gadget::RawShader(fragmentCode, Gadget::ShaderType::Fragment, Gadget::ShaderFormat::SPIRV, numFragmentUniforms);
 
 	pipelinePtr = ownerDevice.CreateGraphicsPipeline(rawVertexShader, rawFragmentShader);
 }

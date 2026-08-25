@@ -39,7 +39,7 @@ GpuShader::GpuShader(GpuDevice& gpuDevice, const RawShader& rawShader) : ownerDe
 		.num_samplers = 0,
 		.num_storage_textures = 0,
 		.num_storage_buffers = 0,
-		.num_uniform_buffers = 0,
+		.num_uniform_buffers = rawShader.GetNumUniforms(),
 	};
 
 	shader = SDL_CreateGPUShader(ownerDevice.GetDevice(), &vertexInfo);
