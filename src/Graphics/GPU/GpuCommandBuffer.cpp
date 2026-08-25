@@ -22,6 +22,12 @@ GpuCommandBuffer::GpuCommandBuffer(GpuDevice& gpuDevice, const Color& clear) : o
 	renderPassPtr = SDL_BeginGPURenderPass(commandBufferPtr, &colorTargetInfo, 1, nullptr); // TODO - Error handling
 }
 
+GpuCommandBuffer::~GpuCommandBuffer()
+{
+	SDL_EndGPURenderPass(renderPassPtr);
+	SDL_SubmitGPUCommandBuffer(commandBufferPtr);
+}
+
 void GpuCommandBuffer::Draw(GpuPipeline& pipeline, GpuVertexBuffer& buffer)
 {
 	SDL_BindGPUGraphicsPipeline(renderPassPtr, pipeline.GetPipeline());
@@ -59,8 +65,8 @@ void GpuCommandBuffer::Draw(GpuPipeline& pipeline, GpuVertexBuffer& vertexBuffer
 	SDL_DrawGPUIndexedPrimitives(renderPassPtr, indexBuffer.GetIndexCount(), 1, 0, 0, 0);
 }
 
-GpuCommandBuffer::~GpuCommandBuffer()
+void GpuCommandBuffer::BindUniformInternal(GpuPipeline& pipeline, uint32_t slot, std::span<const uint8_t> data)
 {
-	SDL_EndGPURenderPass(renderPassPtr);
-	SDL_SubmitGPUCommandBuffer(commandBufferPtr);
+	SDL_BindGPUGraphicsPipeline(renderPassPtr, pipeline.GetPipeline());
+	SDL_PushGPUVertexUniformData(commandBufferPtr, 0, data.data(), data.size_bytes());
 }
