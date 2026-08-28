@@ -134,7 +134,7 @@ namespace Gadget
 
 		[[nodiscard]] inline constexpr TMat4 Inverse() const noexcept
 		{
-			const auto invDet = Math::SafeDivide(1.0, Determinant());
+			const auto invDet = Math::SafeDivide(static_cast<T>(1.0), Determinant());
 			return TMat4<T>(
 				invDet * (m[5] * m[10] * m[15] - m[5] * m[11] * m[14] - m[9] * m[6] * m[15] + m[9] * m[7] * m[14] + m[13] * m[6] * m[11] - m[13] * m[7] * m[10]),
 				invDet * (-m[1] * m[10] * m[15] + m[1] * m[11] * m[14] + m[9] * m[2] * m[15] - m[9] * m[3] * m[14] - m[13] * m[2] * m[11] + m[13] * m[3] * m[10]),
