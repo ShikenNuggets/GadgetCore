@@ -319,7 +319,7 @@ TEST_CASE("TMat4::Orthographic", "[tmat4_orthographic]")
 	REQUIRE(m[15] == Approx(1.0));
 }
 
-TEST_CASE("TMat4::Perspective", "[tmat4_perspective]")
+TEST_CASE("TMat4::PerspectiveGL", "[tmat4_perspective_gl]")
 {
 	SECTION("Basic perspective matrix")
 	{
@@ -328,7 +328,7 @@ TEST_CASE("TMat4::Perspective", "[tmat4_perspective]")
 		const double nearPlane = 0.1;
 		const double farPlane = 100.0;
 
-		const auto m = TMat4<double>::Perspective(fov, aspect, nearPlane, farPlane);
+		const auto m = TMat4<double>::PerspectiveGL(fov, aspect, nearPlane, farPlane);
 		const double cot = 1.0 / Math::Tan(fov * 0.5);
 
 		REQUIRE(m[0] == Approx(cot / aspect));
@@ -358,7 +358,7 @@ TEST_CASE("TMat4::Perspective", "[tmat4_perspective]")
 		const double nearPlane = 0.5;
 		const double farPlane = 500.0;
 
-		const auto m = TMat4<double>::Perspective(fov, aspect, nearPlane, farPlane);
+		const auto m = TMat4<double>::PerspectiveGL(fov, aspect, nearPlane, farPlane);
 		const double cot = 1.0 / Math::Tan(fov * 0.5);
 
 		REQUIRE(m[0] == Approx(cot / aspect));
@@ -366,6 +366,56 @@ TEST_CASE("TMat4::Perspective", "[tmat4_perspective]")
 
 		REQUIRE(m[10] == Approx((nearPlane + farPlane) / (nearPlane - farPlane)));
 		REQUIRE(m[14] == Approx((2.0 * nearPlane * farPlane) / (nearPlane - farPlane)));
+	}
+}
+
+TEST_CASE("TMat4::PerspectiveVK", "[tmat4_perspective_vk]")
+{
+	SECTION("Basic perspective matrix")
+	{
+		const double fov = 90.0;
+		const double aspect = 1.0;
+		const double nearPlane = 0.1;
+		const double farPlane = 100.0;
+
+		const auto m = TMat4<double>::PerspectiveVK(fov, aspect, nearPlane, farPlane);
+		const double cot = 1.0 / Math::Tan(fov * 0.5);
+
+		REQUIRE(m[0] == Approx(cot / aspect));
+		REQUIRE(m[5] == Approx(-cot));
+
+		REQUIRE(m[10] == Approx(farPlane / (nearPlane - farPlane)));
+		REQUIRE(m[11] == Approx(-1.0));
+		REQUIRE(m[14] == Approx((nearPlane * farPlane) / (nearPlane - farPlane)));
+
+		REQUIRE(m[1] == Approx(0.0));
+		REQUIRE(m[2] == Approx(0.0));
+		REQUIRE(m[3] == Approx(0.0));
+		REQUIRE(m[4] == Approx(0.0));
+		REQUIRE(m[6] == Approx(0.0));
+		REQUIRE(m[7] == Approx(0.0));
+		REQUIRE(m[8] == Approx(0.0));
+		REQUIRE(m[9] == Approx(0.0));
+		REQUIRE(m[12] == Approx(0.0));
+		REQUIRE(m[13] == Approx(0.0));
+		REQUIRE(m[15] == Approx(0.0));
+	}
+
+	SECTION("Aspect ratio variation")
+	{
+		const double fov = 60.0;
+		const double aspect = 16.0 / 9.0;
+		const double nearPlane = 0.5;
+		const double farPlane = 500.0;
+
+		const auto m = TMat4<double>::PerspectiveVK(fov, aspect, nearPlane, farPlane);
+		const double cot = 1.0 / Math::Tan(fov * 0.5);
+
+		REQUIRE(m[0] == Approx(cot / aspect));
+		REQUIRE(m[5] == Approx(-cot));
+
+		REQUIRE(m[10] == Approx(farPlane / (nearPlane - farPlane)));
+		REQUIRE(m[14] == Approx((nearPlane * farPlane) / (nearPlane - farPlane)));
 	}
 }
 

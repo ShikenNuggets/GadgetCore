@@ -170,13 +170,25 @@ namespace Gadget
 			return ortho;
 		}
 
-		[[nodiscard]] static inline constexpr TMat4 Perspective(T fov, T aspect, T nearPlane, T farPlane)
+		// -1 to 1 Z space, Y is Up
+		[[nodiscard]] static inline constexpr TMat4 PerspectiveGL(T fov, T aspect, T nearPlane, T farPlane)
 		{
 			const auto cot = 1.0 / Math::Tan(fov * 0.5);
 			return TMat4(cot / aspect, 0.0, 0.0, 0.0,
 				0.0, cot, 0.0, 0.0,
 				0.0, 0.0, (nearPlane + farPlane) / (nearPlane - farPlane), -1.0,
 				0.0, 0.0, (2.0 * nearPlane * farPlane) / (nearPlane - farPlane), 0.0
+			);
+		}
+
+		// 0 to 1 Z space, Y is Down
+		[[nodiscard]] static inline constexpr TMat4 PerspectiveVK(T fov, T aspect, T nearPlane, T farPlane)
+		{
+			const auto cot = 1.0 / Math::Tan(fov * 0.5);
+			return TMat4(cot / aspect, 0.0, 0.0, 0.0,
+				0.0, -cot, 0.0, 0.0,
+				0.0, 0.0, farPlane / (nearPlane - farPlane), -1.0,
+				0.0, 0.0, (nearPlane * farPlane) / (nearPlane - farPlane), 0.0
 			);
 		}
 
