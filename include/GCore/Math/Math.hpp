@@ -179,6 +179,15 @@ namespace Gadget::Math
 	}
 
 	template <FloatLike T>
+	[[nodiscard]] inline constexpr TMat4<T> ViewMatrix(const TVec3<T> position, const TQuat<T> rotation)
+	{
+		auto view = TMat4<T>::Identity();
+		view *= ToMatrix4(rotation).Inverse();
+		view *= Translate(position).Inverse();
+		return view;
+	}
+
+	template <FloatLike T>
 	[[nodiscard]] inline constexpr TRect<T> CalculateBounds(std::span<TVec2<T>> verts)
 	{
 		TRect<T> result;

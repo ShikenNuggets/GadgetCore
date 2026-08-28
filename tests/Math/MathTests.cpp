@@ -318,6 +318,77 @@ TEST_CASE("Math::Scale", "[math_scale]")
 	REQUIRE(m[15] == identity[15]);
 }
 
+TEST_CASE("Math::ViewMatrix", "[math_view_matrix]")
+{
+	SECTION("Identity view")
+	{
+		const auto m = Math::ViewMatrix(TVec3<double>(), TQuat<double>());
+
+		REQUIRE(m[0] == Approx(1.0));
+		REQUIRE(m[5] == Approx(1.0));
+		REQUIRE(m[10] == Approx(1.0));
+		REQUIRE(m[15] == Approx(1.0));
+
+		REQUIRE(m[12] == Approx(0.0));
+		REQUIRE(m[13] == Approx(0.0));
+		REQUIRE(m[14] == Approx(0.0));
+	}
+
+	SECTION("Translation only")
+	{
+		const auto pos = TVec3<double>(5.0, 10.0, -3.0);
+		const auto m = Math::ViewMatrix(pos, TQuat<double>());
+
+		REQUIRE(m[0] == Approx(1.0));
+		REQUIRE(m[5] == Approx(1.0));
+		REQUIRE(m[10] == Approx(1.0));
+		REQUIRE(m[15] == Approx(1.0));
+
+		REQUIRE(m[12] == Approx(-5.0).margin(0.0001));
+		REQUIRE(m[13] == Approx(-10.0).margin(0.0001));
+		REQUIRE(m[14] == Approx(3.0).margin(0.0001));
+	}
+
+	SECTION("Rotation only")
+	{
+		const auto pos = TVec3<double>(0.0, 0.0, 0.0);
+		const auto rot = Math::ToQuaternion(TEuler<double>(0.0, 90.0, 0.0));
+
+		const auto m = Math::ViewMatrix(pos, rot);
+
+		REQUIRE(m[0] == Approx(0.0).margin(0.0001));
+		REQUIRE(m[1] == Approx(0.0).margin(0.0001));
+		REQUIRE(m[2] == Approx(1.0).margin(0.0001));
+
+		REQUIRE(m[4] == Approx(0.0).margin(0.0001));
+		REQUIRE(m[5] == Approx(1.0).margin(0.0001));
+		REQUIRE(m[6] == Approx(0.0).margin(0.0001));
+
+		REQUIRE(m[8] == Approx(-1.0).margin(0.0001));
+		REQUIRE(m[9] == Approx(0.0).margin(0.0001));
+		REQUIRE(m[10] == Approx(0.0).margin(0.0001));
+
+		REQUIRE(m[12] == Approx(0.0).margin(0.0001));
+		REQUIRE(m[13] == Approx(0.0).margin(0.0001));
+		REQUIRE(m[14] == Approx(0.0).margin(0.0001));
+	}
+
+	SECTION("Combined rotation and translation")
+	{
+		const auto pos = TVec3<double>(0.0, 0.0, 5.0);
+		const auto rot = Math::ToQuaternion(TEuler<double>(0.0, 180.0, 0.0));
+		const auto m = Math::ViewMatrix(pos, rot);
+
+		REQUIRE(m[0] == Approx(-1.0));
+		REQUIRE(m[5] == Approx(1.0));
+		REQUIRE(m[10] == Approx(-1.0));
+
+		REQUIRE(m[12] == Approx(0.0).margin(0.0001));
+		REQUIRE(m[13] == Approx(0.0).margin(0.0001));
+		REQUIRE(m[14] == Approx(5.0).margin(0.0001));
+	}
+}
+
 TEST_CASE("Math::CalculateBounds", "[math_calculate_bounds]")
 {
 	std::vector<Vector2> vecs;
