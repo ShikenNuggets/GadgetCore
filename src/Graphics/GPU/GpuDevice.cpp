@@ -211,6 +211,9 @@ SDL_GPUGraphicsPipeline* GpuDevice::CreateGraphicsPipeline(const RawShader& rawV
 	pipelineInfo.vertex_input_state.vertex_attributes = vertexAttributes;
 	pipelineInfo.target_info.num_color_targets = 1;
 	pipelineInfo.target_info.color_target_descriptions = colorTargetDescriptions;
+	pipelineInfo.rasterizer_state.fill_mode = SDL_GPU_FILLMODE_FILL;
+	pipelineInfo.rasterizer_state.cull_mode = SDL_GPU_CULLMODE_BACK;
+	pipelineInfo.rasterizer_state.front_face = SDL_GPU_FRONTFACE_COUNTER_CLOCKWISE;
 
 	SDL_GPUGraphicsPipeline* graphicsPipeline = SDL_CreateGPUGraphicsPipeline(device, &pipelineInfo);
 	SDL_ReleaseGPUShader(device, fragmentShader);
