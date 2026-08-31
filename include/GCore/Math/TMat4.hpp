@@ -192,6 +192,17 @@ namespace Gadget
 			);
 		}
 
+		// 0 to 1 Z space, Y is Up
+		[[nodiscard]] static inline constexpr TMat4 PerspectiveGPU(T fov, T aspect, T nearPlane, T farPlane)
+		{
+			const auto cot = 1.0 / Math::Tan(fov * 0.5);
+			return TMat4(cot / aspect, 0.0, 0.0, 0.0,
+				0.0, cot, 0.0, 0.0,
+				0.0, 0.0, farPlane / (nearPlane - farPlane), -1.0,
+				0.0, 0.0, (nearPlane * farPlane) / (nearPlane - farPlane), 0.0
+			);
+		}
+
 		[[nodiscard]] inline constexpr bool IsValid() const
 		{
 			return std::ranges::all_of(m, [](const auto& v){ return Math::IsValidNumber(v); });

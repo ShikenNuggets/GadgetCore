@@ -419,6 +419,56 @@ TEST_CASE("TMat4::PerspectiveVK", "[tmat4_perspective_vk]")
 	}
 }
 
+TEST_CASE("TMat4::PerspectiveGPU", "[tmat4_perspective_gpu]")
+{
+	SECTION("Basic perspective matrix")
+	{
+		const double fov = 90.0;
+		const double aspect = 1.0;
+		const double nearPlane = 0.1;
+		const double farPlane = 100.0;
+
+		const auto m = TMat4<double>::PerspectiveGPU(fov, aspect, nearPlane, farPlane);
+		const double cot = 1.0 / Math::Tan(fov * 0.5);
+
+		REQUIRE(m[0] == Approx(cot / aspect));
+		REQUIRE(m[5] == Approx(cot));
+
+		REQUIRE(m[10] == Approx(farPlane / (nearPlane - farPlane)));
+		REQUIRE(m[11] == Approx(-1.0));
+		REQUIRE(m[14] == Approx((nearPlane * farPlane) / (nearPlane - farPlane)));
+
+		REQUIRE(m[1] == Approx(0.0));
+		REQUIRE(m[2] == Approx(0.0));
+		REQUIRE(m[3] == Approx(0.0));
+		REQUIRE(m[4] == Approx(0.0));
+		REQUIRE(m[6] == Approx(0.0));
+		REQUIRE(m[7] == Approx(0.0));
+		REQUIRE(m[8] == Approx(0.0));
+		REQUIRE(m[9] == Approx(0.0));
+		REQUIRE(m[12] == Approx(0.0));
+		REQUIRE(m[13] == Approx(0.0));
+		REQUIRE(m[15] == Approx(0.0));
+	}
+
+	SECTION("Aspect ratio variation")
+	{
+		const double fov = 60.0;
+		const double aspect = 16.0 / 9.0;
+		const double nearPlane = 0.5;
+		const double farPlane = 500.0;
+
+		const auto m = TMat4<double>::PerspectiveGPU(fov, aspect, nearPlane, farPlane);
+		const double cot = 1.0 / Math::Tan(fov * 0.5);
+
+		REQUIRE(m[0] == Approx(cot / aspect));
+		REQUIRE(m[5] == Approx(cot));
+
+		REQUIRE(m[10] == Approx(farPlane / (nearPlane - farPlane)));
+		REQUIRE(m[14] == Approx((nearPlane * farPlane) / (nearPlane - farPlane)));
+	}
+}
+
 TEST_CASE("TMat4::IsValid", "[tmat4_is_valid]")
 {
 	const auto identity = TMat4<double>::Identity();
