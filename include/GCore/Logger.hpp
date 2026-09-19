@@ -73,6 +73,11 @@ namespace Gadget::Logger
 		{
 			throw std::runtime_error(fmtMessage);
 		}
+	#else
+		if (severity == Severity::FatalError)
+		{
+			throw std::runtime_error(std::string(message));
+		}
 	#endif // !GADGET_BUILD_NO_LOGGING
 	}
 }
