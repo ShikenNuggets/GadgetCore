@@ -8,9 +8,9 @@ using namespace Gadget;
 Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::string_view name, int32_t x_, int32_t y_) : size(width_, height_), position(x_, y_), renderAPI(renderAPI_)
 {
 	const bool didInit = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK);
-	if (didInit)
+	if (!didInit)
 	{
-		// TODO - throw fatal error
+		GADGET_LOG_FATAL_ERROR("Failed to initialize SDL! SDL Error: {}", SDL_GetError());
 	}
 
 	Uint32 windowFlags = SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_RESIZABLE;
@@ -28,14 +28,16 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 	windowPtr = SDL_CreateWindow(name.data(), size.x, size.y, windowFlags);
 	if (windowPtr == nullptr)
 	{
-		// TODO - throw fatal error
+		GADGET_LOG_FATAL_ERROR("Failed to create window! SDL Error: {}", SDL_GetError());
 	}
 
 	if (renderAPI == RenderAPI::SDLRenderer)
 	{
 		sdlRenderer = SDL_CreateRenderer(windowPtr, nullptr);
-		GADGET_ASSERT(sdlRenderer != nullptr, "Failed to create SDL Renderer! SDL Error: {}", SDL_GetError());
-		// TODO - throw fatal error
+		if (sdlRenderer == nullptr)
+		{
+			GADGET_LOG_FATAL_ERROR("Failed to create SDL Renderer! SDL Error: {}", SDL_GetError());
+		}
 	}
 	else if (renderAPI == RenderAPI::SDLGPU)
 	{
@@ -43,8 +45,7 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 		bool bSuccess = SDL_ClaimWindowForGPUDevice(gpuDevice->GetDevice(), windowPtr);
 		if (!bSuccess)
 		{
-			GADGET_LOG_ERROR("Failed to claim window for GPU device, SDL Error: {}", SDL_GetError());
-			// TODO - throw fatal error
+			GADGET_LOG_FATAL_ERROR("Failed to claim window for GPU device, SDL Error: {}", SDL_GetError());
 		}
 
 		bSuccess = SDL_SetGPUSwapchainParameters(gpuDevice->GetDevice(), windowPtr, SDL_GPU_SWAPCHAINCOMPOSITION_SDR_LINEAR, SDL_GPU_PRESENTMODE_VSYNC);
@@ -57,13 +58,13 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 	SDL_SetJoystickEventsEnabled(true);
 	if (!SDL_JoystickEventsEnabled())
 	{
-		// TODO - throw fatal error
+		GADGET_LOG_ERROR("Failed to enable joystick events! SDL Error: {}", SDL_GetError());
 	}
 
 	SDL_SetGamepadEventsEnabled(true);
 	if (!SDL_GamepadEventsEnabled())
 	{
-		// TODO - throw fatal error
+		GADGET_LOG_ERROR("Failed to enable gamepad events! SDL Error: {}", SDL_GetError());
 	}
 
 	const auto displayId = SDL_GetPrimaryDisplay();
@@ -89,7 +90,7 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 		glContext = SDL_GL_CreateContext(windowPtr);
 		if (glContext == nullptr)
 		{
-			// TODO - throw fatal error
+			GADGET_LOG_FATAL_ERROR("Failed to create OpenGL context! SDL Error: {}", SDL_GetError());
 		}
 	}
 }
