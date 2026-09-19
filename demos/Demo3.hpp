@@ -2,6 +2,7 @@
 #include <GCore/Logger.hpp>
 #include <GCore/Window.hpp>
 
+#include <GCore/Graphics/MeshLoader.hpp>
 #include <GCore/Graphics/Vertex.hpp>
 #include <GCore/Graphics/GPU/GpuBuffer.hpp>
 #include <GCore/Graphics/GPU/GpuCommandBuffer.hpp>
@@ -18,28 +19,6 @@ namespace GadgetCoreDemos
 		Gadget::Vertex(Gadget::Vector4(0.5f, -0.5f, 0.0f, 1.0), Gadget::Color(1.0f, 0.0f, 1.0f, 1.0f)), // Bottom right vertex
 	};
 	static constexpr auto SizeOfTriangles = sizeof(Gadget::Vertex) * triangleVertices.size();
-
-	static constexpr std::array<Gadget::Vertex, 8> cubeVertices =
-	{
-		Gadget::Vertex(Gadget::Vector4(0.0, 0.0, 0.0, 1.0), Gadget::Color(1.0f, 0.0f, 0.0f, 1.0f)),
-		Gadget::Vertex(Gadget::Vector4(1.0, 0.0, 0.0, 1.0), Gadget::Color(1.0f, 1.0f, 0.0f, 1.0f)),
-		Gadget::Vertex(Gadget::Vector4(0.0, 1.0, 0.0, 1.0), Gadget::Color(1.0f, 0.0f, 1.0f, 1.0f)),
-		Gadget::Vertex(Gadget::Vector4(0.0, 0.0, 1.0, 1.0), Gadget::Color(1.0f, 1.0f, 1.0f, 1.0f)),
-		Gadget::Vertex(Gadget::Vector4(1.0, 1.0, 0.0, 1.0), Gadget::Color(0.0f, 0.0f, 0.0f, 1.0f)),
-		Gadget::Vertex(Gadget::Vector4(1.0, 0.0, 1.0, 1.0), Gadget::Color(0.0f, 1.0f, 0.0f, 1.0f)),
-		Gadget::Vertex(Gadget::Vector4(0.0, 1.0, 1.0, 1.0), Gadget::Color(0.0f, 0.0f, 1.0f, 1.0f)),
-		Gadget::Vertex(Gadget::Vector4(1.0, 1.0, 1.0, 1.0), Gadget::Color(0.0f, 1.0f, 1.0f, 1.0f)),
-	};
-
-	static constexpr std::array<uint32_t, 36> cubeIndices =
-	{
-		3, 5, 7, 7, 6, 3,
-		1, 0, 2, 2, 4, 1,
-		2, 6, 7, 7, 4, 2,
-		0, 1, 5, 5, 3, 0,
-		5, 1, 4, 4, 7, 5,
-		0, 3, 6, 6, 2, 0
-	};
 
 	struct CameraBinding
 	{
@@ -108,6 +87,8 @@ namespace GadgetCoreDemos
 				case Gadget::ButtonId::Keyboard_Down:
 					bHoldingDown = true;
 					break;
+				default:
+					break;
 			}
 		});
 
@@ -145,16 +126,20 @@ namespace GadgetCoreDemos
 				case Gadget::ButtonId::Keyboard_Down:
 					bHoldingDown = false;
 					break;
+				default:
+					break;
 			}
 		});
+
+		const auto modelData = Gadget::MeshLoader::LoadMeshFromFile("Assets/Models/Cube.obj");
 
 		auto* gpuDevice = window.GetGpuDevice()->GetDevice();
 
 		auto triangleVertexBuffer = Gadget::GpuVertexBuffer(*window.GetGpuDevice(), triangleVertices);
 		auto triangleIndexBuffer = Gadget::GpuIndexBuffer(*window.GetGpuDevice(), std::array<const uint32_t, 3>{ 0, 1, 2 });
 
-		auto cubeVertexBuffer = Gadget::GpuVertexBuffer(*window.GetGpuDevice(), cubeVertices);
-		auto cubeIndexBuffer = Gadget::GpuIndexBuffer(*window.GetGpuDevice(), cubeIndices);
+		auto cubeVertexBuffer = Gadget::GpuVertexBuffer(*window.GetGpuDevice(), modelData.meshes[0].vertices);
+		auto cubeIndexBuffer = Gadget::GpuIndexBuffer(*window.GetGpuDevice(), modelData.meshes[0].indices);
 
 		auto graphicsPipeline = Gadget::GpuPipeline(*window.GetGpuDevice(), "Shaders/bin/TriangleVertex.spv", "Shaders/bin/TriangleFragment.spv", 1, 0);
 
