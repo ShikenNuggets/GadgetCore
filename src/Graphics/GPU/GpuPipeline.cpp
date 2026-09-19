@@ -15,8 +15,7 @@ GpuPipeline::GpuPipeline(GpuDevice& owner, std::string_view vertexFilePath, std:
 	auto vertexCodeResult = Gadget::FileSystem::ReadFileRaw(vertexFilePath);
 	if (!vertexCodeResult.has_value())
 	{
-		GADGET_LOG_ERROR("Failed to load vertex shader file!");
-		throw -1; // TODO - Custom exception type
+		GADGET_LOG_FATAL_ERROR("Failed to load vertex shader file!");
 	}
 
 	const auto& vertexCode = vertexCodeResult.value();
@@ -26,8 +25,7 @@ GpuPipeline::GpuPipeline(GpuDevice& owner, std::string_view vertexFilePath, std:
 	auto fragmentCodeResult = Gadget::FileSystem::ReadFileRaw(fragmentFilePath);
 	if (!fragmentCodeResult.has_value())
 	{
-		GADGET_LOG_ERROR("Failed to load fragment shader file!");
-		throw - 1; // TODO - Custom exception type
+		GADGET_LOG_FATAL_ERROR("Failed to load fragment shader file!");
 	}
 
 	const auto& fragmentCode = fragmentCodeResult.value();
