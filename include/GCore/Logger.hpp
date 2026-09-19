@@ -67,7 +67,12 @@ namespace Gadget::Logger
 			sourceLocation.line()
 		);
 		
-		OnProcessLogMessage_Internal(severity, std::move(fmtMessage));
+		OnProcessLogMessage_Internal(severity, fmtMessage);
+
+		if (severity == Severity::FatalError)
+		{
+			throw std::runtime_error(fmtMessage);
+		}
 	#endif // !GADGET_BUILD_NO_LOGGING
 	}
 }
@@ -87,3 +92,7 @@ namespace Gadget::Logger
 #ifndef GADGET_LOG_ERROR
 	#define GADGET_LOG_ERROR(message, ...) GADGET_LOG(Error, message, ##__VA_ARGS__)
 #endif // !GADGET_LOG_ERROR
+
+#ifndef GADGET_LOG_FATAL_ERROR
+	#define GADGET_LOG_FATAL_ERROR(message, ...) GADGET_LOG(FatalError, message, ##__VA_ARGS__)
+#endif // !GADGET_LOG_FATAL_ERROR
