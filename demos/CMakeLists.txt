@@ -50,5 +50,8 @@ if(TARGET ${APP_TARGET}_Shaders)
 		COMMAND ${CMAKE_COMMAND} -E copy_directory
 			"${CMAKE_CURRENT_SOURCE_DIR}/Shaders/bin"
 			"$<TARGET_FILE_DIR:${APP_TARGET}>/Shaders/bin"
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
+			"${CMAKE_CURRENT_SOURCE_DIR}/Assets"
+			"$<TARGET_FILE_DIR:${APP_TARGET}>/Assets"
 	)
 endif()
