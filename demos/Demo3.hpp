@@ -18,6 +18,17 @@ namespace GadgetCoreDemos
 		Gadget::Matrix4 view;
 	};
 
+	struct ModelBinding
+	{
+		Gadget::Matrix4 modelMatrix;
+		Gadget::Matrix3 normalMatrix;
+	};
+
+	struct MaterialBinding
+	{
+		Gadget::Vector4 color;
+	};
+
 	int Demo3()
 	{
 		Gadget::Logger::SimpleInit(Gadget::Logger::Mode::StdOut, Gadget::Logger::Severity::Verbose, {});
@@ -130,11 +141,18 @@ namespace GadgetCoreDemos
 		auto modelVertexBuffer = Gadget::GpuVertexBuffer(*window.GetGpuDevice(), modelData.meshes[0].vertices);
 		auto modelIndexBuffer = Gadget::GpuIndexBuffer(*window.GetGpuDevice(), modelData.meshes[0].indices);
 
-		auto graphicsPipeline = Gadget::GpuPipeline(*window.GetGpuDevice(), "Shaders/bin/TriangleVertex.spv", "Shaders/bin/TriangleFragment.spv", 1, 0);
+		auto graphicsPipeline = Gadget::GpuPipeline(*window.GetGpuDevice(), "Shaders/bin/StandardVertex.spv", "Shaders/bin/StandardFragment.spv", 2, 1);
 
 		CameraBinding binding;
 		binding.projection = Gadget::Matrix4::PerspectiveGPU(45.0f, static_cast<float>(window.GetWidth()) / window.GetHeight(), 0.001f, 10'000.0f);
 		binding.view = Gadget::Matrix4::Identity();
+
+		ModelBinding modelBinding;
+		modelBinding.modelMatrix = Gadget::Matrix4::Identity();
+		modelBinding.normalMatrix = Gadget::Matrix3::Identity();
+
+		MaterialBinding materialBinding;
+		materialBinding.color = Gadget::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 
 		Gadget::Vector3 cameraPosition = Gadget::Vector3{ 0.0f, 0.5f, 5.0f };
 		Gadget::Quaternion cameraRotation;
@@ -202,7 +220,9 @@ namespace GadgetCoreDemos
 
 			{
 				auto commandBuffer = Gadget::GpuCommandBuffer(*window.GetGpuDevice(), Gadget::Color(0.02f, 0.02f, 0.02f));
-				commandBuffer.BindUniform(graphicsPipeline, 0, binding);
+				commandBuffer.BindVertexUniform(graphicsPipeline, 0, binding);
+				commandBuffer.BindVertexUniform(graphicsPipeline, 1, modelBinding);
+				commandBuffer.BindFragmentUniform(graphicsPipeline, 0, materialBinding);
 				commandBuffer.Draw(graphicsPipeline, modelVertexBuffer, modelIndexBuffer);
 			}
 

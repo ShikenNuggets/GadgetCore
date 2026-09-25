@@ -19,15 +19,27 @@ namespace Gadget
 		void SetClearColor(const Color& newClearColor){ clearColor = newClearColor; }
 
 		template <typename T>
-		void BindUniform(GpuPipeline& pipeline, uint32_t slot, const T& data)
+		void BindVertexUniform(GpuPipeline& pipeline, uint32_t slot, const T& data)
 		{
-			BindUniformInternal(pipeline, slot, std::span<const uint8_t>{ reinterpret_cast<const uint8_t*>(&data), sizeof(T) });
+			BindVertexUniformInternal(pipeline, slot, std::span<const uint8_t>{ reinterpret_cast<const uint8_t*>(&data), sizeof(T) });
 		}
 
 		template <typename T>
-		void BindUniform(GpuPipeline& pipeline, uint32_t slot, std::span<const T> data)
+		void BindVertexUniform(GpuPipeline& pipeline, uint32_t slot, std::span<const T> data)
 		{
-			BindUniformInternal(pipeline, slot, std::span<const uint8_t>{ reinterpret_cast<const uint8_t*>(data.data()), data.size_bytes() });
+			BindVertexUniformInternal(pipeline, slot, std::span<const uint8_t>{ reinterpret_cast<const uint8_t*>(data.data()), data.size_bytes() });
+		}
+
+		template <typename T>
+		void BindFragmentUniform(GpuPipeline& pipeline, uint32_t slot, const T& data)
+		{
+			BindFragmentUniformInternal(pipeline, slot, std::span<const uint8_t>{ reinterpret_cast<const uint8_t*>(&data), sizeof(T) });
+		}
+
+		template <typename T>
+		void BindFragmentUniform(GpuPipeline& pipeline, uint32_t slot, std::span<const T> data)
+		{
+			BindFragmentUniformInternal(pipeline, slot, std::span<const uint8_t>{ reinterpret_cast<const uint8_t*>(data.data()), data.size_bytes() });
 		}
 
 		void Draw(GpuPipeline& pipeline, GpuVertexBuffer& buffer);
@@ -39,6 +51,7 @@ namespace Gadget
 		SDL_GPURenderPass* renderPassPtr;
 		Color clearColor;
 
-		void BindUniformInternal(GpuPipeline& pipeline, uint32_t slot, std::span<const uint8_t> data);
+		void BindVertexUniformInternal(GpuPipeline& pipeline, uint32_t slot, std::span<const uint8_t> data);
+		void BindFragmentUniformInternal(GpuPipeline& pipeline, uint32_t slot, std::span<const uint8_t> data);
 	};
 }

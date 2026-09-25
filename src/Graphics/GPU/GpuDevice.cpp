@@ -182,7 +182,7 @@ SDL_GPUGraphicsPipeline* GpuDevice::CreateGraphicsPipeline(const RawShader& rawV
 		.instance_step_rate = 0
 	}};
 
-	SDL_GPUVertexAttribute vertexAttributes[2]{};
+	SDL_GPUVertexAttribute vertexAttributes[3]{};
 	vertexAttributes[0].buffer_slot = 0;
 	vertexAttributes[0].location = 0;
 	vertexAttributes[0].format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3;
@@ -190,8 +190,13 @@ SDL_GPUGraphicsPipeline* GpuDevice::CreateGraphicsPipeline(const RawShader& rawV
 
 	vertexAttributes[1].buffer_slot = 0;
 	vertexAttributes[1].location = 1;
-	vertexAttributes[1].format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4;
-	vertexAttributes[1].offset = sizeof(Gadget::Vector4);
+	vertexAttributes[1].format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3;
+	vertexAttributes[1].offset = sizeof(Gadget::Vector3);
+
+	vertexAttributes[2].buffer_slot = 0;
+	vertexAttributes[2].location = 2;
+	vertexAttributes[2].format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2;
+	vertexAttributes[2].offset = sizeof(Gadget::Vector3) + sizeof(Gadget::Vector3);
 
 	SDL_GPUColorTargetDescription colorTargetDescriptions[1]
 	{{
@@ -207,7 +212,7 @@ SDL_GPUGraphicsPipeline* GpuDevice::CreateGraphicsPipeline(const RawShader& rawV
 
 	pipelineInfo.vertex_input_state.num_vertex_buffers = 1;
 	pipelineInfo.vertex_input_state.vertex_buffer_descriptions = vertexBufferDescriptions;
-	pipelineInfo.vertex_input_state.num_vertex_attributes = 2;
+	pipelineInfo.vertex_input_state.num_vertex_attributes = 3;
 	pipelineInfo.vertex_input_state.vertex_attributes = vertexAttributes;
 	pipelineInfo.target_info.num_color_targets = 1;
 	pipelineInfo.target_info.color_target_descriptions = colorTargetDescriptions;

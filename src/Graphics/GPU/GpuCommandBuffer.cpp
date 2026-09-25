@@ -65,8 +65,14 @@ void GpuCommandBuffer::Draw(GpuPipeline& pipeline, GpuVertexBuffer& vertexBuffer
 	SDL_DrawGPUIndexedPrimitives(renderPassPtr, indexBuffer.GetIndexCount(), 1, 0, 0, 0);
 }
 
-void GpuCommandBuffer::BindUniformInternal(GpuPipeline& pipeline, uint32_t slot, std::span<const uint8_t> data)
+void GpuCommandBuffer::BindVertexUniformInternal(GpuPipeline& pipeline, uint32_t slot, std::span<const uint8_t> data)
 {
 	SDL_BindGPUGraphicsPipeline(renderPassPtr, pipeline.GetPipeline());
-	SDL_PushGPUVertexUniformData(commandBufferPtr, 0, data.data(), data.size_bytes());
+	SDL_PushGPUVertexUniformData(commandBufferPtr, slot, data.data(), data.size_bytes());
+}
+
+void GpuCommandBuffer::BindFragmentUniformInternal(GpuPipeline& pipeline, uint32_t slot, std::span<const uint8_t> data)
+{
+	SDL_BindGPUGraphicsPipeline(renderPassPtr, pipeline.GetPipeline());
+	SDL_PushGPUFragmentUniformData(commandBufferPtr, slot, data.data(), data.size_bytes());
 }

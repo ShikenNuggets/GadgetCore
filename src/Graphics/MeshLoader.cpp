@@ -46,24 +46,21 @@ static inline void ProcessMesh(const aiMesh* mesh, std::vector<MeshData>& outMes
 	indices.reserve(static_cast<size_t>(mesh->mNumFaces) * 3);
 
 	const auto sourceVerts = std::span(mesh->mVertices, mesh->mNumVertices);
-	std::span<aiColor4D> sourceColorChannel;
-	if (mesh->HasVertexColors(0))
-	{
-		sourceColorChannel = std::span(mesh->mColors[0], mesh->mNumVertices);
-	}
-	
+	const auto sourceNormals = std::span(mesh->mNormals, mesh->mNumVertices);
+	const auto sourceTexCoords = std::span(mesh->mTextureCoords[0], mesh->mNumVertices);
+
 	for (size_t i = 0; i < sourceVerts.size(); i++)
 	{
 		const auto& vertex = sourceVerts[i];
-		auto color = Color::White();
+		const auto pos = Vector3(vertex.x, vertex.y, vertex.z);
 
-		if (!sourceColorChannel.empty())
-		{
-			const auto assimpColor = sourceColorChannel[i];
-			color = Color(assimpColor.r, assimpColor.g, assimpColor.b, assimpColor.a);
-		}
+		const auto& normal = sourceNormals[i];
+		const auto norm = Vector3(normal.x, normal.y, normal.z);
 
-		verts.emplace_back(Vector4(vertex.x, vertex.y, vertex.z, 1.0), color);
+		const auto& texCoord = sourceTexCoords[i];
+		const auto tex = Vector2(texCoord.x, texCoord.y);
+
+		verts.emplace_back(pos, norm, tex);
 	}
 
 	const auto sourceFaces = std::span(mesh->mFaces, mesh->mNumFaces);
