@@ -12,14 +12,6 @@
 
 namespace GadgetCoreDemos
 {
-	static constexpr std::array<Gadget::Vertex, 3> triangleVertices =
-	{
-		Gadget::Vertex(Gadget::Vector4(0.0, 0.5, 0.0, 1.0), Gadget::Color(1.0f, 0.0f, 0.0f, 1.0f)), // Top vertex
-		Gadget::Vertex(Gadget::Vector4(-0.5f, -0.5f, 0.0f, 1.0), Gadget::Color(1.0f, 1.0f, 0.0f, 1.0f)), // Bottom left vertex
-		Gadget::Vertex(Gadget::Vector4(0.5f, -0.5f, 0.0f, 1.0), Gadget::Color(1.0f, 0.0f, 1.0f, 1.0f)), // Bottom right vertex
-	};
-	static constexpr auto SizeOfTriangles = sizeof(Gadget::Vertex) * triangleVertices.size();
-
 	struct CameraBinding
 	{
 		Gadget::Matrix4 projection;
@@ -131,15 +123,12 @@ namespace GadgetCoreDemos
 			}
 		});
 
-		const auto modelData = Gadget::MeshLoader::LoadMeshFromFile("Assets/Models/Cube.obj");
+		const auto modelData = Gadget::MeshLoader::LoadMeshFromFile("Assets/Models/Monkey.obj");
 
 		auto* gpuDevice = window.GetGpuDevice()->GetDevice();
 
-		auto triangleVertexBuffer = Gadget::GpuVertexBuffer(*window.GetGpuDevice(), triangleVertices);
-		auto triangleIndexBuffer = Gadget::GpuIndexBuffer(*window.GetGpuDevice(), std::array<const uint32_t, 3>{ 0, 1, 2 });
-
-		auto cubeVertexBuffer = Gadget::GpuVertexBuffer(*window.GetGpuDevice(), modelData.meshes[0].vertices);
-		auto cubeIndexBuffer = Gadget::GpuIndexBuffer(*window.GetGpuDevice(), modelData.meshes[0].indices);
+		auto modelVertexBuffer = Gadget::GpuVertexBuffer(*window.GetGpuDevice(), modelData.meshes[0].vertices);
+		auto modelIndexBuffer = Gadget::GpuIndexBuffer(*window.GetGpuDevice(), modelData.meshes[0].indices);
 
 		auto graphicsPipeline = Gadget::GpuPipeline(*window.GetGpuDevice(), "Shaders/bin/TriangleVertex.spv", "Shaders/bin/TriangleFragment.spv", 1, 0);
 
@@ -214,7 +203,7 @@ namespace GadgetCoreDemos
 			{
 				auto commandBuffer = Gadget::GpuCommandBuffer(*window.GetGpuDevice(), Gadget::Color(0.02f, 0.02f, 0.02f));
 				commandBuffer.BindUniform(graphicsPipeline, 0, binding);
-				commandBuffer.Draw(graphicsPipeline, cubeVertexBuffer, cubeIndexBuffer);
+				commandBuffer.Draw(graphicsPipeline, modelVertexBuffer, modelIndexBuffer);
 			}
 
 			window.UpdateWindowSurface();
