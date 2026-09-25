@@ -1,3 +1,5 @@
+#include <cinttypes>
+
 #include <GCore/Logger.hpp>
 #include <GCore/Timer.hpp>
 #include <GCore/Window.hpp>
@@ -168,7 +170,7 @@ namespace GadgetCoreDemos
 
 			if (cachedFramerate.has_value())
 			{
-				SDL_RenderDebugTextFormat(window.GetSDLRenderer(), 10, 10, "FPS: %lld", cachedFramerate.value()); // NOLINT(cppcoreguidelines-pro-type-vararg)
+				SDL_RenderDebugTextFormat(window.GetSDLRenderer(), 10, 10, "FPS: %" PRId64, cachedFramerate.value());
 			}
 
 			window.UpdateWindowSurface();
