@@ -1061,3 +1061,6 @@ dkms.conf
 .idea
 android/local.properties
 android/.gradle/
+
+# Compiled shaders
+*.spv
