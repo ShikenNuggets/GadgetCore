@@ -174,34 +174,47 @@ SDL_GPUGraphicsPipeline* GpuDevice::CreateGraphicsPipeline(const RawShader& rawV
 	auto* vertexShader = CreateShader(rawVertexShader);
 	auto* fragmentShader = CreateShader(rawFragmentShader);
 
-	SDL_GPUVertexBufferDescription vertexBufferDescriptions[1]
-	{{
+	std::array<SDL_GPUVertexBufferDescription, 1> vertexBufferDescriptions
+	{{{
 		.slot = 0,
 		.pitch = sizeof(Gadget::Vertex),
 		.input_rate = SDL_GPU_VERTEXINPUTRATE_VERTEX,
 		.instance_step_rate = 0
-	}};
+	}}};
 
-	SDL_GPUVertexAttribute vertexAttributes[3]{};
-	vertexAttributes[0].buffer_slot = 0;
-	vertexAttributes[0].location = 0;
-	vertexAttributes[0].format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3;
-	vertexAttributes[0].offset = 0;
+	// This code likely needs to be updated if any of these fail
+	// TODO: C++26 Reflection could make this unnecessary
+	static_assert(sizeof(Gadget::Vertex) == 32, "Vertex struct size does not match expected size");
+	static_assert(offsetof(Gadget::Vertex, position) == 0, "Vertex struct position offset does not match expected offset");
+	static_assert(offsetof(Gadget::Vertex, normal) == 12, "Vertex struct normal offset does not match expected offset");
+	static_assert(offsetof(Gadget::Vertex, texCoords) == 24, "Vertex struct texCoords offset does not match expected offset");
 
-	vertexAttributes[1].buffer_slot = 0;
-	vertexAttributes[1].location = 1;
-	vertexAttributes[1].format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3;
-	vertexAttributes[1].offset = sizeof(Gadget::Vector3);
-
-	vertexAttributes[2].buffer_slot = 0;
-	vertexAttributes[2].location = 2;
-	vertexAttributes[2].format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2;
-	vertexAttributes[2].offset = sizeof(Gadget::Vector3) + sizeof(Gadget::Vector3);
-
-	SDL_GPUColorTargetDescription colorTargetDescriptions[1]
+	std::array<SDL_GPUVertexAttribute, 3> vertexAttributes
 	{{
-		.format = SDL_GetGPUSwapchainTextureFormat(device, ownerWindow)
+		{
+			.location = 0,
+			.buffer_slot = 0,
+			.format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3,
+			.offset = offsetof(Gadget::Vertex, position) // TODO: C++26 Reflection?
+		},
+		{
+			.location = 1,
+			.buffer_slot = 0,
+			.format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3,
+			.offset = offsetof(Gadget::Vertex, normal) // TODO: C++26 Reflection?
+		},
+		{
+			.location = 2,
+			.buffer_slot = 0,
+			.format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2,
+			.offset = offsetof(Gadget::Vertex, texCoords) // TODO: C++26 Reflection?
+		}
 	}};
+
+	std::array<SDL_GPUColorTargetDescription, 1> colorTargetDescriptions
+	{{{
+		.format = SDL_GetGPUSwapchainTextureFormat(device, ownerWindow)
+	}}};
 
 	SDL_GPUGraphicsPipelineCreateInfo pipelineInfo
 	{
@@ -210,12 +223,12 @@ SDL_GPUGraphicsPipeline* GpuDevice::CreateGraphicsPipeline(const RawShader& rawV
 		.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST,
 	};
 
-	pipelineInfo.vertex_input_state.num_vertex_buffers = 1;
-	pipelineInfo.vertex_input_state.vertex_buffer_descriptions = vertexBufferDescriptions;
-	pipelineInfo.vertex_input_state.num_vertex_attributes = 3;
-	pipelineInfo.vertex_input_state.vertex_attributes = vertexAttributes;
-	pipelineInfo.target_info.num_color_targets = 1;
-	pipelineInfo.target_info.color_target_descriptions = colorTargetDescriptions;
+	pipelineInfo.vertex_input_state.num_vertex_buffers = vertexBufferDescriptions.size();
+	pipelineInfo.vertex_input_state.vertex_buffer_descriptions = vertexBufferDescriptions.data();
+	pipelineInfo.vertex_input_state.num_vertex_attributes = vertexAttributes.size();
+	pipelineInfo.vertex_input_state.vertex_attributes = vertexAttributes.data();
+	pipelineInfo.target_info.num_color_targets = colorTargetDescriptions.size();
+	pipelineInfo.target_info.color_target_descriptions = colorTargetDescriptions.data();
 	pipelineInfo.rasterizer_state.fill_mode = SDL_GPU_FILLMODE_FILL;
 	pipelineInfo.rasterizer_state.cull_mode = SDL_GPU_CULLMODE_BACK;
 	pipelineInfo.rasterizer_state.front_face = SDL_GPU_FRONTFACE_COUNTER_CLOCKWISE;
