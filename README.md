@@ -1,4 +1,10 @@
 # GadgetCore - Reusable components for your next game engine
+![C++23](https://img.shields.io/badge/C++-23-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Platform](https://img.shields.io/badge/platform-Win%20%7C%20Mac%20%7C%20Linux%20%7C%20Android-lightgrey.svg)
+
+[![Build Status](https://github.com/ShikenNuggets/GadgetCore/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/ShikenNuggets/GadgetCore/actions)
+
 GadgetCore spawned out of work on [GadgetEngine](https://github.com/ShikenNuggets/GadgetEngine). The goal was to pull some general functionality out of that to make major refactors easier, while also making it easier to kick off new projects without wasting time either retrofitting/decoupling existing code, or rewriting everything from scratch.
 
 ## High Level Goals
@@ -63,3 +69,17 @@ Requires:
 GadgetCore is designed to be built from source, used with CMake and FetchContent, and linked statically. You can find canonical usage examples in [GadgetEngine's experimental branch](https://github.com/ShikenNuggets/GadgetEngine/blob/Gadget2/CMakeLists.txt) or in [RenderSoft](https://github.com/ShikenNuggets/RenderSoft/blob/main/CMakeLists.txt).
 
 Pre-built binaries and package manager distributions are not available at this time.
+
+## Dependencies
+
+Check the [CMakeLists.txt](CMakeLists.txt) for dependency versions.
+We use:
+* [Catch2](https://github.com/catchorg/Catch2)
+* [SDL](https://github.com/libsdl-org/SDL)
+* [SDL_image](https://github.com/libsdl-org/SDL_image)
+* [assimp](https://github.com/assimp/assimp)
+* [nlohmann/json](https://github.com/nlohmann/json.git)
+
+## License
+
+GadgetCore is licensed under the MIT License. See [LICENSE](LICENSE) for details.
