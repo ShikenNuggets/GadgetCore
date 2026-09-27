@@ -1,15 +1,31 @@
 #include "GCore/Graphics/GPU/GpuCommandBuffer.hpp"
 
+#include "GCore/Logger.hpp"
+
 using namespace Gadget;
 
-GpuCommandBuffer::GpuCommandBuffer(GpuDevice& gpuDevice, SDL_GPUTexture* depthTexture, const Color& clear) : ownerDevice(gpuDevice), commandBufferPtr(nullptr), clearColor(clear)
+GpuCommandBuffer::GpuCommandBuffer(GpuDevice& gpuDevice, SDL_GPUTexture* depthTexture, const Color& clear) : ownerDevice(gpuDevice), commandBufferPtr(nullptr), renderPassPtr(nullptr), clearColor(clear)
 {
-	commandBufferPtr = SDL_AcquireGPUCommandBuffer(ownerDevice.GetDevice()); // TODO - Error handling
+	commandBufferPtr = SDL_AcquireGPUCommandBuffer(ownerDevice.GetDevice());
+	if (commandBufferPtr == nullptr)
+	{
+		GADGET_LOG_FATAL_ERROR("SDL_AcquireGPUCommandBuffer failed! SDL Error: ", SDL_GetError());
+	}
 
 	SDL_GPUTexture* swapchainTexture = nullptr;
 	Uint32 width{};
 	Uint32 height{};
-	SDL_WaitAndAcquireGPUSwapchainTexture(commandBufferPtr, ownerDevice.GetOwnerWindow(), &swapchainTexture, &width, &height); // TODO - Error handling
+	bool success = SDL_WaitAndAcquireGPUSwapchainTexture(commandBufferPtr, ownerDevice.GetOwnerWindow(), &swapchainTexture, &width, &height);
+	if (!success)
+	{
+		GADGET_LOG_ERROR("SDL_WaitAndAcquireGPUSwapchainTexture failed! SDL Error: ", SDL_GetError());
+		return;
+	}
+
+	if (swapchainTexture == nullptr)
+	{
+		return; // Null swapchain texture with no error usually means the window is minimized or something
+	}
 
 	SDL_GPUColorTargetInfo colorTargetInfo
 	{
@@ -30,17 +46,33 @@ GpuCommandBuffer::GpuCommandBuffer(GpuDevice& gpuDevice, SDL_GPUTexture* depthTe
 	};
 
 	SDL_GPUDepthStencilTargetInfo* depthTargetInfoPtr = depthTexture ? &depthTargetInfo : nullptr;
-	renderPassPtr = SDL_BeginGPURenderPass(commandBufferPtr, &colorTargetInfo, 1, depthTargetInfoPtr); // TODO - Error handling
+	renderPassPtr = SDL_BeginGPURenderPass(commandBufferPtr, &colorTargetInfo, 1, depthTargetInfoPtr);
+	if (renderPassPtr == nullptr)
+	{
+		GADGET_LOG_ERROR("SDL_BeginGPURenderPass failed! SDL Error: ", SDL_GetError());
+		return;
+	}
 }
 
 GpuCommandBuffer::~GpuCommandBuffer()
 {
+	if (renderPassPtr == nullptr)
+	{
+		SDL_CancelGPUCommandBuffer(commandBufferPtr);
+		return;
+	}
+
 	SDL_EndGPURenderPass(renderPassPtr);
 	SDL_SubmitGPUCommandBuffer(commandBufferPtr);
 }
 
 void GpuCommandBuffer::Draw(GpuPipeline& pipeline, GpuVertexBuffer& buffer)
 {
+	if (renderPassPtr == nullptr)
+	{
+		return;
+	}
+
 	SDL_BindGPUGraphicsPipeline(renderPassPtr, pipeline.GetPipeline());
 
 	SDL_GPUBufferBinding bufferBindings[1]
@@ -56,6 +88,11 @@ void GpuCommandBuffer::Draw(GpuPipeline& pipeline, GpuVertexBuffer& buffer)
 
 void GpuCommandBuffer::Draw(GpuPipeline& pipeline, GpuVertexBuffer& vertexBuffer, GpuIndexBuffer& indexBuffer)
 {
+	if (renderPassPtr == nullptr)
+	{
+		return;
+	}
+
 	SDL_BindGPUGraphicsPipeline(renderPassPtr, pipeline.GetPipeline());
 
 	SDL_GPUBufferBinding vertexBufferBinding =
@@ -78,12 +115,22 @@ void GpuCommandBuffer::Draw(GpuPipeline& pipeline, GpuVertexBuffer& vertexBuffer
 
 void GpuCommandBuffer::BindVertexUniformInternal(GpuPipeline& pipeline, uint32_t slot, std::span<const uint8_t> data)
 {
+	if (renderPassPtr == nullptr)
+	{
+		return;
+	}
+
 	SDL_BindGPUGraphicsPipeline(renderPassPtr, pipeline.GetPipeline());
 	SDL_PushGPUVertexUniformData(commandBufferPtr, slot, data.data(), data.size_bytes());
 }
 
 void GpuCommandBuffer::BindFragmentUniformInternal(GpuPipeline& pipeline, uint32_t slot, std::span<const uint8_t> data)
 {
+	if (renderPassPtr == nullptr)
+	{
+		return;
+	}
+
 	SDL_BindGPUGraphicsPipeline(renderPassPtr, pipeline.GetPipeline());
 	SDL_PushGPUFragmentUniformData(commandBufferPtr, slot, data.data(), data.size_bytes());
 }
