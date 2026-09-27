@@ -337,6 +337,55 @@ void Window::SetWindowTitle(std::string_view title)
 	SDL_SetWindowTitle(windowPtr, title.data());
 }
 
+void Window::Minimize()
+{
+	SDL_MinimizeWindow(windowPtr);
+}
+
+void Window::Maximize()
+{
+	SDL_MaximizeWindow(windowPtr);
+}
+
+void Window::ToggleMaximize()
+{
+	if (SDL_GetWindowFlags(windowPtr) & SDL_WINDOW_MAXIMIZED)
+	{
+		Restore();
+	}
+	else
+	{
+		Maximize();
+	}
+}
+
+void Window::Restore()
+{
+	SDL_RestoreWindow(windowPtr);
+}
+
+void Window::SetFullscreen()
+{
+	SDL_SetWindowFullscreen(windowPtr, true);
+}
+
+void Window::SetWindowed()
+{
+	SDL_SetWindowFullscreen(windowPtr, false);
+}
+
+void Window::ToggleFullscreen()
+{
+	if (SDL_GetWindowFlags(windowPtr) & SDL_WINDOW_FULLSCREEN)
+	{
+		SetWindowed();
+	}
+	else
+	{
+		SetFullscreen();
+	}
+}
+
 void Window::UpdateGPUDepthTexture()
 {
 	GADGET_ASSERT(renderAPI == RenderAPI::SDLGPU, "Tried to create GPU depth texture on a window that is not using SDL GPU Render API");

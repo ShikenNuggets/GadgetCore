@@ -57,6 +57,15 @@ namespace Gadget
 		void SetSize(ScreenCoordinate size_) noexcept;
 		void SetWindowTitle(std::string_view title);
 
+		void Minimize();
+		void Maximize();
+		void Restore();
+		void ToggleMaximize();
+
+		void SetFullscreen();
+		void SetWindowed();
+		void ToggleFullscreen();
+
 		WindowEventHandler& EventHandler(){ return eventHandler; }
 
 	private:

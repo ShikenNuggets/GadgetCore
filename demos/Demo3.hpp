@@ -143,6 +143,12 @@ namespace GadgetCoreDemos
 				case Gadget::ButtonId::Keyboard_Down:
 					bHoldingDown = true;
 					break;
+				case Gadget::ButtonId::Keyboard_F10:
+					window.ToggleMaximize();
+					break;
+				case Gadget::ButtonId::Keyboard_F11:
+					window.ToggleFullscreen();
+					break;
 				default:
 					break;
 			}
