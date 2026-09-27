@@ -12,19 +12,62 @@
 
 namespace GadgetCoreDemos
 {
-	struct CameraBinding
+	struct alignas(16) CameraBinding
 	{
 		Gadget::Matrix4 projection;
 		Gadget::Matrix4 view;
 	};
 
-	struct ModelBinding
+	struct alignas(16) ModelBinding
 	{
 		Gadget::Matrix4 modelMatrix;
-		Gadget::Matrix3 normalMatrix;
+		Gadget::Matrix4 normalMatrix;
 	};
 
-	struct MaterialBinding
+	struct alignas(16) PointLightBinding
+	{
+		Gadget::Vector4 position;
+		Gadget::Vector4 color;
+		float constant;
+		float linear;
+		float quadratic;
+	};
+
+	struct alignas(16) SpotLightBinding
+	{
+		Gadget::Vector4 position;
+		Gadget::Vector4 direction;
+		float cutOff;
+		float outerCutoff;
+		Gadget::Vector4 color;
+		float constant;
+		float linear;
+		float quadratic;
+	};
+
+	struct alignas(16) DirectionalLightBinding
+	{
+		Gadget::Vector4 direction;
+		Gadget::Vector4 color;
+	};
+
+	static constexpr int gMaxLights = 8;
+	struct alignas(16) LightsBinding
+	{
+		std::array<PointLightBinding, gMaxLights> pointLights = std::array<PointLightBinding, gMaxLights>();
+		std::array<SpotLightBinding, gMaxLights> spotLights = std::array<SpotLightBinding, gMaxLights>();
+		std::array<DirectionalLightBinding, gMaxLights> directionalLights = std::array<DirectionalLightBinding, gMaxLights>();
+		int numPointLights = 0;
+		int numSpotLights = 0;
+		int numDirLights = 0;
+	};
+
+	struct alignas(16) CameraViewBinding
+	{
+		Gadget::Vector4 viewPos;
+	};
+
+	struct alignas(16) MaterialBinding
 	{
 		Gadget::Vector4 color;
 	};
@@ -141,7 +184,7 @@ namespace GadgetCoreDemos
 		auto modelVertexBuffer = Gadget::GpuVertexBuffer(*window.GetGpuDevice(), modelData.meshes[0].vertices);
 		auto modelIndexBuffer = Gadget::GpuIndexBuffer(*window.GetGpuDevice(), modelData.meshes[0].indices);
 
-		auto graphicsPipeline = Gadget::GpuPipeline(*window.GetGpuDevice(), "Shaders/bin/StandardVertex.spv", "Shaders/bin/StandardFragment.spv", 2, 1);
+		auto graphicsPipeline = Gadget::GpuPipeline(*window.GetGpuDevice(), "Shaders/bin/StandardVertex.spv", "Shaders/bin/StandardFragment.spv", 2, 3);
 
 		CameraBinding binding;
 		binding.projection = Gadget::Matrix4::PerspectiveGPU(45.0f, static_cast<float>(window.GetWidth()) / window.GetHeight(), 0.001f, 10'000.0f);
@@ -149,7 +192,11 @@ namespace GadgetCoreDemos
 
 		ModelBinding modelBinding;
 		modelBinding.modelMatrix = Gadget::Matrix4::Identity();
-		modelBinding.normalMatrix = Gadget::Matrix3::Identity();
+		modelBinding.normalMatrix = Gadget::Matrix4::Identity();
+
+		LightsBinding lightsBinding{};
+		lightsBinding.directionalLights[0] = DirectionalLightBinding{ Gadget::Vector4(-1.0f, -1.0f, -1.0f, 0.0f).Normal(), Gadget::Vector4(1.0f, 1.0f, 1.0f, 1.0f) };
+		lightsBinding.numDirLights = 1;
 
 		MaterialBinding materialBinding;
 		materialBinding.color = Gadget::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -220,9 +267,14 @@ namespace GadgetCoreDemos
 
 			{
 				auto commandBuffer = Gadget::GpuCommandBuffer(*window.GetGpuDevice(), Gadget::Color(0.02f, 0.02f, 0.02f));
+
 				commandBuffer.BindVertexUniform(graphicsPipeline, 0, binding);
 				commandBuffer.BindVertexUniform(graphicsPipeline, 1, modelBinding);
+				
 				commandBuffer.BindFragmentUniform(graphicsPipeline, 0, materialBinding);
+				commandBuffer.BindFragmentUniform(graphicsPipeline, 1, lightsBinding);
+				commandBuffer.BindFragmentUniform(graphicsPipeline, 2, CameraViewBinding{ Gadget::Vector4(cameraPosition, 1.0f) });
+
 				commandBuffer.Draw(graphicsPipeline, modelVertexBuffer, modelIndexBuffer);
 			}
 
