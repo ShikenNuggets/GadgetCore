@@ -2,7 +2,7 @@
 
 using namespace Gadget;
 
-GpuCommandBuffer::GpuCommandBuffer(GpuDevice& gpuDevice, const Color& clear) : ownerDevice(gpuDevice), commandBufferPtr(nullptr), clearColor(clear)
+GpuCommandBuffer::GpuCommandBuffer(GpuDevice& gpuDevice, SDL_GPUTexture* depthTexture, const Color& clear) : ownerDevice(gpuDevice), commandBufferPtr(nullptr), clearColor(clear)
 {
 	commandBufferPtr = SDL_AcquireGPUCommandBuffer(ownerDevice.GetDevice()); // TODO - Error handling
 
@@ -19,7 +19,18 @@ GpuCommandBuffer::GpuCommandBuffer(GpuDevice& gpuDevice, const Color& clear) : o
 		.store_op = SDL_GPU_STOREOP_STORE
 	};
 
-	renderPassPtr = SDL_BeginGPURenderPass(commandBufferPtr, &colorTargetInfo, 1, nullptr); // TODO - Error handling
+	SDL_GPUDepthStencilTargetInfo depthTargetInfo
+	{
+		.texture = depthTexture,
+		.clear_depth = 1.0f,
+		.load_op = SDL_GPU_LOADOP_CLEAR,
+		.store_op = SDL_GPU_STOREOP_DONT_CARE,
+		.stencil_load_op = SDL_GPU_LOADOP_DONT_CARE,
+		.stencil_store_op = SDL_GPU_STOREOP_DONT_CARE
+	};
+
+	SDL_GPUDepthStencilTargetInfo* depthTargetInfoPtr = depthTexture ? &depthTargetInfo : nullptr;
+	renderPassPtr = SDL_BeginGPURenderPass(commandBufferPtr, &colorTargetInfo, 1, depthTargetInfoPtr); // TODO - Error handling
 }
 
 GpuCommandBuffer::~GpuCommandBuffer()

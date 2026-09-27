@@ -12,7 +12,7 @@ namespace Gadget
 	class GpuCommandBuffer
 	{
 	public:
-		GpuCommandBuffer(GpuDevice& gpuDevice, const Color& clear = Color::Black());
+		GpuCommandBuffer(GpuDevice& gpuDevice, SDL_GPUTexture* depthTexture, const Color& clear = Color::Black());
 		~GpuCommandBuffer();
 
 		Color GetClearColor() const{ return clearColor; }

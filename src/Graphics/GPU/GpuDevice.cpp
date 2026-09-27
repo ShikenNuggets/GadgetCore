@@ -229,9 +229,14 @@ SDL_GPUGraphicsPipeline* GpuDevice::CreateGraphicsPipeline(const RawShader& rawV
 	pipelineInfo.vertex_input_state.vertex_attributes = vertexAttributes.data();
 	pipelineInfo.target_info.num_color_targets = colorTargetDescriptions.size();
 	pipelineInfo.target_info.color_target_descriptions = colorTargetDescriptions.data();
+	pipelineInfo.target_info.has_depth_stencil_target = true;
+	pipelineInfo.target_info.depth_stencil_format = SDL_GPU_TEXTUREFORMAT_D32_FLOAT;
 	pipelineInfo.rasterizer_state.fill_mode = SDL_GPU_FILLMODE_FILL;
 	pipelineInfo.rasterizer_state.cull_mode = SDL_GPU_CULLMODE_BACK;
 	pipelineInfo.rasterizer_state.front_face = SDL_GPU_FRONTFACE_COUNTER_CLOCKWISE;
+	pipelineInfo.depth_stencil_state.enable_depth_test = true;
+	pipelineInfo.depth_stencil_state.enable_depth_write = true;
+	pipelineInfo.depth_stencil_state.compare_op = SDL_GPU_COMPAREOP_LESS;
 
 	SDL_GPUGraphicsPipeline* graphicsPipeline = SDL_CreateGPUGraphicsPipeline(device, &pipelineInfo);
 	SDL_ReleaseGPUShader(device, fragmentShader);

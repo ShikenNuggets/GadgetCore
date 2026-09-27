@@ -266,7 +266,7 @@ namespace GadgetCoreDemos
 			binding.view = Gadget::Math::ViewMatrix(cameraPosition, cameraRotation);
 
 			{
-				auto commandBuffer = Gadget::GpuCommandBuffer(*window.GetGpuDevice(), Gadget::Color(0.02f, 0.02f, 0.02f));
+				auto commandBuffer = Gadget::GpuCommandBuffer(*window.GetGpuDevice(), window.GetGpuDepthTexture(), Gadget::Color(0.02f, 0.02f, 0.02f));
 
 				commandBuffer.BindVertexUniform(graphicsPipeline, 0, binding);
 				commandBuffer.BindVertexUniform(graphicsPipeline, 1, modelBinding);
