@@ -12,6 +12,7 @@ namespace Gadget
 		T x, y, z, w;
 
 		explicit constexpr TVec4(T x_ = 0.0, T y_ = 0.0, T z_ = 0.0, T w_ = 0.0) noexcept : x(x_), y(y_), z(z_), w(w_){}
+		constexpr TVec4(const TVec3<T>& v, T w_ = 0.0) noexcept : x(v.x), y(v.y), z(v.z), w(w_){}
 
 		[[nodiscard]] static inline constexpr TVec4 Zero() noexcept{ return TVec4(0.0, 0.0, 0.0, 0.0); }
 		[[nodiscard]] static inline constexpr TVec4 Fill(T value) noexcept{ return TVec4(value, value, value, value); }

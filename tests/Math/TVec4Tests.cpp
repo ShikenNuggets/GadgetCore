@@ -13,6 +13,17 @@ TEST_CASE("TVec4::TVec4", "[tvec4_constructor]")
 	REQUIRE(doubleVec4.w == 0.0);
 }
 
+TEST_CASE("TVec4::TVec4", "[tvec4_constructor_tvec3]")
+{
+	const TVec3<double> doubleVec3(1.0, 2.0, 3.0);
+
+	const TVec4<double> doubleVec4 = TVec4<double>(doubleVec3, 4.0);
+	REQUIRE(doubleVec4.x == 1.0);
+	REQUIRE(doubleVec4.y == 2.0);
+	REQUIRE(doubleVec4.z == 3.0);
+	REQUIRE(doubleVec4.w == 4.0);
+}
+
 TEST_CASE("TVec4::Zero", "[tvec4_zero]")
 {
 	const TVec4<double> zeroVec = TVec4<double>::Zero();
