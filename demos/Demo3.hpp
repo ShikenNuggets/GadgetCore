@@ -85,6 +85,16 @@ namespace GadgetCoreDemos
 			shouldContinue = false;
 		});
 
+		CameraBinding binding;
+		binding.projection = Gadget::Matrix4::PerspectiveGPU(45.0f, static_cast<float>(window.GetWidth()) / window.GetHeight(), 0.001f, 10'000.0f);
+		binding.view = Gadget::Matrix4::Identity();
+
+		auto resizeHandle = window.EventHandler().OnWindowResized.Add([&](int32_t width, int32_t height)
+		{
+			GADGET_LOG_INFO("Window resized to {}x{}", width, height);
+			binding.projection = Gadget::Matrix4::PerspectiveGPU(45.0f, static_cast<float>(width) / static_cast<float>(height), 0.001f, 10'000.0f);
+		});
+
 		bool bHoldingW = false;
 		bool bHoldingS = false;
 		bool bHoldingA = false;
@@ -185,10 +195,6 @@ namespace GadgetCoreDemos
 		auto modelIndexBuffer = Gadget::GpuIndexBuffer(*window.GetGpuDevice(), modelData.meshes[0].indices);
 
 		auto graphicsPipeline = Gadget::GpuPipeline(*window.GetGpuDevice(), "Shaders/bin/StandardVertex.spv", "Shaders/bin/StandardFragment.spv", 2, 3);
-
-		CameraBinding binding;
-		binding.projection = Gadget::Matrix4::PerspectiveGPU(45.0f, static_cast<float>(window.GetWidth()) / window.GetHeight(), 0.001f, 10'000.0f);
-		binding.view = Gadget::Matrix4::Identity();
 
 		ModelBinding modelBinding;
 		modelBinding.modelMatrix = Gadget::Matrix4::Identity();
