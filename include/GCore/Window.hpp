@@ -51,6 +51,7 @@ namespace Gadget
 		[[nodiscard]] SDL_Window* GetSDLWindowPtr() const noexcept{ return windowPtr; }
 		[[nodiscard]] SDL_Renderer* GetSDLRenderer() const noexcept{ return sdlRenderer; }
 		[[nodiscard]] GpuDevice* GetGpuDevice() const noexcept{ return gpuDevice.get(); }
+		[[nodiscard]] SDL_GPUTexture* GetGpuDepthTexture() const noexcept{ return gpuDepthTexture; }
 
 		void SetSize(int32_t width, int32_t height) noexcept;
 		void SetSize(ScreenCoordinate size_) noexcept;
@@ -68,6 +69,9 @@ namespace Gadget
 		SDL_Renderer* sdlRenderer;
 		SDL_GLContext glContext;
 		std::unique_ptr<GpuDevice> gpuDevice;
+		SDL_GPUTexture* gpuDepthTexture;
 		std::map<SDL_JoystickID, InputDeviceHandle> controllers;
+
+		void UpdateGPUDepthTexture();
 	};
 }

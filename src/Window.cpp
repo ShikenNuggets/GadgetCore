@@ -10,6 +10,7 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 	, size(width_, height_), position(x_, y_)
 	, renderAPI(renderAPI_)
 	, glContext(nullptr)
+	, gpuDepthTexture(nullptr)
 {
 	const bool didInit = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK);
 	if (!didInit)
@@ -57,6 +58,8 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 		{
 			GADGET_LOG_ERROR("Failed to set GPU swapchain parameters, SDL Error: {}", SDL_GetError());
 		}
+
+		UpdateGPUDepthTexture();
 	}
 
 	SDL_SetJoystickEventsEnabled(true);
@@ -101,6 +104,11 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 
 Window::~Window()
 {
+	if (gpuDepthTexture != nullptr)
+	{
+		SDL_ReleaseGPUTexture(gpuDevice->GetDevice(), gpuDepthTexture);
+	}
+
 	gpuDevice.reset();
 
 	if (sdlRenderer != nullptr)
@@ -137,6 +145,11 @@ void Window::HandleEvents()
 				return; // No need to process any other events
 			case SDL_EVENT_WINDOW_RESIZED:
 				size = ScreenCoordinate(e.window.data1, e.window.data2);
+				if (renderAPI == RenderAPI::SDLGPU)
+				{
+					UpdateGPUDepthTexture();
+				}
+
 				eventHandler.OnWindowResized.Broadcast(e.window.data1, e.window.data2);
 				break;
 			case SDL_EVENT_WINDOW_MOVED:
@@ -322,4 +335,43 @@ void Window::SetSize(ScreenCoordinate size_) noexcept
 void Window::SetWindowTitle(std::string_view title)
 {
 	SDL_SetWindowTitle(windowPtr, title.data());
+}
+
+void Window::UpdateGPUDepthTexture()
+{
+	GADGET_ASSERT(renderAPI == RenderAPI::SDLGPU, "Tried to create GPU depth texture on a window that is not using SDL GPU Render API");
+	if (renderAPI != RenderAPI::SDLGPU)
+	{
+		return;
+	}
+
+	GADGET_ASSERT(gpuDevice != nullptr, "Tried to create GPU depth texture with an invalid device");
+	if (gpuDevice == nullptr)
+	{
+		return;
+	}
+
+	if (gpuDepthTexture != nullptr)
+	{
+		SDL_ReleaseGPUTexture(gpuDevice->GetDevice(), gpuDepthTexture);
+	}
+
+	GADGET_ASSERT(size.x > 0, "Tried to create GPU depth texture with invalid window width");
+	GADGET_ASSERT(size.y > 0, "Tried to create GPU depth texture with invalid window height");
+	SDL_GPUTextureCreateInfo depthTexInfo
+	{
+		.type = SDL_GPU_TEXTURETYPE_2D,
+		.format = SDL_GPU_TEXTUREFORMAT_D32_FLOAT,
+		.usage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET,
+		.width = static_cast<Uint32>(size.x),
+		.height = static_cast<Uint32>(size.y),
+		.layer_count_or_depth = 1,
+		.num_levels = 1,
+	};
+
+	gpuDepthTexture = SDL_CreateGPUTexture(gpuDevice->GetDevice(), &depthTexInfo);
+	if (gpuDepthTexture == nullptr)
+	{
+		GADGET_LOG_ERROR("Failed to create GPU depth texture! SDL Error: {}", SDL_GetError());
+	}
 }
