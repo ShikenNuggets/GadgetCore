@@ -58,12 +58,21 @@ GpuCommandBuffer::~GpuCommandBuffer()
 {
 	if (renderPassPtr == nullptr)
 	{
-		SDL_CancelGPUCommandBuffer(commandBufferPtr);
+		bool success = SDL_CancelGPUCommandBuffer(commandBufferPtr);
+		if (!success)
+		{
+			GADGET_LOG_ERROR("Failed to cancel GPU command buffer! SDL Error: ", SDL_GetError());
+		}
+
 		return;
 	}
 
 	SDL_EndGPURenderPass(renderPassPtr);
-	SDL_SubmitGPUCommandBuffer(commandBufferPtr);
+	bool success = SDL_SubmitGPUCommandBuffer(commandBufferPtr);
+	if (!success)
+	{
+		GADGET_LOG_ERROR("Failed to submit GPU command buffer! SDL Error: ", SDL_GetError());
+	}
 }
 
 void GpuCommandBuffer::Draw(GpuPipeline& pipeline, GpuVertexBuffer& buffer)

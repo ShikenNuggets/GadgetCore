@@ -19,8 +19,7 @@ GpuDevice::GpuDevice(SDL_Window* window) : ownerWindow(window), device(nullptr)
 	device = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV, isDebug, nullptr);
 	if (device == nullptr)
 	{
-		GADGET_LOG_ERROR("Unable to create GPU device! SDL Error: {}", SDL_GetError());
-		// TODO - Throw fatal error
+		GADGET_LOG_FATAL_ERROR("Unable to create GPU device! SDL Error: {}", SDL_GetError());
 	}
 }
 
@@ -41,7 +40,7 @@ SDL_GPUShader* GpuDevice::CreateShader(const RawShader& rawShader)
 			shaderStage = SDL_GPU_SHADERSTAGE_FRAGMENT;
 			break;
 		default:
-			GADGET_ASSERT(false, "Tried to construct shader of invalid type {}", static_cast<uint8_t>(rawShader.GetShaderType())); // TODO - enum to string
+			GADGET_ASSERT(false, "Tried to construct shader of unsupported type {}", static_cast<uint8_t>(rawShader.GetShaderType())); // TODO - enum to string
 			return nullptr;
 	}
 
@@ -49,7 +48,7 @@ SDL_GPUShader* GpuDevice::CreateShader(const RawShader& rawShader)
 	if (rawShader.GetShaderFormat() != ShaderFormat::SPIRV)
 	{
 		// TODO - Support other formats
-		GADGET_ASSERT(false, "Tried to construct shader of invalid format {}", static_cast<uint8_t>(rawShader.GetShaderFormat())); // TODO - enum to string
+		GADGET_ASSERT(false, "Tried to construct shader of unsupported format {}", static_cast<uint8_t>(rawShader.GetShaderFormat())); // TODO - enum to string
 		return nullptr;
 	}
 
@@ -103,7 +102,7 @@ void GpuDevice::CopyDataToBuffer(SDL_GPUBuffer* buffer, std::span<const uint8_t>
 	GADGET_ASSERT(buffer != nullptr, "Tried to copy data to an invalid GPU buffer");
 	GADGET_ASSERT(data.size_bytes() <= std::numeric_limits<Uint32>::max(), "Tried to create vertex buffer with data size larger than Uint32 max"); // TODO: Can we check the buffer size here?
 
-	if(data.empty())
+	if (data.empty())
 	{
 		GADGET_LOG_WARNING("Tried to copy empty data to GPU buffer");
 		return;
@@ -116,12 +115,31 @@ void GpuDevice::CopyDataToBuffer(SDL_GPUBuffer* buffer, std::span<const uint8_t>
 	};
 
 	SDL_GPUTransferBuffer* transferBuffer = SDL_CreateGPUTransferBuffer(device, &transferInfo);
+	if (transferBuffer == nullptr)
+	{
+		GADGET_LOG_ERROR("Failed to create GPU transfer buffer! SDL Error: ", SDL_GetError());
+		return;
+	}
 
 	auto* dataPtr = SDL_MapGPUTransferBuffer(device, transferBuffer, false);
+	if (dataPtr == nullptr)
+	{
+		GADGET_LOG_ERROR("Failed to map GPU transfer buffer! SDL Error: ", SDL_GetError());
+		SDL_ReleaseGPUTransferBuffer(device, transferBuffer);
+		return;
+	}
+
 	SDL_memcpy(dataPtr, data.data(), data.size_bytes());
 	SDL_UnmapGPUTransferBuffer(device, transferBuffer);
 
 	SDL_GPUCommandBuffer* commandBuffer = SDL_AcquireGPUCommandBuffer(device);
+	if (commandBuffer == nullptr)
+	{
+		GADGET_LOG_ERROR("Failed to acquire GPU command buffer! SDL Error: ", SDL_GetError());
+		SDL_ReleaseGPUTransferBuffer(device, transferBuffer);
+		return;
+	}
+
 	SDL_GPUCopyPass* copyPass = SDL_BeginGPUCopyPass(commandBuffer);
 
 	SDL_GPUTransferBufferLocation location
@@ -140,7 +158,12 @@ void GpuDevice::CopyDataToBuffer(SDL_GPUBuffer* buffer, std::span<const uint8_t>
 	SDL_UploadToGPUBuffer(copyPass, &location, &region, true);
 
 	SDL_EndGPUCopyPass(copyPass);
-	SDL_SubmitGPUCommandBuffer(commandBuffer);
+	
+	bool success = SDL_SubmitGPUCommandBuffer(commandBuffer);
+	if (!success)
+	{
+		GADGET_LOG_ERROR("Failed to submit GPU command buffer! SDL Error: ", SDL_GetError());
+	}
 
 	SDL_ReleaseGPUTransferBuffer(device, transferBuffer);
 }
@@ -239,6 +262,11 @@ SDL_GPUGraphicsPipeline* GpuDevice::CreateGraphicsPipeline(const RawShader& rawV
 	pipelineInfo.depth_stencil_state.compare_op = SDL_GPU_COMPAREOP_LESS;
 
 	SDL_GPUGraphicsPipeline* graphicsPipeline = SDL_CreateGPUGraphicsPipeline(device, &pipelineInfo);
+	if (graphicsPipeline == nullptr)
+	{
+		GADGET_LOG_ERROR("Failed to create graphics pipeline: {}", SDL_GetError());
+	}
+
 	SDL_ReleaseGPUShader(device, fragmentShader);
 	SDL_ReleaseGPUShader(device, vertexShader);
 

@@ -290,10 +290,18 @@ void Window::UpdateWindowSurface()
 {
 	if (sdlRenderer != nullptr)
 	{
-		SDL_RenderPresent(sdlRenderer);
+		bool success = SDL_RenderPresent(sdlRenderer);
+		if (!success)
+		{
+			GADGET_LOG_ERROR("SDL_RenderPresent failed! SDL Error: {}", SDL_GetError());
+		}
 	}
 
-	SDL_UpdateWindowSurface(windowPtr);
+	bool success = SDL_UpdateWindowSurface(windowPtr);
+	if (!success)
+	{
+		GADGET_LOG_ERROR("SDL_UpdateWindowSurface failed! SDL Error: {}", SDL_GetError());
+	}
 }
 
 ScreenCoordinate Window::GetSize() const noexcept
@@ -318,7 +326,13 @@ std::optional<float> Window::GetRefreshRate() const noexcept
 
 WindowSurfaceView Window::GetSurfaceView()
 {
-	return WindowSurfaceView(SDL_GetWindowSurface(windowPtr));
+	SDL_Surface* surface = SDL_GetWindowSurface(windowPtr);
+	if (surface == nullptr)
+	{
+		GADGET_LOG_FATAL_ERROR("Failed to get window surface! SDL Error: {}", SDL_GetError());
+	}
+
+	return WindowSurfaceView(surface);
 }
 
 void Window::SetSize(int32_t width, int32_t height) noexcept
@@ -329,22 +343,38 @@ void Window::SetSize(int32_t width, int32_t height) noexcept
 void Window::SetSize(ScreenCoordinate size_) noexcept
 {
 	size = size_;
-	SDL_SetWindowSize(windowPtr, size.x, size.y);
+	bool success = SDL_SetWindowSize(windowPtr, size.x, size.y);
+	if (!success)
+	{
+		GADGET_LOG_ERROR("Failed to set window size! SDL Error: {}", SDL_GetError());
+	}
 }
 
 void Window::SetWindowTitle(std::string_view title)
 {
-	SDL_SetWindowTitle(windowPtr, title.data());
+	bool success = SDL_SetWindowTitle(windowPtr, title.data());
+	if (!success)
+	{
+		GADGET_LOG_ERROR("Failed to set window title! SDL Error: {}", SDL_GetError());
+	}
 }
 
 void Window::Minimize()
 {
-	SDL_MinimizeWindow(windowPtr);
+	bool success = SDL_MinimizeWindow(windowPtr);
+	if (!success)
+	{
+		GADGET_LOG_ERROR("Failed to minimize window! SDL Error: {}", SDL_GetError());
+	}
 }
 
 void Window::Maximize()
 {
-	SDL_MaximizeWindow(windowPtr);
+	bool success = SDL_MaximizeWindow(windowPtr);
+	if (!success)
+	{
+		GADGET_LOG_ERROR("Failed to maximize window! SDL Error: {}", SDL_GetError());
+	}
 }
 
 void Window::ToggleMaximize()
@@ -361,17 +391,29 @@ void Window::ToggleMaximize()
 
 void Window::Restore()
 {
-	SDL_RestoreWindow(windowPtr);
+	bool success = SDL_RestoreWindow(windowPtr);
+	if (!success)
+	{
+		GADGET_LOG_ERROR("Failed to restore window! SDL Error: {}", SDL_GetError());
+	}
 }
 
 void Window::SetFullscreen()
 {
-	SDL_SetWindowFullscreen(windowPtr, true);
+	bool success = SDL_SetWindowFullscreen(windowPtr, true);
+	if (!success)
+	{
+		GADGET_LOG_ERROR("Failed to set window fullscreen! SDL Error: {}", SDL_GetError());
+	}
 }
 
 void Window::SetWindowed()
 {
-	SDL_SetWindowFullscreen(windowPtr, false);
+	bool success = SDL_SetWindowFullscreen(windowPtr, false);
+	if (!success)
+	{
+		GADGET_LOG_ERROR("Failed to set window windowed! SDL Error: {}", SDL_GetError());
+	}
 }
 
 void Window::ToggleFullscreen()

@@ -11,8 +11,7 @@ InputDeviceHandle::InputDeviceHandle(SDL_JoystickID id) : internalId(id), joysti
 {
 	if (joystick == nullptr)
 	{
-		GADGET_LOG_ERROR("Failed to open joystick ID {}! SDL Error: {}", internalId, SDL_GetError());
-		return; // TODO - throw?
+		GADGET_LOG_FATAL_ERROR("Failed to open joystick ID {}! SDL Error: {}", internalId, SDL_GetError());
 	}
 
 	type = SDL_GetJoystickType(joystick);
