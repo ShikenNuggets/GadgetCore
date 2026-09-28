@@ -14,18 +14,39 @@ GuiBounds GuiElement::CalculateBounds(const ScreenCoordinate& pixelSize) const
 {
 	const auto parentBounds = parent ? parent->CalculateBounds(pixelSize) : GuiBounds{ 0.0f, 0.0f, static_cast<float>(pixelSize.x), static_cast<float>(pixelSize.y) };
 
-	if (anchor == GuiAnchor::TopLeft)
+	GuiBounds finalBounds;
+
+	// X alignment
+	if (anchor == GuiAnchor::TopLeft || anchor == GuiAnchor::MiddleLeft || anchor == GuiAnchor::BottomLeft)
 	{
-		return GuiBounds
-		{
-			parentBounds.x,
-			parentBounds.y,
-			parentBounds.width* width,
-			parentBounds.height* height
-		};
+		finalBounds.x = parentBounds.x;
+	}
+	else if(anchor == GuiAnchor::TopCenter || anchor == GuiAnchor::MiddleCenter || anchor == GuiAnchor::BottomCenter)
+	{
+		finalBounds.x = parentBounds.x + (parentBounds.width / 2.0f) - ((parentBounds.width * width) / 2.0f);
+	}
+	else if(anchor == GuiAnchor::TopRight || anchor == GuiAnchor::MiddleRight || anchor == GuiAnchor::BottomRight)
+	{
+		finalBounds.x = parentBounds.x + parentBounds.width - (parentBounds.width * width);
 	}
 
-	return parentBounds; // TODO - Implement other anchor types
+	// Y alignment
+	if (anchor == GuiAnchor::TopLeft || anchor == GuiAnchor::TopCenter || anchor == GuiAnchor::TopRight)
+	{
+		finalBounds.y = parentBounds.y;
+	}
+	else if(anchor == GuiAnchor::MiddleLeft || anchor == GuiAnchor::MiddleCenter || anchor == GuiAnchor::MiddleRight)
+	{
+		finalBounds.y = parentBounds.y + (parentBounds.height / 2.0f) - ((parentBounds.height * height) / 2.0f);
+	}
+	else if(anchor == GuiAnchor::BottomLeft || anchor == GuiAnchor::BottomCenter || anchor == GuiAnchor::BottomRight)
+	{
+		finalBounds.y = parentBounds.y + parentBounds.height - (parentBounds.height * height);
+	}
+
+	finalBounds.width = parentBounds.width * width;
+	finalBounds.height = parentBounds.height * height;
+	return finalBounds;
 }
 
 GuiElement* GuiElement::AddSubElement(GuiElement* element)

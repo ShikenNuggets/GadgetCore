@@ -23,12 +23,19 @@ TEST_CASE("GuiElement::GuiElement", "[gui_element_constructor]")
 TEST_CASE("GuiElement::CalculateBounds", "[gui_element_calculate_bounds]")
 {
 	const auto pixelSize = ScreenCoordinate(1000, 1000);
-	const auto element = GuiElement(GuiAnchor::TopLeft, 0.5f, 0.5f);
-	const auto bounds = element.CalculateBounds(pixelSize);
-	REQUIRE(bounds.x == Approx(0.0f));
-	REQUIRE(bounds.y == Approx(0.0f));
-	REQUIRE(bounds.width == Approx(500.0f));
-	REQUIRE(bounds.height == Approx(500.0f));
+	const auto topLeftElement = GuiElement(GuiAnchor::TopLeft, 0.5f, 0.5f);
+	const auto topLeftBounds = topLeftElement.CalculateBounds(pixelSize);
+	REQUIRE(topLeftBounds.x == Approx(0.0f));
+	REQUIRE(topLeftBounds.y == Approx(0.0f));
+	REQUIRE(topLeftBounds.width == Approx(500.0f));
+	REQUIRE(topLeftBounds.height == Approx(500.0f));
+
+	const auto middleCenterElement = GuiElement(GuiAnchor::MiddleCenter, 0.5f, 0.5f);
+	const auto middleCenterBounds = middleCenterElement.CalculateBounds(pixelSize);
+	REQUIRE(middleCenterBounds.x == Approx(250.0f));
+	REQUIRE(middleCenterBounds.y == Approx(250.0f));
+	REQUIRE(middleCenterBounds.width == Approx(500.0f));
+	REQUIRE(middleCenterBounds.height == Approx(500.0f));
 }
 
 TEST_CASE("GuiElement::AddSubElement", "[gui_element_add_sub_element]")

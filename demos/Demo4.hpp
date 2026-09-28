@@ -38,7 +38,7 @@ namespace GadgetCoreDemos
 		});
 
 		auto canvas = Gadget::GuiElement(Gadget::GuiAnchor::TopLeft, 1.0f, 1.0f);
-		auto button = canvas.AddSubElement(new Gadget::GuiElement(Gadget::GuiAnchor::TopLeft, 0.5f, 0.5f, &canvas));
+		auto button = canvas.AddSubElement(new Gadget::GuiElement(Gadget::GuiAnchor::MiddleCenter, 0.5f, 0.5f, &canvas));
 
 		while (shouldContinue)
 		{
