@@ -29,7 +29,7 @@ FetchContent_MakeAvailable(catch2)
 FetchContent_Declare(
 	SDL3
 	GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
-	GIT_TAG release-3.4.14
+	GIT_TAG release-3.4.18
 	SYSTEM
 	EXCLUDE_FROM_ALL
 	GIT_SHALLOW TRUE
@@ -40,7 +40,7 @@ FetchContent_MakeAvailable(SDL3)
 FetchContent_Declare(
 	SDL3_Image
 	GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
-	GIT_TAG release-3.4.4
+	GIT_TAG release-3.4.8
 	SYSTEM
 	EXCLUDE_FROM_ALL
 	GIT_SHALLOW TRUE
