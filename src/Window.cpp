@@ -296,11 +296,13 @@ void Window::UpdateWindowSurface()
 			GADGET_LOG_ERROR("SDL_RenderPresent failed! SDL Error: {}", SDL_GetError());
 		}
 	}
-
-	bool success = SDL_UpdateWindowSurface(windowPtr);
-	if (!success)
+	else
 	{
-		GADGET_LOG_ERROR("SDL_UpdateWindowSurface failed! SDL Error: {}", SDL_GetError());
+		bool success = SDL_UpdateWindowSurface(windowPtr);
+		if (!success)
+		{
+			GADGET_LOG_ERROR("SDL_UpdateWindowSurface failed! SDL Error: {}", SDL_GetError());
+		}
 	}
 }
 
