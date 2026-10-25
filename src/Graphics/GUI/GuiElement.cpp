@@ -10,9 +10,9 @@ GuiElement::GuiElement(GuiAnchor anchor, float w, float h, GuiElement* parent) :
 	GADGET_ASSERT(height >= 0.0f && height <= 1.0f, "GuiElement height must be between 0 and 1");
 }
 
-GuiBounds GuiElement::CalculateBounds(const ScreenCoordinate& pixelSize) const
+GuiBounds GuiElement::CalculateBounds() const
 {
-	const auto parentBounds = parent ? parent->CalculateBounds(pixelSize) : GuiBounds{ 0.0f, 0.0f, static_cast<float>(pixelSize.x), static_cast<float>(pixelSize.y) };
+	const auto parentBounds = parent ? parent->CalculateBounds() : GuiBounds{ 0.0f, 0.0f, 1.0f, 1.0f };
 
 	GuiBounds finalBounds;
 
@@ -49,6 +49,11 @@ GuiBounds GuiElement::CalculateBounds(const ScreenCoordinate& pixelSize) const
 	return finalBounds;
 }
 
+GuiBounds GuiElement::CalculatePixelBounds(const ScreenCoordinate& pixelSize) const
+{
+	return CalculateBounds() * pixelSize;
+}
+
 GuiElement* GuiElement::AddSubElement(GuiElement* element)
 {
 	subElements.push_back(std::unique_ptr<GuiElement>(element));
@@ -65,4 +70,78 @@ void GuiElement::SetHeight(float h)
 {
 	GADGET_ASSERT(h >= 0.0f && h <= 1.0f, "GuiElement height must be between 0 and 1");
 	height = h;
+}
+
+bool GuiElement::OnClickDown(ButtonId button, double x, double y)
+{
+	for (const auto& subElement : subElements)
+	{
+		GADGET_BASIC_ASSERT(subElement != nullptr);
+		if (subElement == nullptr)
+		{
+			continue;
+		}
+
+		if (subElement->OnClickDown(button, x, y))
+		{
+			return true; // Sub-element received the input
+		}
+	}
+
+	if (!IsPointInBounds(static_cast<float>(x), static_cast<float>(y)))
+	{
+		return false;
+	}
+
+	if (!onClickDownCallback)
+	{
+		return false;
+	}
+
+	return onClickDownCallback(button, x, y);
+}
+
+bool GuiElement::OnClickUp(ButtonId button, double x, double y)
+{
+	for (const auto& subElement : subElements)
+	{
+		GADGET_BASIC_ASSERT(subElement != nullptr);
+		if (subElement == nullptr)
+		{
+			continue;
+		}
+
+		if (subElement->OnClickUp(button, x, y))
+		{
+			return true; // Sub-element received and handled the input
+		}
+	}
+
+	if (!IsPointInBounds(static_cast<float>(x), static_cast<float>(y)))
+	{
+		return false;
+	}
+
+	if (!onClickUpCallback)
+	{
+		return false;
+	}
+
+	return onClickUpCallback(button, x, y);
+}
+
+void GuiElement::SetOnClickDownCallback(ClickCallback func)
+{
+	onClickDownCallback = func;
+}
+
+void GuiElement::SetOnClickUpCallback(ClickCallback func)
+{
+	onClickUpCallback = func;
+}
+
+bool GuiElement::IsPointInBounds(float x, float y) const
+{
+	const auto bounds = CalculateBounds();
+	return (x >= bounds.x && x <= bounds.x + bounds.width) && (y >= bounds.y && y <= bounds.y + bounds.height);
 }

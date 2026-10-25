@@ -2,6 +2,7 @@
 #include <GCore/Window.hpp>
 
 #include <GCore/Graphics/GUI/GuiElement.hpp>
+#include <GCore/Input/InputDefines.hpp>
 
 namespace GadgetCoreDemos
 {
@@ -37,8 +38,21 @@ namespace GadgetCoreDemos
 			}
 		});
 
-		auto canvas = Gadget::GuiElement(Gadget::GuiAnchor::TopLeft, 1.0f, 1.0f);
+		auto canvas = Gadget::GuiCanvas();
+		auto canvasClickHandle = window.EventHandler().OnClickDown.Add([&](Gadget::ButtonId button, double x, double y)
+		{
+			const auto guiX = x / window.GetSize().x;
+			const auto guiY = y / window.GetSize().y;
+
+			canvas.OnClickDown(button, guiX, guiY);
+		});
+
 		auto button = canvas.AddSubElement(new Gadget::GuiElement(Gadget::GuiAnchor::MiddleCenter, 0.5f, 0.5f, &canvas));
+		button->SetOnClickDownCallback([](Gadget::ButtonId button, double x, double y) -> bool
+		{
+			GADGET_LOG_INFO("Clicked the button!");
+			return true;
+		});
 
 		while (shouldContinue)
 		{
@@ -47,7 +61,7 @@ namespace GadgetCoreDemos
 			SDL_SetRenderDrawColor(window.GetSDLRenderer(), 25, 25, 25, 0);
 			SDL_RenderClear(window.GetSDLRenderer());
 
-			auto buttonBounds = button->CalculateBounds(window.GetSize());
+			auto buttonBounds = button->CalculatePixelBounds(window.GetSize());
 
 			SDL_SetRenderDrawColorFloat(window.GetSDLRenderer(), 1.0f, 1.0f, 1.0f, 1.0f);
 			const SDL_FRect rect{ .x = buttonBounds.x, .y = buttonBounds.y, .w = buttonBounds.width, .h = buttonBounds.height };
