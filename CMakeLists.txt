@@ -29,7 +29,7 @@ FetchContent_MakeAvailable(catch2)
 FetchContent_Declare(
 	SDL3
 	GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
-	GIT_TAG release-3.4.18
+	GIT_TAG release-3.4.20
 	SYSTEM
 	EXCLUDE_FROM_ALL
 	GIT_SHALLOW TRUE
@@ -127,7 +127,7 @@ add_library(GadgetCore STATIC ${SRC_FILES} ${INC_FILES})
 
 option(GADGETCORE_BUILD_TESTS "Build tests for the GadgetCore project" ON)
 option(GADGETCORE_BUILD_DEMOS "Build demos for the GadgetCore project" ON) # TODO - turn this off later
-option(GADGETCORE_ENABLE_LOGGING "Enable/disable internal logging in GadgetCore (this also disables the Gadget::Logger framework entirely)" OFF)
+option(GADGETCORE_ENABLE_LOGGING "Enable/disable internal logging in GadgetCore (this also disables the Gadget::Logger framework entirely)" ON)
 option(GADGETCORE_USE_DOUBLE_MATH "Use doubles instead of floats for internal math structures" ON)
 
 set_target_properties(GadgetCore PROPERTIES
