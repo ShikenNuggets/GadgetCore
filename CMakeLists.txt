@@ -63,7 +63,7 @@ FetchContent_MakeAvailable(SDL3_Image)
 FetchContent_Declare(
 	Assimp
 	GIT_REPOSITORY https://github.com/assimp/assimp.git
-	GIT_TAG v6.0.5
+	GIT_TAG v6.0.6
 	SYSTEM
 	EXCLUDE_FROM_ALL
 	GIT_SHALLOW TRUE
