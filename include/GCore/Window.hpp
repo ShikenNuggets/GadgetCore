@@ -78,6 +78,7 @@ namespace Gadget
 		WindowEventHandler eventHandler;
 		SDL_Renderer* sdlRenderer;
 		SDL_GLContext glContext;
+		bool isGpuWindowClaimed = false;
 		std::unique_ptr<GpuDevice> gpuDevice;
 		SDL_GPUTexture* gpuDepthTexture;
 		std::map<SDL_JoystickID, InputDeviceHandle> controllers;

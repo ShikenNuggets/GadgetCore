@@ -50,13 +50,13 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 	else if (renderAPI == RenderAPI::SDLGPU)
 	{
 		gpuDevice = std::make_unique<GpuDevice>(windowPtr);
-		bool bSuccess = SDL_ClaimWindowForGPUDevice(gpuDevice->GetDevice(), windowPtr);
-		if (!bSuccess)
+		isGpuWindowClaimed = SDL_ClaimWindowForGPUDevice(gpuDevice->GetDevice(), windowPtr);
+		if (!isGpuWindowClaimed)
 		{
 			GADGET_LOG_FATAL_ERROR("Failed to claim window for GPU device, SDL Error: {}", SDL_GetError());
 		}
 
-		bSuccess = SDL_SetGPUSwapchainParameters(gpuDevice->GetDevice(), windowPtr, SDL_GPU_SWAPCHAINCOMPOSITION_SDR_LINEAR, SDL_GPU_PRESENTMODE_VSYNC);
+		const bool bSuccess = SDL_SetGPUSwapchainParameters(gpuDevice->GetDevice(), windowPtr, SDL_GPU_SWAPCHAINCOMPOSITION_SDR_LINEAR, SDL_GPU_PRESENTMODE_VSYNC);
 		if (!bSuccess)
 		{
 			GADGET_LOG_ERROR("Failed to set GPU swapchain parameters, SDL Error: {}", SDL_GetError());
@@ -114,11 +114,13 @@ Window::~Window()
 		SDL_ReleaseGPUTexture(gpuDevice->GetDevice(), gpuDepthTexture);
 	}
 
-	if (gpuDevice != nullptr)
+	if (isGpuWindowClaimed && gpuDevice != nullptr)
 	{
 		SDL_ReleaseWindowFromGPUDevice(gpuDevice->GetDevice(), windowPtr);
-		gpuDevice.reset();
+		isGpuWindowClaimed = false;
 	}
+
+	gpuDevice.reset();
 
 	if (sdlRenderer != nullptr)
 	{
