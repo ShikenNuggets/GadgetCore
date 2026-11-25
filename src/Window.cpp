@@ -262,7 +262,7 @@ void Window::HandleEvents()
 				controllers.erase(e.jdevice.which);
 				break;
 			case SDL_EVENT_JOYSTICK_AXIS_MOTION:
-				eventHandler.OnAxisChange.Broadcast(SDL_Utils::JoystickToAxisId(e.jaxis.axis), static_cast<double>(e.gaxis.value) / std::numeric_limits<Sint16>::max());
+				eventHandler.OnAxisChange.Broadcast(SDL_Utils::JoystickToAxisId(e.jaxis.axis), static_cast<double>(e.jaxis.value) / std::numeric_limits<Sint16>::max());
 				break;
 			case SDL_EVENT_JOYSTICK_HAT_MOTION:
 				if (e.jhat.value & (SDL_HAT_LEFT | SDL_HAT_RIGHT))
@@ -284,11 +284,11 @@ void Window::HandleEvents()
 				break;
 			case SDL_EVENT_FINGER_DOWN:
 				eventHandler.OnButtonDown.Broadcast(ButtonId::Touch_Press);
-				eventHandler.OnClickDown.Broadcast(ButtonId::Touch_Press, e.button.x, e.button.y);
+				eventHandler.OnClickDown.Broadcast(ButtonId::Touch_Press, e.tfinger.x, e.tfinger.y);
 				break;
 			case SDL_EVENT_FINGER_UP:
 				eventHandler.OnButtonUp.Broadcast(ButtonId::Touch_Press);
-				eventHandler.OnClickUp.Broadcast(ButtonId::Touch_Press, e.button.x, e.button.y);
+				eventHandler.OnClickUp.Broadcast(ButtonId::Touch_Press, e.tfinger.x, e.tfinger.y);
 				break;
 			case SDL_EVENT_FINGER_MOTION:
 				if (e.tfinger.dx != 0.0f)
@@ -298,10 +298,10 @@ void Window::HandleEvents()
 
 				if (e.tfinger.dy != 0.0f)
 				{
-					eventHandler.OnAxisChange.Broadcast(AxisId::Touch_Vertical, e.tfinger.dx);
+					eventHandler.OnAxisChange.Broadcast(AxisId::Touch_Vertical, e.tfinger.dy);
 				}
 
-				eventHandler.OnPointerMoved.Broadcast(e.motion.x, e.motion.y);
+				eventHandler.OnPointerMoved.Broadcast(e.tfinger.x, e.tfinger.y);
 
 				break;
 		}
