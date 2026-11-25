@@ -40,26 +40,37 @@ namespace Gadget
 		template <typename... Args>
 		void Broadcast(const Args&... args)
 		{
-			bool anyInvalid = false;
-			for (auto& callbackWeakPtr : callbacks)
+			if (callbacks.empty())
 			{
-				auto callbackPtr = callbackWeakPtr.lock();
+				return;
+			}
+
+			++broadcastDepth;
+			const size_t initialCount = callbacks.size();
+			for (size_t i = 0; i < initialCount; ++i)
+			{
+				auto callbackPtr = callbacks[i].lock();
 				if (callbackPtr == nullptr)
 				{
-					anyInvalid = true;
+					hasExpiredCallbacks = true;
 					continue;
 				}
 
 				(*callbackPtr)(args...);
 			}
 
-			if (anyInvalid)
+			--broadcastDepth;
+
+			if (broadcastDepth == 0 && hasExpiredCallbacks)
 			{
+				hasExpiredCallbacks = false;
 				std::erase_if(callbacks, [](const auto& wp){ return wp.expired(); });
 			}
 		}
 
 	private:
 		std::vector<std::weak_ptr<std::function<T>>> callbacks;
+		size_t broadcastDepth = 0;
+		bool hasExpiredCallbacks = false;
 	};
 }
