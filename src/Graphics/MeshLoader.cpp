@@ -46,18 +46,22 @@ static inline void ProcessMesh(const aiMesh* mesh, std::vector<MeshData>& outMes
 	indices.reserve(static_cast<size_t>(mesh->mNumFaces) * 3);
 
 	const auto sourceVerts = std::span(mesh->mVertices, mesh->mNumVertices);
-	const auto sourceNormals = std::span(mesh->mNormals, mesh->mNumVertices);
-	const auto sourceTexCoords = std::span(mesh->mTextureCoords[0], mesh->mNumVertices);
+	const auto sourceNormals = mesh->HasNormals() ? std::span(mesh->mNormals, mesh->mNumVertices) : std::span<aiVector3D>();
+	const auto sourceTexCoords = mesh->HasTextureCoords(0) ? std::span(mesh->mTextureCoords[0], mesh->mNumVertices) : std::span<aiVector3D>();
+
+	GADGET_BASIC_ASSERT(!sourceVerts.empty());
+	GADGET_BASIC_ASSERT(sourceNormals.empty() || sourceNormals.size() == sourceVerts.size());
+	GADGET_BASIC_ASSERT(sourceTexCoords.empty() || sourceTexCoords.size() == sourceVerts.size());
 
 	for (size_t i = 0; i < sourceVerts.size(); i++)
 	{
 		const auto& vertex = sourceVerts[i];
 		const auto pos = Vector3(vertex.x, vertex.y, vertex.z);
 
-		const auto& normal = sourceNormals[i];
+		const auto& normal = !sourceNormals.empty() && i < sourceNormals.size() ? sourceNormals[i] : aiVector3D(0.0f, 0.0f, 0.0f);
 		const auto norm = Vector3(normal.x, normal.y, normal.z);
 
-		const auto& texCoord = sourceTexCoords[i];
+		const auto& texCoord = !sourceTexCoords.empty() && i < sourceTexCoords.size() ? sourceTexCoords[i] : aiVector3D(0.0f, 0.0f, 0.0f);
 		const auto tex = Vector2(texCoord.x, texCoord.y);
 
 		verts.emplace_back(pos, norm, tex);
