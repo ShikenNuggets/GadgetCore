@@ -247,7 +247,7 @@ void Window::HandleEvents()
 				break;
 			// SDL_EVENT_GAMEPAD_ADDED and SDL_EVENT_GAMEPAD_REMOVED are intentionally unhandled here
 			case SDL_EVENT_GAMEPAD_AXIS_MOTION:
-				eventHandler.OnAxisChange.Broadcast(SDL_Utils::GamepadToAxisId(e.gaxis.axis), static_cast<double>(e.gaxis.value) / std::numeric_limits<Sint16>::max());
+				eventHandler.OnAxisChange.Broadcast(SDL_Utils::GamepadToAxisId(e.gaxis.axis), Math::Dequantize<double>(e.gaxis.value));
 				break;
 			case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
 				eventHandler.OnButtonDown.Broadcast(SDL_Utils::GamepadtoButtonId(e.gbutton.button));
@@ -262,7 +262,7 @@ void Window::HandleEvents()
 				controllers.erase(e.jdevice.which);
 				break;
 			case SDL_EVENT_JOYSTICK_AXIS_MOTION:
-				eventHandler.OnAxisChange.Broadcast(SDL_Utils::JoystickToAxisId(e.jaxis.axis), static_cast<double>(e.jaxis.value) / std::numeric_limits<Sint16>::max());
+				eventHandler.OnAxisChange.Broadcast(SDL_Utils::JoystickToAxisId(e.jaxis.axis), Math::Dequantize<double>(e.jaxis.value));
 				break;
 			case SDL_EVENT_JOYSTICK_HAT_MOTION:
 				if (e.jhat.value & (SDL_HAT_LEFT | SDL_HAT_RIGHT))
