@@ -42,7 +42,14 @@ InputDeviceHandle::~InputDeviceHandle()
 
 std::string_view InputDeviceHandle::GetName() const
 {
-	return SDL_GetJoystickName(joystick);
+	const char* name = SDL_GetJoystickName(joystick);
+	if (name == nullptr)
+	{
+		GADGET_LOG_ERROR("Failed to get joystick name for ID {}! SDL Error: {}", internalId, SDL_GetError());
+		return "Unknown Joystick";
+	}
+
+	return std::string_view(name);
 }
 
 std::string InputDeviceHandle::GetTypeName() const
