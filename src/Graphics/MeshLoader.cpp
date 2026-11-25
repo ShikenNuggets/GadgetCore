@@ -34,7 +34,7 @@ static constexpr unsigned int gBaseFlags =
 static inline void ProcessMesh(const aiMesh* mesh, std::vector<MeshData>& outMeshes)
 {
 	GADGET_BASIC_ASSERT(mesh != nullptr);
-	if (mesh == nullptr)
+	if (mesh == nullptr || !mesh->HasPositions())
 	{
 		return;
 	}
