@@ -15,6 +15,11 @@ namespace Gadget
 		GpuCommandBuffer(GpuDevice& gpuDevice, SDL_GPUTexture* depthTexture, const Color& clear = Color::Black());
 		~GpuCommandBuffer();
 
+		GpuCommandBuffer(const GpuCommandBuffer&) = delete;
+		GpuCommandBuffer(GpuCommandBuffer&&) = delete;
+		GpuCommandBuffer& operator=(const GpuCommandBuffer&) = delete;
+		GpuCommandBuffer& operator=(GpuCommandBuffer&&) = delete;
+
 		Color GetClearColor() const{ return clearColor; }
 		void SetClearColor(const Color& newClearColor){ clearColor = newClearColor; }
 

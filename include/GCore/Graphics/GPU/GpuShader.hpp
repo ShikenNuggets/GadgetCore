@@ -13,6 +13,11 @@ namespace Gadget
 		GpuShader(GpuDevice& gpuDevice, const RawShader& rawShader);
 		~GpuShader();
 
+		GpuShader(const GpuShader&) = delete;
+		GpuShader(GpuShader&&) = delete;
+		GpuShader& operator=(const GpuShader&) = delete;
+		GpuShader& operator=(GpuShader&&) = delete;
+
 		SDL_GPUShader* GetShader(){ return shader; }
 
 	private:

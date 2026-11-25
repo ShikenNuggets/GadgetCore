@@ -14,6 +14,12 @@ namespace Gadget
 		GpuDevice(SDL_Window* window);
 		~GpuDevice();
 
+		// No move for stable address + no valid empty state
+		GpuDevice(const GpuDevice&) = delete;
+		GpuDevice(GpuDevice&&) = delete;
+		GpuDevice& operator=(const GpuDevice&) = delete;
+		GpuDevice& operator=(GpuDevice&&) = delete;
+
 		SDL_GPUDevice* GetDevice(){ return device; }
 		SDL_Window* GetOwnerWindow(){ return ownerWindow; }
 

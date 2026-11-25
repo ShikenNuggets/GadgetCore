@@ -13,6 +13,11 @@ namespace Gadget
 		GpuPipeline(GpuDevice& owner, std::string_view vertexFilePath, std::string_view fragmentFilePath, uint32_t numVertexUniforms, uint32_t numFragmentUniforms);
 		~GpuPipeline();
 
+		GpuPipeline(const GpuPipeline&) = delete;
+		GpuPipeline(GpuPipeline&&) = delete;
+		GpuPipeline& operator=(const GpuPipeline&) = delete;
+		GpuPipeline& operator=(GpuPipeline&&) = delete;
+
 		SDL_GPUGraphicsPipeline* GetPipeline(){ return pipelinePtr; }
 
 	private:
