@@ -34,7 +34,8 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 		position.y = SDL_WINDOWPOS_CENTERED;
 	}
 
-	windowPtr = SDL_CreateWindow(name.data(), size.x, size.y, windowFlags);
+	const auto nameStr = std::string(name);
+	windowPtr = SDL_CreateWindow(nameStr.c_str(), size.x, size.y, windowFlags);
 	if (windowPtr == nullptr)
 	{
 		GADGET_LOG_FATAL_ERROR("Failed to create window! SDL Error: {}", SDL_GetError());
@@ -375,7 +376,8 @@ void Window::SetSize(ScreenCoordinate size_) noexcept
 
 void Window::SetWindowTitle(std::string_view title)
 {
-	bool success = SDL_SetWindowTitle(windowPtr, title.data());
+	const auto titleStr = std::string(title);
+	bool success = SDL_SetWindowTitle(windowPtr, titleStr.c_str());
 	if (!success)
 	{
 		GADGET_LOG_ERROR("Failed to set window title! SDL Error: {}", SDL_GetError());

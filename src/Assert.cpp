@@ -11,7 +11,7 @@
 
 using namespace Gadget;
 
-void Gadget::PopupErrorMessage(std::string_view title, std::string_view message)
+void Gadget::PopupErrorMessage(const std::string& title, const std::string& message)
 {
 	#ifdef GADGET_BUILD_DEBUG
 		Internal::PopupDebugErrorMessage(title, message);
@@ -37,7 +37,7 @@ namespace Gadget
 	}
 }
 
-void Gadget::Internal::PopupDebugErrorMessage(std::string_view title, std::string_view message)
+void Gadget::Internal::PopupDebugErrorMessage(const std::string& title, const std::string& message)
 {
 	std::array<SDL_MessageBoxButtonData, 3> buttons
 	{{
@@ -50,8 +50,8 @@ void Gadget::Internal::PopupDebugErrorMessage(std::string_view title, std::strin
 	data.flags = SDL_MESSAGEBOX_ERROR;
 	data.numbuttons = buttons.size();
 	data.buttons = buttons.data();
-	data.title = title.data();
-	data.message = message.data();
+	data.title = title.c_str();
+	data.message = message.c_str();
 
 	int buttonId = -1;
 	const bool didOpen = SDL_ShowMessageBox(&data, &buttonId);
@@ -74,9 +74,9 @@ void Gadget::Internal::PopupDebugErrorMessage(std::string_view title, std::strin
 	}
 }
 
-void Gadget::Internal::PopupSimpleErrorMessage(std::string_view title, std::string_view message)
+void Gadget::Internal::PopupSimpleErrorMessage(const std::string& title, const std::string& message)
 {
-	const bool didOpen = SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title.data(), message.data(), nullptr);
+	const bool didOpen = SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title.c_str(), message.c_str(), nullptr);
 	if(!didOpen)
 	{
 		GADGET_LOG_ERROR("Failed to open SDL simple message box. SDL Error: ", SDL_GetError());

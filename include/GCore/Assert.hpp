@@ -7,7 +7,7 @@
 
 namespace Gadget
 {
-	void PopupErrorMessage(std::string_view title, std::string_view message);
+	void PopupErrorMessage(const std::string& title, const std::string& message);
 
 	inline constexpr void Assert(bool condition, std::string_view message, std::source_location sourceLocation = std::source_location::current())
 	{
@@ -27,8 +27,8 @@ namespace Gadget
 
 	namespace Internal
 	{
-		void PopupDebugErrorMessage(std::string_view title, std::string_view message);
-		void PopupSimpleErrorMessage(std::string_view title, std::string_view message);
+		void PopupDebugErrorMessage(const std::string& title, const std::string& message);
+		void PopupSimpleErrorMessage(const std::string& title, const std::string& message);
 	}
 }
 
