@@ -25,6 +25,11 @@ namespace Gadget::Math
 	static_assert(!Numeric<char>, "Sanity Check - char should not be used as a numeric type");
 	static_assert(!Numeric<wchar_t>, "Sanity Check - wchar_t should not be used as a numeric type");
 
+	template <typename T>
+	concept IntegerLike = Numeric<T> && std::is_integral_v<T>;
+	static_assert(IntegerLike<int>, "Sanity Check - int must satisfy the IntegerLike concept");
+	static_assert(!IntegerLike<float>, "Sanity Check - float is not an integer-like type");
+
 #ifdef GADGET_BUILD_DOUBLE_MATH
 	using GFloat = double;
 #else
@@ -273,4 +278,53 @@ namespace Gadget::Math
 
 	template <FloatLike T>
 	[[nodiscard]] static inline constexpr T Lerp(T a, T b, T t) noexcept{ return a + (t * (b - a)); }
+
+	template <IntegerLike IntT, FloatLike FloatT>
+	[[nodiscard]] static inline IntT Quantize(FloatT value) noexcept
+	{
+		if (!IsValidNumber(value))
+		{
+			return 0;
+		}
+
+		constexpr auto minInt = std::numeric_limits<IntT>::lowest();
+		constexpr auto maxInt = std::numeric_limits<IntT>::max();
+
+		constexpr auto minFloat = std::is_signed_v<IntT> ? static_cast<FloatT>(-1.0) : static_cast<FloatT>(0.0);
+		constexpr auto maxFloat = static_cast<FloatT>(1.0);
+
+		if (value >= maxFloat)
+		{
+			return maxInt;
+		}
+		
+		if (value <= minFloat)
+		{
+			return minInt;
+		}
+
+		return static_cast<IntT>(std::round(value * static_cast<FloatT>(maxInt)));
+	}
+
+	template <FloatLike FloatT, IntegerLike IntT>
+	[[nodiscard]] static inline constexpr FloatT Dequantize(IntT value) noexcept
+	{
+		constexpr auto minInt = std::numeric_limits<IntT>::lowest();
+		constexpr auto maxInt = std::numeric_limits<IntT>::max();
+
+		constexpr auto minFloat = std::is_signed_v<IntT> ? static_cast<FloatT>(-1.0) : static_cast<FloatT>(0.0);
+		constexpr auto maxFloat = static_cast<FloatT>(1.0);
+
+		if (value == minInt)
+		{
+			return minFloat;
+		}
+		
+		if (value == maxInt)
+		{
+			return maxFloat;
+		}
+
+		return static_cast<FloatT>(value) / static_cast<FloatT>(maxInt);
+	}
 }

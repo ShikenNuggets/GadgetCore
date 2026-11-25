@@ -5,6 +5,7 @@
 #include "GCore/Math/CoreMath.hpp"
 
 using namespace Gadget;
+using Catch::Approx;
 
 TEST_CASE("Math::IsValidNumber", "[math_is_valid_number]")
 {
@@ -327,4 +328,35 @@ TEST_CASE("Math::Lerp", "[math_lerp]")
 
 	const auto lerpTest2 = Math::Lerp(0.0, 10.0, 0.25);
 	REQUIRE(Math::IsNear(lerpTest2, 2.5));
+}
+
+TEST_CASE("Math::Quantize", "[math_quantize]")
+{
+	REQUIRE(Math::Quantize<int32_t>(0.0) == 0);
+	REQUIRE(Math::Quantize<int32_t>(0.5) == 1073741824);
+	REQUIRE(Math::Quantize<int32_t>(1.0) == 2147483647);
+	REQUIRE(Math::Quantize<int32_t>(-0.5) == -1073741824);
+	REQUIRE(Math::Quantize<int32_t>(-1.0) == -2147483648);
+
+	REQUIRE(Math::Quantize<uint16_t>(0.0f) == 0);
+	REQUIRE(Math::Quantize<uint16_t>(0.5f) == 32768);
+	REQUIRE(Math::Quantize<uint16_t>(1.0f) == 65535);
+	REQUIRE(Math::Quantize<uint16_t>(-0.5f) == 0);
+	REQUIRE(Math::Quantize<uint16_t>(-1.0f) == 0);
+}
+
+TEST_CASE("Math::Dequantize", "[math_dequantize]")
+{
+	REQUIRE(Math::Dequantize<double, int32_t>(0) == 0.0);
+	REQUIRE(Math::Dequantize<double, int32_t>(1073741824) == Approx(0.5));
+	REQUIRE(Math::Dequantize<double, int32_t>(2147483647) == 1.0);
+	REQUIRE(Math::Dequantize<double, int32_t>(-1073741824) == Approx(-0.5));
+	REQUIRE(Math::Dequantize<double, int32_t>(-2147483648) == -1.0);
+
+	REQUIRE(Math::Dequantize<float, uint16_t>(0) == 0.0f);
+	REQUIRE(Math::Dequantize<float, uint16_t>(32768) == Approx(0.5f).epsilon(1e-4));
+	REQUIRE(Math::Dequantize<float, uint16_t>(65535) == 1.0f);
+
+	static_assert(Math::Dequantize<double, int32_t>(0) == 0.0);
+	static_assert(Math::Dequantize<double, int32_t>(2147483647) == 1.0);
 }
