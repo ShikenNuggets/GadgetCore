@@ -81,6 +81,11 @@ void WindowSurfaceView::AssignPixel(int32_t x, int32_t y, Uint32 color)
 void WindowSurfaceView::AssignPixel(int32_t x, int32_t y, const Color& color)
 {
 	GADGET_BASIC_ASSERT(surface != nullptr);
+	if (surface == nullptr)
+	{
+		return;
+	}
+
 	GADGET_BASIC_ASSERT(x >= 0 && x < surface->w);
 	GADGET_BASIC_ASSERT(y >= 0 && y < surface->h);
 
