@@ -105,6 +105,8 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 
 Window::~Window()
 {
+	controllers.clear();
+
 	if (gpuDepthTexture != nullptr)
 	{
 		SDL_ReleaseGPUTexture(gpuDevice->GetDevice(), gpuDepthTexture);
