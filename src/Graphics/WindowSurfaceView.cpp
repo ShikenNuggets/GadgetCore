@@ -69,7 +69,7 @@ void WindowSurfaceView::AssignPixel(int32_t x, int32_t y, Uint32 color)
 
 	GADGET_BASIC_ASSERT(x >= 0 && x < surface->w);
 	GADGET_BASIC_ASSERT(y >= 0 && y < surface->h);
-	if (x < 0 || x >= surface->w || y < 0 && y >= surface->h)
+	if (x < 0 || x >= surface->w || y < 0 || y >= surface->h)
 	{
 		GADGET_LOG_WARNING("Tried to assign pixel with ({},{}), max width/height is ({},{})", x, y, surface->w, surface->h);
 		return;
