@@ -7,6 +7,7 @@ using namespace Gadget;
 
 static constexpr SDL_InitFlags gInitFlags = SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK;
 
+// Known Issue: Resources can leak if an exception is thrown here. Window failing to init is usually fatal anyway
 Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::string_view name, int32_t x_, int32_t y_)
 	: windowPtr(nullptr)
 	, size(width_, height_), position(x_, y_)
