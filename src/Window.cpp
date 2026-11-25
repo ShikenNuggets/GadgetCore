@@ -9,6 +9,7 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 	: windowPtr(nullptr)
 	, size(width_, height_), position(x_, y_)
 	, renderAPI(renderAPI_)
+	, sdlRenderer(nullptr)
 	, glContext(nullptr)
 	, gpuDepthTexture(nullptr)
 {
