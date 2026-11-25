@@ -252,6 +252,22 @@ TEST_CASE("TMat4::Determinant", "[tmat4_determinant]")
 	m = identity;
 	m[15] = -1.0;
 	REQUIRE(m.Determinant() == Approx(-1.0));
+
+	const auto dense = TMat4<double>(
+		2.0, 2.0, 4.0, 2.0,
+		1.0, 2.0, 2.0, 3.0,
+		3.0, 5.0, 9.0, 10.0,
+		4.0, 5.0, 10.0, 9.0
+	);
+	REQUIRE(dense.Determinant() == Approx(6.0));
+
+	const auto unique = TMat4<double>(
+		3.0, -8.0, -7.0, 4.0,
+		5.0, -4.0, 7.0, -3.0,
+		1.0, 2.0, 6.0, -2.0,
+		-9.0, 9.0, -6.0, -1.0
+	);
+	REQUIRE(unique.Determinant() == Approx(1.0));
 }
 
 TEST_CASE("TMat4::Inverse", "[tmat4_inverse]")
@@ -287,6 +303,43 @@ TEST_CASE("TMat4::Inverse", "[tmat4_inverse]")
 	for(size_t i = 0; i < TMat4<double>::Size(); ++i)
 	{
 		REQUIRE(m[i] == 0.0);
+	}
+
+	const auto dense = TMat4<double>(
+		2.0, 2.0, 4.0, 2.0,
+		1.0, 2.0, 2.0, 3.0,
+		3.0, 5.0, 9.0, 10.0,
+		4.0, 5.0, 10.0, 9.0
+	);
+	const auto denseInv = dense.Inverse();
+	const auto prodLeft = dense * denseInv;
+	const auto prodRight = denseInv * dense;
+	for (size_t i = 0; i < TMat4<double>::Size(); ++i)
+	{
+		REQUIRE(prodLeft[i] == Approx(identity[i]).margin(1e-6));
+		REQUIRE(prodRight[i] == Approx(identity[i]).margin(1e-6));
+	}
+
+	const auto unique = TMat4<double>(
+		3.0, -8.0, -7.0, 4.0,
+		5.0, -4.0, 7.0, -3.0,
+		1.0, 2.0, 6.0, -2.0,
+		-9.0, 9.0, -6.0, -1.0
+	);
+	const auto expectedUniqueInv = TMat4<double>(
+		158.0, 8.0, 261.0, 86.0,
+		101.0, 5.0, 167.0, 55.0,
+		-77.0, -4.0, -127.0, -42.0,
+		-51.0, -3.0, -84.0, -28.0
+	);
+	const auto uniqueInv = unique.Inverse();
+	const auto uniqueProdLeft = unique * uniqueInv;
+	const auto uniqueProdRight = uniqueInv * unique;
+	for (size_t i = 0; i < TMat4<double>::Size(); ++i)
+	{
+		REQUIRE(uniqueInv[i] == Approx(expectedUniqueInv[i]));
+		REQUIRE(uniqueProdLeft[i] == Approx(identity[i]).margin(1e-6));
+		REQUIRE(uniqueProdRight[i] == Approx(identity[i]).margin(1e-6));
 	}
 }
 
