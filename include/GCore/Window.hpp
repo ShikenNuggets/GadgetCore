@@ -69,6 +69,7 @@ namespace Gadget
 		WindowEventHandler& EventHandler(){ return eventHandler; }
 
 	private:
+		bool didInitSDL = false;
 		SDL_Window* windowPtr = nullptr;
 		ScreenCoordinate size;
 		ScreenCoordinate position;

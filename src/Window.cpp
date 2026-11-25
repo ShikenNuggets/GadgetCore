@@ -5,6 +5,8 @@
 
 using namespace Gadget;
 
+static constexpr SDL_InitFlags gInitFlags = SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK;
+
 Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::string_view name, int32_t x_, int32_t y_)
 	: windowPtr(nullptr)
 	, size(width_, height_), position(x_, y_)
@@ -13,8 +15,8 @@ Window::Window(int32_t width_, int32_t height_, RenderAPI renderAPI_, std::strin
 	, glContext(nullptr)
 	, gpuDepthTexture(nullptr)
 {
-	const bool didInit = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK);
-	if (!didInit)
+	didInitSDL = SDL_Init(gInitFlags);
+	if (!didInitSDL)
 	{
 		GADGET_LOG_FATAL_ERROR("Failed to initialize SDL! SDL Error: {}", SDL_GetError());
 	}
@@ -137,7 +139,16 @@ Window::~Window()
 		SDL_DestroyWindow(windowPtr);
 	}
 
-	SDL_Quit();
+	if (didInitSDL)
+	{
+		SDL_QuitSubSystem(gInitFlags);
+
+		// Quit SDL entirely if no other subsystems are active (i.e., no other windows are open)
+		if (SDL_WasInit(0) == 0)
+		{
+			SDL_Quit();
+		}
+	}
 }
 
 void Window::HandleEvents()
