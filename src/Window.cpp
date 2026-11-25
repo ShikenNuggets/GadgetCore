@@ -110,7 +110,11 @@ Window::~Window()
 		SDL_ReleaseGPUTexture(gpuDevice->GetDevice(), gpuDepthTexture);
 	}
 
-	gpuDevice.reset();
+	if (gpuDevice != nullptr)
+	{
+		SDL_ReleaseWindowFromGPUDevice(gpuDevice->GetDevice(), windowPtr);
+		gpuDevice.reset();
+	}
 
 	if (sdlRenderer != nullptr)
 	{
