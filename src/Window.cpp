@@ -1,6 +1,7 @@
 #include "Window.hpp"
 
 #include "Logger.hpp"
+#include "Math/CoreMath.hpp"
 #include "ThirdParty/SDL_Utils.hpp"
 
 using namespace Gadget;
