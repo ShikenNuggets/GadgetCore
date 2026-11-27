@@ -266,17 +266,38 @@ void Window::HandleEvents()
 				eventHandler.OnAxisChange.Broadcast(SDL_Utils::JoystickToAxisId(e.jaxis.axis), Math::Dequantize<double>(e.jaxis.value));
 				break;
 			case SDL_EVENT_JOYSTICK_HAT_MOTION:
-				if (e.jhat.value & (SDL_HAT_LEFT | SDL_HAT_RIGHT))
+			{
+				const bool isLeft = static_cast<bool>(e.jhat.value & SDL_HAT_LEFT);
+				const bool isRight = static_cast<bool>(e.jhat.value & SDL_HAT_RIGHT);
+				const bool isUp = static_cast<bool>(e.jhat.value & SDL_HAT_UP);
+				const bool isDown = static_cast<bool>(e.jhat.value & SDL_HAT_DOWN);
+
+				double hatX = 0.0;
+				if (isRight)
 				{
-					eventHandler.OnAxisChange.Broadcast(SDL_Utils::JoystickHorizontalHatToAxisId(e.jhat.hat), static_cast<bool>(e.jhat.value & SDL_HAT_RIGHT) ? 1.0 : -1.0);
+					hatX += 1.0;
+				}
+				
+				if (isLeft)
+				{
+					hatX -= 1.0;
 				}
 
-				if (e.jhat.value & (SDL_HAT_UP | SDL_HAT_DOWN))
+				double hatY = 0.0;
+				if (isUp)
 				{
-					eventHandler.OnAxisChange.Broadcast(SDL_Utils::JoystickVerticalHatToAxisId(e.jhat.hat), static_cast<bool>(e.jhat.value & SDL_HAT_UP) ? 1.0 : -1.0);
+					hatY += 1.0;
+				}
+				
+				if (isDown)
+				{
+					hatY -= 1.0;
 				}
 
+				eventHandler.OnAxisChange.Broadcast(SDL_Utils::JoystickHorizontalHatToAxisId(e.jhat.hat), hatX);
+				eventHandler.OnAxisChange.Broadcast(SDL_Utils::JoystickVerticalHatToAxisId(e.jhat.hat), hatY);
 				break;
+			}
 			case SDL_EVENT_JOYSTICK_BUTTON_DOWN:
 				eventHandler.OnButtonDown.Broadcast(SDL_Utils::JoystickToButtonId(e.jbutton.button));
 				break;
